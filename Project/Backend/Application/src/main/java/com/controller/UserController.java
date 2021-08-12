@@ -64,15 +64,12 @@ public class UserController {
 			switch(Integer.parseInt(user.getUser_role()))
 			{
 			case 1:
-				return "userdashboard";
+				return "/user/dashboard";
 				
 			case 2:
-				return "admindashboard";
+				return "/user/dashboard";
 				
-			}
-			
-				
-			
+			}		
 		} else {
 			rowsAffected = 3;
 			model.addAttribute("result",rowsAffected);
@@ -81,5 +78,9 @@ public class UserController {
 		return "login";
 //		System.out.println("Called...");
 //		return "";
+	}
+	@RequestMapping(value="/user/header")
+	public String header() {
+		return "/user/header";
 	}
 }
