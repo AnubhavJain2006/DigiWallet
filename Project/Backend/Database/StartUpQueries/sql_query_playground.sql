@@ -29,3 +29,23 @@ ALTER DATABASE digiwallet MODIFY NAME = DigiWallet;
 GO  
 ALTER DATABASE DigiWallet SET MULTI_USER
 GO
+
+
+select monthname(getdate())
+SELECT DATENAME(WEEKDAY, getdate()) AS 'Month Name'
+select DATEADD(DAY, 2, '2000-08-01')
+
+--------------------------------------------
+go
+alter trigger AUTO_ACCOUNT_INSERT_TG 
+on user_master
+for insert
+as 
+Begin
+	DECLARE @user_id int
+	select @user_id = user_id from inserted
+	insert into account_master (account_user_id,account_group_id,account_name,account_amount) values (@user_id,1,'Cash',0)
+	insert into account_master (account_user_id,account_group_id,account_name,account_amount) values (@user_id,2,'Accounts',0)
+	insert into account_master (account_user_id,account_group_id,account_name,account_amount) values (@user_id,3,'Card',0)
+End
+

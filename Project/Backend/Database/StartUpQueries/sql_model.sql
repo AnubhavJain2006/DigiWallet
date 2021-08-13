@@ -64,7 +64,7 @@ account_id int primary key identity,
 account_user_id int NOT NULL,
 account_group_id int NOT NULL,
 account_name varchar(30) NOT NULL,
-account_amount money CHECK (account_amount > 0),
+account_amount money CHECK (account_amount >= 0),
 account_description text DEFAULT NULL
 )
 ------------------------------------------------------------------------------------------------------------
@@ -221,4 +221,23 @@ create procedure sp_get_user_by_email_and_password
 AS
 	print @email
 	select * from [DigiWallet].[dbo].[user_master] AS u where u.user_email = @email and u.user_password = @pwd
+------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------
+--Adding Triggers to Batch
+------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------------
+GO
+CREATE TRIGGER AUTO_ACCOUNT_INSERT_TG 
+ON [DigiWallet].[dbo].[user_master]
+FOR INSERT
+AS 
+BEGIN
+	DECLARE @user_id INT
+	select @user_id = user_id from inserted
+	insert into [DigiWallet].[dbo].[account_master] (account_user_id,account_group_id,account_name,account_amount) values (@user_id,1,'Cash',0)
+	insert into [DigiWallet].[dbo].[account_master] (account_user_id,account_group_id,account_name,account_amount) values (@user_id,2,'Accounts',0)
+	insert into [DigiWallet].[dbo].[account_master] (account_user_id,account_group_id,account_name,account_amount) values (@user_id,3,'Card',0)
+END
 ------------------------------------------------------------------------------------------------------------
