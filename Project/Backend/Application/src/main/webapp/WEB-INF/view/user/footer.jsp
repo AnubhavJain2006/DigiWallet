@@ -11,3 +11,12 @@
 <script src="<c:url value="/resources/plugins/bootstrap/js/bootstrap.min.js"/>"></script>
 <!-- Page Specific JS -->
 <script src="<c:url value="/resources/js/app.js"/>"></script>
+<script>
+	let items=document.querySelectorAll("a");
+	items.forEach(item=>{
+		item.addEventListener('click',()=>{
+			items.forEach(item=>item.classList.remove('active'))
+			item.classList.add('active')
+		})
+	})
+</script>

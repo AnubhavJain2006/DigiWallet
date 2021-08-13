@@ -22,7 +22,14 @@ public class UserDao {
 	}
 	public UserBean checkUser(UserBean user) {
 		// TODO Auto-generated method stub
-		UserBean userbean=stmt.queryForObject("select * from user_master where user_email=? and user_password=?",new Object[] {user.getUser_email(),user.getUser_password()},new UserRowMapper());
+		UserBean  userbean=null;
+		try {
+		userbean=stmt.queryForObject("select * from user_master where user_email=? and user_password=?",new UserRowMapper(),new Object[] {user.getUser_email(),user.getUser_password()});
+		}
+		catch(Exception e)
+		{
+			return null;
+		}
 		return userbean;
 	}
 	
@@ -37,6 +44,32 @@ public class UserDao {
 			user.setUser_role(rs.getString(9));
 			return user;
 		}
+	}
+
+	public boolean checkEmail(String emailId) {
+		// TODO Auto-generated method stub
+		UserBean userbean=null;
+		boolean isFound=false;
+		try {
+			userbean=stmt.queryForObject("select * from user_master where user_email=?",new UserRowMapper(), new Object[] {emailId});
+			if(userbean!=null)
+			{
+				isFound=true;
+			}
+		}
+		catch(Exception e)
+		{
+			isFound=false;
+			System.out.println(e.getMessage());
+		}
+		return isFound;
+	}
+	public int updatePassword(String password,String email) {
+		// TODO Auto-generated method stub
 		
+		int result=stmt.update("update user_master set user_password=? where user_email=?",password,email);
+		if(result>0)
+			System.out.println("Hui gava");
+		return result;
 	}
 }

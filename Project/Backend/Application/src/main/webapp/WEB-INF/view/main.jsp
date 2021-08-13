@@ -18,4 +18,13 @@
 
 <link id="theme-style" rel="stylesheet"
 	href="<c:url value="/resources/css/portal.css"/>">
+	
+	<style type="text/css">
+		.display{
+		display:flex;
+		flex-direction:column;
+		justify-content:center
+		
+		}
+	</style>
 </head>
