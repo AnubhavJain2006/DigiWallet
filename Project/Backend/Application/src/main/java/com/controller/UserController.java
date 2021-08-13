@@ -176,7 +176,7 @@ public class UserController {
 			return "/user/dashboard";
 		}
 		else
-			return "/Login";
+			return "redirect:/login";
 		
 	}
 	@RequestMapping(value = "user/logout")
