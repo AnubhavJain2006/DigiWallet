@@ -14,7 +14,7 @@
 
 <body class="app app-signup p-0">
 	<div class="row g-0 app-auth-wrapper">
-		<div class="col-12 col-md-7 col-lg-6 auth-main-col text-center p-5">
+		<div class="col-12 col-md-7 col-lg-6 display auth-main-col text-center p-5">
 			<div class="d-flex flex-column align-content-end">
 				<div class="app-auth-body mx-auto">
 					<div class="app-auth-branding mb-4">
@@ -46,6 +46,7 @@
 									cssClass="form-control signup-password"
 									placeholder="Create a password" required="required"/> 
 									<f:errors path="user_password" cssClass="error"></f:errors>
+									<br>
 									<input type="checkbox" id="eye" class="d-inline form-check-label fas fa-eye" onclick="myFunction()">Show Password
 							</div>
 					

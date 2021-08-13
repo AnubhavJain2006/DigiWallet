@@ -11,7 +11,7 @@
 
 	<div class="row g-0 app-auth-wrapper">
 
-		<div class="col-12 col-md-7 col-lg-6 auth-main-col text-center p-5">
+		<div class="col-12 col-md-7 col-lg-6 display auth-main-col text-center p-5">
 			
 			<c:choose>
 				<c:when test="${result==1}">
@@ -38,6 +38,15 @@
 					<div class="alert alert-danger alert-dismissible fade show"
 						role="alert">
 						<strong>Invalid Credentials..</strong>Email or Password is incorrect...
+						<button type="button" class="btn-close" data-bs-dismiss="alert"
+							aria-label="Close"></button>
+					</div>
+				</c:when>
+				
+				<c:when test="${result==4}">
+					<div class="alert alert-success alert-dismissible fade show"
+						role="alert">
+						<strong>Congratulations..</strong>Your Password has been successfully changed.
 						<button type="button" class="btn-close" data-bs-dismiss="alert"
 							aria-label="Close"></button>
 					</div>
@@ -80,7 +89,7 @@
 										<!--//col-6-->
 										<div class="col-6">
 											<div class="forgot-password text-end">
-												<a href="<c:url value="reset-password.jsp"/>">Forgot
+												<a href="<c:url value="forgotpassword"/>">Forgot
 													password?</a>
 											</div>
 										</div>
