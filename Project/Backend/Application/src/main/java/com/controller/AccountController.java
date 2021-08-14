@@ -1,7 +1,9 @@
 package com.controller;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,11 +37,15 @@ public class AccountController {
 	}
 
 	@RequestMapping(value = "/user/account")
-	public String Account(HttpServletRequest req,Model model, AccountBean abean) {
+	public String Account(HttpServletRequest req,Model model, AccountBean abean,HttpSession session) {
 		if (isValidUser(req)) {
+			int beanId = getUserId(session);
 			List<AccountBean> account_grp_list = dao.getGroupId();
+			List<AccountBean> account_bean_list = dao.getAllAccount(beanId);
+			System.out.println(account_grp_list.size()+" 1st "+account_grp_list.get(0).getAccount_description());
 			model.addAttribute("abean", abean);
 			model.addAttribute("account_grp_list", account_grp_list);
+			model.addAttribute("account_bean_list", account_bean_list);
 			return "/user/account";
 
 		}

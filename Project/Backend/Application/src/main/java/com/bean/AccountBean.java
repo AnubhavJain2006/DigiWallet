@@ -1,8 +1,7 @@
 package com.bean;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
-import org.hibernate.validator.constraints.NotBlank;
 
 import org.springframework.stereotype.Component;
 
@@ -14,7 +13,7 @@ public class AccountBean {
 	
 	private String account_group_name;
 	
-	@NotBlank(message="*It must be a valid name")
+	@NotNull(message="*It must be a valid name")
 	private String account_name;
 	
 	@Pattern(regexp = "^[0-9]+$",message="*Amount should be a number")

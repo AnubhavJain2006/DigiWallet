@@ -98,54 +98,57 @@ a:active {
 					</div>
 
 					<button type="submit" class="btn"
-						style="background: green; float:right; color: white">Submit</button>
+						style="background: green; float: right; color: white">Submit</button>
 				</f:form>
 			</div>
 			<div class="container mt-5">
-					<div class="py-2 border-bottom">
-						<h5 class="h5">
-							<i class="fas fa-chevron-right"></i> Account Overview
-						</h5>
-					</div>
+				<div class="py-2 border-bottom">
+					<h5 class="h5">
+						<i class="fas fa-chevron-right"></i> Account Overview
+					</h5>
+				</div>
 
-					<div class=" mx-2 mt-4 bg-white shadow rounded ">
-						<div class="table-responsive">
-							<table
-								class="table table-hover  text-center" id="myTable">
-								<thead class="table-secondary">
+				<div class=" mx-2 mt-4 bg-white shadow rounded ">
+					<div class="table-responsive">
+						<table class="table table-hover  text-center" id="myTable">
+							<thead class="table-secondary">
+								<tr>
+									<th>Sr.No.</th>
+									<th>Group Name</th>
+									<th>Account Name</th>
+									<th>Amount</th>
+									<th>Description</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<%
+								int i = 1;
+								%>
+								<c:forEach items="${account_bean_list}" var="bean">
 									<tr>
-										<th>Account Name</th>
-										<th>Amount</th>
-										<th>Description</th>
+										<td><%=i%></td>
+										<td>${bean.account_group_name}</td>
+										<td>${bean.account_name}</td>
+										<td>${bean.account_amount}</td>
+										<td>${bean.account_description}</td>
+										<td>
+											<form action="/${bean.account_id }" method="POST">
+												<a href=""><button type="submit" class="btn btn-warning">Update</button></a>
+												<a href=""><button type="submit" class="btn btn-danger">Delete</button></a>
+											</form>
+										</td>
 									</tr>
-								</thead>
-								<tbody>
-									<tr>
+									<%
+									i = i + 1;
+									%>
+								</c:forEach>
 
-										<td>Cash</td>
-										<td>2400</td>
-										<td>HELLO JI</td>
-									</tr>
-									<tr>
-										<td>Cash</td>
-										<td>2400</td>
-										<td>HELLO JI</td>
-									</tr>
-									<tr>
-										<td>Cash</td>
-										<td>2400</td>
-										<td>HELLO JI</td>
-									</tr>
-									<tr>
-										<td>Cash</td>
-										<td>2400</td>
-										<td>HELLO JI</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
+							</tbody>
+						</table>
 					</div>
 				</div>
+			</div>
 		</div>
 	</div>
 </div>

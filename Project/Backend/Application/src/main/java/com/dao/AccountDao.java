@@ -3,7 +3,9 @@ package com.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -46,6 +48,13 @@ public class AccountDao {
 		}
 		
 		
+	}
+	public List<AccountBean> getAllAccount(int id) {
+		List<AccountBean> beans = stmt.query("select am.account_id,am.account_name, am.account_amount, am.account_description ,ag.account_group_name from account_master am join account_group ag on am.account_group_id=ag.account_group_id where am.account_user_id="+id +" order by account_id desc", new BeanPropertyRowMapper<AccountBean>(AccountBean.class) );
+		if(!beans.isEmpty()) {
+			return beans;
+		}
+		return null;
 	}
 
 }
