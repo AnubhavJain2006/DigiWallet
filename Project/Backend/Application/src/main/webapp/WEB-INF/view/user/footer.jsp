@@ -12,11 +12,12 @@
 <!-- Page Specific JS -->
 <script src="<c:url value="/resources/js/app.js"/>"></script>
 <script>
-	let items=document.querySelectorAll("a");
+	let items=document.querySelectorAll("li a.nav-link");
 	items.forEach(item=>{
 		item.addEventListener('click',()=>{
 			items.forEach(item=>item.classList.remove('active'))
 			item.classList.add('active')
 		})
-	})
+	});
 </script>
+

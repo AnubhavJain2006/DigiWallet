@@ -6,7 +6,16 @@
 <head>
 <meta charset="ISO-8859-1">
 <%@include file="head.jsp" %>
-<title>Dashboard</title>
+
+<title>Account</title>
+    <style>
+        a:active {
+            color: #15a362;
+            background: #edfdf6;
+            border-left: 3px solid #15a362;
+            font-weight: 500;
+        }
+    </style>
 </head>
 <%@include file="header.jsp" %>
  <div class="app-wrapper">

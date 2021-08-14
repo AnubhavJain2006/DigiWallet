@@ -1,14 +1,18 @@
 package com.controller;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.http.CacheControl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -123,7 +127,6 @@ public class UserController {
 //==================================================================================================================
 
 	public boolean isValidUser(HttpServletRequest req) {
-	
 		HttpSession session=req.getSession(false);
 //		System.out.println(session.getAttribute("user"));
 		UserBean user = (UserBean) session.getAttribute("user");
@@ -147,7 +150,7 @@ public class UserController {
 
 			case 2:
 				System.out.println(((UserBean)session.getAttribute("user")).getUser_name());
-				return "redirec:/user/dashboard";
+				return "redirect:/user/dashboard";
 
 			}
 		} else {
@@ -169,15 +172,14 @@ public class UserController {
 	
 	@RequestMapping(value="/user/dashboard")
 	public String UserDashboard(HttpServletRequest req,Model model) {
+		System.out.println("Aa gaya");
 //		HttpSession session=req.getSession(false);
 		model.addAttribute("user",new UserBean());
-		if(isValidUser(req))
-		{	
+		if(isValidUser(req)) {
 			return "/user/dashboard";
 		}
 		else
-			return "redirect:/login";
-		
+			return "redirect:/login";	
 	}
 	@RequestMapping(value = "user/logout")
 	public String logout(HttpServletRequest req,HttpSession session, Model model) {
@@ -185,6 +187,11 @@ public class UserController {
 		session=req.getSession(false);
 		model.addAttribute("user", new UserBean());
 		return "redirect:/login";
+	}
+	
+	@RequestMapping(value="/user/account")
+	public String Account() {
+		return "/user/account";
 	}
 
 }
