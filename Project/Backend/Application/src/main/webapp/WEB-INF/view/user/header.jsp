@@ -1,5 +1,11 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <body class="app">
+<%
+	response.setHeader("Cache-Control", "no-cache");
+	response.setHeader("Cache-Control", "no-store");
+	response.setDateHeader("Expires", 0);
+	response.setHeader("Pragma", "no-cache");
+%>
 <header class="app-header fixed-top">
         <div class="app-header-inner">
             <div class="container-fluid py-2">

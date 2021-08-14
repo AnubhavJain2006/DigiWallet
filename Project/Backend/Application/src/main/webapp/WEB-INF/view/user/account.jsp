@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="f" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="f"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,13 +46,13 @@ a:active {
 			</c:choose>
 			<div class="container">
 				<f:form action="saveAccount" method="post" modelAttribute="abean">
-					<div class="row mb-3">
+					<%-- <div class="row mb-3">
 						<div class="col-sm-10">
 							<input type="hidden" readonly="readonly" name="account_user_id"
 								class="form-control" id="account_user_id"
 								value="<%=((UserBean) session.getAttribute("user")).getUser_id()%>" />
 						</div>
-					</div>
+					</div> --%>
 
 
 					<div class="row mb-3">
@@ -63,7 +63,6 @@ a:active {
 								<c:forEach items="${account_grp_list}" var="g_name">
 									<option value="${g_name.account_group_id}">${g_name.account_group_name}</option>
 								</c:forEach>
-
 							</f:select>
 						</div>
 					</div>
@@ -72,7 +71,7 @@ a:active {
 							Name</label>
 						<div class="col-sm-10">
 							<f:input path="account_name" cssClass="form-control"
-								id="account_name" />
+								id="account_name" required="required" />
 						</div>
 					</div>
 
@@ -82,7 +81,7 @@ a:active {
 							Amount</label>
 						<div class="col-sm-10">
 							<f:input path="account_amount" cssClass="form-control"
-								id="account_amount" />
+								id="account_amount" required="required"/>
 							<f:errors cssClass="error"></f:errors>
 						</div>
 					</div>
@@ -93,7 +92,7 @@ a:active {
 							Description</label>
 						<div Class="col-sm-10">
 							<f:textarea path="account_description" cssClass="form-control"
-								cssStyle="height:200px;" id="account_description" />
+								cssStyle="height:200px;" id="account_description" required="required" />
 						</div>
 					</div>
 
@@ -133,10 +132,10 @@ a:active {
 										<td>${bean.account_amount}</td>
 										<td>${bean.account_description}</td>
 										<td>
-											<form action="/${bean.account_id }" method="POST">
-												<a href=""><button type="submit" class="btn btn-warning">Update</button></a>
-												<a href=""><button type="submit" class="btn btn-danger">Delete</button></a>
-											</form>
+											
+												<a href="update/${bean.account_id }"><button type="submit" class="btn btn-warning">Update</button></a>
+												<a href="delete/${bean.account_id}"><button type="submit" class="btn btn-danger" onclick="return confirmDelete()">Delete</button></a>
+											
 										</td>
 									</tr>
 									<%
@@ -153,6 +152,11 @@ a:active {
 	</div>
 </div>
 <%@include file="footer.jsp"%>
-
+<script>
+function confirmDelete() {
+    var confirmation = confirm("Are you sure.... ?")
+    return confirmation;
+}
+</script>
 </body>
 </html>

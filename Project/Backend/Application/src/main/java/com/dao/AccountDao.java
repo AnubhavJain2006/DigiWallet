@@ -17,12 +17,12 @@ public class AccountDao {
 	@Autowired
 	JdbcTemplate stmt;
 
-	public boolean accInsert(AccountBean abean) {
+	public boolean accInsert(AccountBean abean,int id) {
 		boolean flag=false;
 		try {
 			 stmt.update(
 					"insert into account_master(account_user_id,account_group_id,account_name,account_amount,account_description) values(?,?,?,?,? )",
-					abean.getAccount_user_id(), abean.getAccount_group_id(), abean.getAccount_name(),
+					id, abean.getAccount_group_id(), abean.getAccount_name(),
 					abean.getAccount_amount(), abean.getAccount_description());
 			 flag=true;
 			 return flag;
@@ -56,5 +56,21 @@ public class AccountDao {
 		}
 		return null;
 	}
+	
+	public void deleteAccount(int userId, int acc_id) {
+		// TODO Auto-generated method stub
+	
+		int acc_delete=stmt.update("delete from account_master where account_user_id=? and account_id=?",userId,acc_id);
+		System.out.println(acc_delete+"deleted");
+	}
+
+	public AccountBean updateAccount(int userId, int acc_id) {
+		AccountBean abean=stmt.queryForObject("select am.*, ag.account_group_name from account_master AS am inner join account_group as ag on am.account_group_id = ag.account_group_id where account_id = ?",new BeanPropertyRowMapper<AccountBean>(AccountBean.class), new Object[] {acc_id});
+		System.out.println(abean.getAccount_group_name());
+		System.out.println(abean.getAccount_name());
+		return abean;
+	}
+	
+	
 
 }
