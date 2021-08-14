@@ -1,18 +1,12 @@
 package com.controller;
 
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
-import org.springframework.http.CacheControl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import com.bean.UserBean;
 import com.dao.UserDao;
 import com.service.EmailService;
@@ -140,6 +133,7 @@ public class UserController {
 	@RequestMapping(value = "/checkUser", method = RequestMethod.POST)
 	public String checkUser(@Valid @ModelAttribute("user") UserBean user, BindingResult result, HttpSession session,
 			Model model) {
+		System.out.println("HEllo");
 		UserBean userbean = dao.checkUser(user);
 		if (userbean != null) {
 			session.setAttribute("user", userbean);
@@ -172,9 +166,10 @@ public class UserController {
 	
 	@RequestMapping(value="/user/dashboard")
 	public String UserDashboard(HttpServletRequest req,Model model) {
-		System.out.println("Aa gaya");
+		activeLink="dashboard";
 //		HttpSession session=req.getSession(false);
 		model.addAttribute("user",new UserBean());
+		model.addAttribute("activeLink",activeLink);
 		if(isValidUser(req)) {
 			return "/user/dashboard";
 		}
@@ -189,9 +184,6 @@ public class UserController {
 		return "redirect:/login";
 	}
 	
-	@RequestMapping(value="/user/account")
-	public String Account() {
-		return "/user/account";
-	}
-
+//==============================================
+	
 }

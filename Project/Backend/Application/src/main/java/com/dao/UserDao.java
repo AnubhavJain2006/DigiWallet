@@ -24,10 +24,14 @@ public class UserDao {
 		// TODO Auto-generated method stub
 		UserBean  userbean=null;
 		try {
+			System.out.println(user.getUser_email());
+			System.out.println(user.getUser_password());
 		userbean=stmt.queryForObject("select * from user_master where user_email=? and user_password=?",new UserRowMapper(),new Object[] {user.getUser_email(),user.getUser_password()});
+		System.out.println(" hahid"+userbean.getUser_name());
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			return null;
 		}
 		return userbean;
@@ -37,10 +41,10 @@ public class UserDao {
 
 		public UserBean mapRow(ResultSet rs, int rowNum) throws SQLException {
 			UserBean user=new UserBean();
-			user.setUser_id(rs.getInt(1));
-			user.setUser_name(rs.getString(2));
-			user.setUser_email(rs.getString(4));
-			user.setUser_password(rs.getString(7));
+			user.setUser_id(rs.getInt("user_id"));
+			user.setUser_name(rs.getString("user_name"));
+			user.setUser_email(rs.getString("user_email"));
+			user.setUser_password(rs.getString("user_password"));
 			user.setUser_role(rs.getString(9));
 			return user;
 		}
