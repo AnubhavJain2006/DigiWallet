@@ -50,7 +50,7 @@ public class AccountDao {
 		
 	}
 	public List<AccountBean> getAllAccount(int id) {
-		List<AccountBean> beans = stmt.query("select am.account_id,am.account_name, am.account_amount, am.account_description ,ag.account_group_name from account_master am join account_group ag on am.account_group_id=ag.account_group_id where am.account_user_id="+id +" order by account_id desc", new BeanPropertyRowMapper<AccountBean>(AccountBean.class) );
+		List<AccountBean> beans = stmt.query("select am.account_id,am.account_name,am.account_group_id, am.account_amount, am.account_description ,ag.account_group_name from account_master am join account_group ag on am.account_group_id=ag.account_group_id where am.account_user_id="+id +" order by account_id desc", new BeanPropertyRowMapper<AccountBean>(AccountBean.class) );
 		if(!beans.isEmpty()) {
 			return beans;
 		}
@@ -64,11 +64,12 @@ public class AccountDao {
 		System.out.println(acc_delete+"deleted");
 	}
 
-	public AccountBean updateAccount(int userId, int acc_id) {
-		AccountBean abean=stmt.queryForObject("select am.*, ag.account_group_name from account_master AS am inner join account_group as ag on am.account_group_id = ag.account_group_id where account_id = ?",new BeanPropertyRowMapper<AccountBean>(AccountBean.class), new Object[] {acc_id});
-		System.out.println(abean.getAccount_group_name());
-		System.out.println(abean.getAccount_name());
-		return abean;
+	public boolean updateAccount(int userId, AccountBean abean) {
+		boolean flag=false;
+		stmt.update("update account_master set account_group_id=?,account_name=?,account_amount=?,account_description=? where account_id=? and account_user_id=?",abean.getAccount_group_id(),abean.getAccount_name(),abean.getAccount_amount(),abean.getAccount_description(),abean.getAccount_id(),userId );
+		if(flag)
+			System.out.println("Updated");
+		return flag;
 	}
 	
 	

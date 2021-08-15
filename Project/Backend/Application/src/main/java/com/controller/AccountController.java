@@ -86,14 +86,13 @@ public class AccountController {
 		return "redirect:/user/account";
 	}
 	
-	@RequestMapping(value="/user/update/{id}")
-	public String update(Model model,HttpSession session,@PathVariable("id") int acc_id)
+	@RequestMapping(value="/user/updateAccount",method = RequestMethod.POST)
+	public String updateAccount(@Valid @ModelAttribute("abean") AccountBean abean, BindingResult result,Model model,HttpSession session)
 	{
 		int userId=getUserId(session);
-		AccountBean abean=dao.updateAccount(userId,acc_id);
+		boolean flag=dao.updateAccount(userId,abean);
 		List<AccountBean> account_grp_list = dao.getGroupId();
 		model.addAttribute("account_grp_list", account_grp_list);
-		model.addAttribute("abean",abean);
-		return "/user/update";
+		return "redirect:/user/account";
 	}
 }
