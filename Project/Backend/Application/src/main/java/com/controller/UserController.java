@@ -1,11 +1,14 @@
 package com.controller;
 
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.bean.AccountBean;
 import com.bean.UserBean;
 import com.dao.UserDao;
 import com.service.EmailService;
@@ -165,12 +170,14 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/user/dashboard")
-	public String UserDashboard(HttpServletRequest req,Model model) {
+	public String UserDashboard(HttpServletRequest req,Model model,HttpSession session) {
 		activeLink="dashboard";
 //		HttpSession session=req.getSession(false);
 		model.addAttribute("user",new UserBean());
 		model.addAttribute("activeLink",activeLink);
 		if(isValidUser(req)) {
+			List<AccountBean> userAccountList=dao.UserAccountList(((UserBean)session.getAttribute("user")).getUser_id());
+			model.addAttribute("userAccountList",userAccountList);
 			return "/user/dashboard";
 		}
 		else

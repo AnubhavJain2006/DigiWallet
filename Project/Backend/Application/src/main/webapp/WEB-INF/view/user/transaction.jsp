@@ -66,7 +66,6 @@
 								<div class="col-sm-8">
 									<select class="form-select" aria-label="Default select example"
 										id="trans_sub_category">
-
 									</select>
 								</div>
 							</div>

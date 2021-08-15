@@ -78,33 +78,20 @@
 								class="table table-bordered table-hover rounded text-center">
 								<thead class="table-secondary">
 									<tr>
+										<th>Account Group</th>
 										<th>Account Name</th>
-										<th>Amount</th>
-										<th>Description</th>
+										<th>Account Amount</th>
 									</tr>
 								</thead>
 								<tbody>
+								<c:forEach items="${userAccountList}" var="list">
 									<tr>
-
-										<td>Cash</td>
-										<td>2400</td>
-										<td>HELLO JI</td>
+										<td>${list.account_group_name}</td>
+										<td>${list.account_name }</td>
+										<td>${list.account_amount }</td>
 									</tr>
-									<tr>
-										<td>Cash</td>
-										<td>2400</td>
-										<td>HELLO JI</td>
-									</tr>
-									<tr>
-										<td>Cash</td>
-										<td>2400</td>
-										<td>HELLO JI</td>
-									</tr>
-									<tr>
-										<td>Cash</td>
-										<td>2400</td>
-										<td>HELLO JI</td>
-									</tr>
+								</c:forEach>
+								
 								</tbody>
 							</table>
 						</div>
