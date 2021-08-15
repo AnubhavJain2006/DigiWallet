@@ -22,7 +22,7 @@ user_phone varchar(30) DEFAULT NULL,
 user_full_name varchar(255) DEFAULT NULL,
 user_password varchar(MAX),
 user_image text,
-user_role_id int NOT NULL ,
+user_role_id int NOT NULL DEFAULT 2,
 user_insertdate datetime DEFAULT getdate(),
 user_updatedate datetime DEFAULT NULL,
 user_status varchar(10) DEFAULT 'ACTIVE' check(user_status in ('ACTIVE','DEACTIVE'))

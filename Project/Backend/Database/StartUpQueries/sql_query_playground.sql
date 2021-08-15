@@ -48,4 +48,28 @@ Begin
 	insert into account_master (account_user_id,account_group_id,account_name,account_amount) values (@user_id,2,'Accounts',0)
 	insert into account_master (account_user_id,account_group_id,account_name,account_amount) values (@user_id,3,'Card',0)
 End
+------------------------------------------------------------------------------------------------------------
 
+select * from category_master where category_user_id = 1
+
+select c.category_id,sub_category_id,category_name,sub_category_name from category_master as c
+inner join sub_category AS s
+on c.category_id = s.category_id
+where category_user_id = 1
+
+select * from account_master where account_user_id = 1
+
+delete from account_master where account_id = 2
+
+insert into trans_master values (1,'INCOME',getdate,2,1,1,300,NULL,NULL,NULL,'ACTIVE')
+
+select * from trans_master
+
+select am.account_name,ag.account_group_name,am.account_amount from account_master as am ,account_group as ag where am.account_group_id = ag.account_group_id and account_user_id = 3
+
+
+select getdate()
+
+
+
+select * from sub_category
