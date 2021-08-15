@@ -21,9 +21,9 @@ INSERT INTO [DigiWallet].[dbo].[account_group] values (11,'Others')
 ------------------------------------------------------------------------------------------------------------
 --Insert values into user_master
 GO
-INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password,user_role_id) values ('Jay Bansod','jaybansod007@gmail.com','fghmiuyg',1)
+INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password,user_role_id) values ('Jay Bansod','jaybansod007@gmail.com','Jay@2000',1)
 INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password,user_role_id) values ('Jinu Gohil','jinugohil.com','ht5j6h46',2)
-INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password,user_role_id) values ('Anubhav Jain','anubhv2001.com','k3jlljf9',1)
+INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password,user_role_id) values ('Anubhav Jain','anubhav@gmail.com','Anubhav@123',2)
 INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password,user_role_id) values ('Mihir Soni','sonimihir@outlook.com','ljfhregu9',2)
 INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password,user_role_id) values ('Prachi Shah','prachishaht1998@gmail.com','jfdkgd88w',2)
 INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password,user_role_id) values ('Pranay Desai','desaibrothers89@gmail.com','kvdvjfkj89',2)

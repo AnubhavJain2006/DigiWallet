@@ -24,10 +24,11 @@ public class UserDao {
 		// TODO Auto-generated method stub
 		UserBean  userbean=null;
 		try {
-			System.out.println(user.getUser_email());
-			System.out.println(user.getUser_password());
+			/*
+			 * System.out.println(user.getUser_email());
+			 * System.out.println(user.getUser_password());
+			 */
 		userbean=stmt.queryForObject("select * from user_master where user_email=? and user_password=?",new UserRowMapper(),new Object[] {user.getUser_email(),user.getUser_password()});
-		System.out.println(" hahid"+userbean.getUser_name());
 		}
 		catch(Exception e)
 		{

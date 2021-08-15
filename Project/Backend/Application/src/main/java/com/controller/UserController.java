@@ -85,8 +85,8 @@ public class UserController {
 	@RequestMapping(value = "/verifyOtp")
 	public String verifyOtp(Model model, HttpSession session, @RequestParam("otp") int userOtp) {
 		int otp = (Integer) session.getAttribute("otp");
-		System.out.println("Session otp value" + otp);
-		System.out.println("UserOtp" + userOtp);
+//		System.out.println("Session otp value" + otp);
+//		System.out.println("UserOtp" + userOtp);
 		if (otp == userOtp) {
 			return "changePassword";
 		} else {
@@ -133,7 +133,7 @@ public class UserController {
 	@RequestMapping(value = "/checkUser", method = RequestMethod.POST)
 	public String checkUser(@Valid @ModelAttribute("user") UserBean user, BindingResult result, HttpSession session,
 			Model model) {
-		System.out.println("HEllo");
+		/* System.out.println("HEllo"); */
 		UserBean userbean = dao.checkUser(user);
 		if (userbean != null) {
 			session.setAttribute("user", userbean);

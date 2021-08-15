@@ -23,12 +23,16 @@ GO
 alter table [DigiWallet].[dbo].[trans_master] drop constraint [trans_user_id_to_user_id_FK]
 ------------------------------------------------------------------------------------------------------------
 -- drop constraint on trans_master
-GO
-alter table [DigiWallet].[dbo].[trans_master] drop constraint [trans_account_id_to_account_id_FK]
+--GO
+--alter table [DigiWallet].[dbo].[trans_master] drop constraint [trans_account_id_to_account_id_FK]
 ------------------------------------------------------------------------------------------------------------
 -- drop constraint on trans_master
 GO
 alter table [DigiWallet].[dbo].[trans_master] drop constraint [trans_category_id_to_category_id_FK]
+------------------------------------------------------------------------------------------------------------
+-- drop constraint on trans_master
+GO
+alter table [DigiWallet].[dbo].[trans_master] drop constraint [trans_sub_category_id_to_sub_category_id_FK]
 ------------------------------------------------------------------------------------------------------------
 -- drop constraint on sub_category
 GO

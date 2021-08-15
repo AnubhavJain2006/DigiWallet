@@ -77,6 +77,11 @@ public class AccountBean {
 	public void setAccount_description(String account_description) {
 		this.account_description = account_description;
 	}
+	
+	@Override
+	public String toString() {
+		return account_id+" "+account_name+" "+account_amount+" "+account_description;
+	}
 
 	
 }
