@@ -34,14 +34,14 @@
 						<form>
 							<div class="row mb-3">
 								<label for="trnas_date" class="col-sm-4 col-form-label">Date</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<input type="datetime-local" class="form-control"
 										id="trans_date">
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="inputPassword3" class="col-sm-4 col-form-label">Account</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<select class="form-select" aria-label="Default select example">
 										<c:forEach items="${account_list}" var="account_list">
 											<option value="${account_list.account_id}">${account_list.account_name}</option>
@@ -51,7 +51,7 @@
 							</div>
 							<div class="row mb-3">
 								<label for="trans_category" class="col-sm-4 col-form-label">Category</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<select class="form-select" aria-label="Default select example"
 										id="trans_category">
 										<c:forEach items="${category_list}" var="category_list">
@@ -59,43 +59,51 @@
 										</c:forEach>
 									</select>
 								</div>
+								<div class="mt-1 col-sm-1 ">
+									<i class="fas fa-plus h3 bg-success rounded-circle"
+										style="color: white; padding:3px;"></i>
+								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_sub_category" class="col-sm-4 col-form-label">Sub
 									Category</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<select class="form-select" aria-label="Default select example"
 										id="trans_sub_category">
 									</select>
 								</div>
+								<div class="mt-1 col-sm-1 ">
+									<i class="fas fa-plus h3 bg-success rounded-circle"
+										style="color: white; padding:3px;"></i>
+								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_amount" class="col-sm-4 col-form-label">Amount</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<input type="text" class="form-control" id="trans_amount">
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_label" class="col-sm-4 col-form-label">Label</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<input type="text" class="form-control" id="trans_label">
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_note" class="col-sm-4 col-form-label">Note</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<input type="text" class="form-control" id="trans_note">
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_description" class="col-sm-4 col-form-label">Description</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<input type="text" class="form-control" id="trans_description">
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_image" class="col-sm-4 col-form-label">Image</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<input type="file" class="form-control" id="trans_image">
 								</div>
 							</div>
@@ -114,13 +122,13 @@
 						<form>
 							<div class="row mb-3">
 								<label for="inputEmail3" class="col-sm-4 col-form-label">Date</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<input type="email" class="form-control" id="inputEmail3">
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="inputPassword3" class="col-sm-4 col-form-label">Password</label>
-								<div class="col-sm-8">
+								<div class="col-sm-7">
 									<input type="password" class="form-control" id="inputPassword3">
 								</div>
 							</div>
