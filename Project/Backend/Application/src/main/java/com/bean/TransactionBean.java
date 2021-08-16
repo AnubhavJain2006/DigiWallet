@@ -15,6 +15,15 @@ public class TransactionBean {
 	private int trans_category_id;
 	private int trans_sub_category_id;
 
+	@Override
+	public String toString() {
+		return "TransactionBean [trans_id=" + trans_id + ", trans_user_id=" + trans_user_id + ", trans_date="
+				+ trans_date + ", trans_account_id=" + trans_account_id + ", trans_category_id=" + trans_category_id
+				+ ", trans_sub_category_id=" + trans_sub_category_id + ", trans_amount=" + trans_amount
+				+ ", trans_note=" + trans_note + ", trans_description=" + trans_description + ", trans_image="
+				+ trans_image + ", trans_status=" + trans_status + "]";
+	}
+
 	@Pattern(regexp = "^[0-9]+$", message = "*Amount should be a number")
 	private String trans_amount;
 	private String trans_note;

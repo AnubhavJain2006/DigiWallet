@@ -20,4 +20,25 @@ public class CategoryDao {
 				new BeanPropertyRowMapper<CategoryBean>(CategoryBean.class), userId);
 		return categoryBeanList;
 	}
+
+	public int addUserCategoryExpense(int userId, String categoryName) {
+		try {
+			int rowAffected = stmt.update("insert into category_master values(?,?,?)", userId, categoryName, "EXPENSE");
+			try {
+				CategoryBean categoryBean = stmt
+						.queryForObject(
+								"select * from category_master where category_user_id = " + userId
+										+ " and category_name = '" + categoryName + "'",
+								new BeanPropertyRowMapper<CategoryBean>(CategoryBean.class));
+				return categoryBean.getCategory_id();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				System.out.println("Error in getting categoryBean object ");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error in inserting user cartegory to category_master table");
+		}
+		return -1;
+	}
 }
