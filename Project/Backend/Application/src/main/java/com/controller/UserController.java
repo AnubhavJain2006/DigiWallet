@@ -56,6 +56,12 @@ public class UserController {
 			return "signup";
 		} else {
 			rowsAffected = dao.insert(user);
+			if(rowsAffected==5)
+			{
+				model.addAttribute("result",rowsAffected);
+				return "Login";
+			}
+			rowsAffected=10;
 //			System.out.println("SaveUser"+rowsAffected);
 			return "redirect:/login";
 		}

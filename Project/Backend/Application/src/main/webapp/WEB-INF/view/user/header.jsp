@@ -51,7 +51,7 @@
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item" href="logout" onclick="logout()">Log Out</a></li>
+                                    <li><a class="dropdown-item" href="logout" onclick="return logout()">Log Out</a></li>
                                 </ul>
                             </div>
                             <!--//app-user-dropdown-->

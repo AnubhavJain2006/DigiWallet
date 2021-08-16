@@ -51,6 +51,14 @@
 							aria-label="Close"></button>
 					</div>
 				</c:when>
+				<c:when test="${result==5}">
+					<div class="alert alert-danger alert-dismissible fade show"
+						role="alert">
+						<strong>Opps..</strong>User Already Exist.
+						<button type="button" class="btn-close" data-bs-dismiss="alert"
+							aria-label="Close"></button>
+					</div>
+				</c:when>
 				</c:choose>
 				<div class="d-flex flex-column align-content-end">
 					<div class="app-auth-body mx-auto">
