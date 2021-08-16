@@ -17,6 +17,10 @@ a:active {
 	border-left: 3px solid #15a362;
 	font-weight: 500;
 }
+
+.error {
+	color: red;
+}
 </style>
 <script>
 	var myModal = document.getElementById('myModal')
@@ -154,6 +158,7 @@ a:active {
 						<div class="col-sm-10">
 							<f:input path="account_name" cssClass="form-control"
 								id="account_name" required="required" />
+							<f:errors cssClass="error" path="account_name"></f:errors>
 						</div>
 					</div>
 
@@ -164,7 +169,7 @@ a:active {
 						<div class="col-sm-10">
 							<f:input path="account_amount" cssClass="form-control"
 								id="account_amount" required="required" />
-							<f:errors cssClass="error"></f:errors>
+							<f:errors cssClass="error" path="account_amount"></f:errors>
 						</div>
 					</div>
 
@@ -176,6 +181,7 @@ a:active {
 							<f:textarea path="account_description" cssClass="form-control"
 								cssStyle="height:200px;" id="account_description"
 								required="required" />
+							<f:errors cssClass="error" path="account_description"></f:errors>
 						</div>
 					</div>
 
@@ -196,7 +202,7 @@ a:active {
 							<thead class="table-secondary">
 								<tr>
 									<th>Sr.No.</th>
-									<th style="display:none">Account Group Id</th>
+									<th style="display: none">Account Group Id</th>
 									<th>Group Name</th>
 									<th>Account Name</th>
 									<th>Amount</th>
@@ -211,7 +217,7 @@ a:active {
 								<c:forEach items="${account_bean_list}" var="bean">
 									<tr>
 										<td><%=i%></td>
-										<td style="display:none">${bean.account_group_id }</td>
+										<td style="display: none">${bean.account_group_id }</td>
 										<td>${bean.account_group_name}</td>
 
 										<td>${bean.account_name}</td>

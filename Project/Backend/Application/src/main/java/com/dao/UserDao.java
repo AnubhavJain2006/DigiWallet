@@ -2,9 +2,11 @@ package com.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,7 +21,14 @@ public class UserDao {
 	JdbcTemplate stmt;
 	public int insert(UserBean user)
 	{
-		int result=stmt.update("insert into user_master(user_name,user_email,user_password) values(?,?,?)",user.getUser_name(),user.getUser_email(),user.getUser_password());
+		int result=0;
+		try {
+		result=stmt.update("insert into user_master(user_name,user_email,user_password) values(?,?,?)",user.getUser_name(),user.getUser_email(),user.getUser_password());
+		}
+		catch(Exception e)
+		{
+			result=5;
+		}
 		return result;
 	}
 	public UserBean checkUser(UserBean user) {
@@ -73,15 +82,30 @@ public class UserDao {
 	}
 	public int updatePassword(String password,String email) {
 		// TODO Auto-generated method stub
-		
-		int result=stmt.update("update user_master set user_password=? where user_email=?",password,email);
-		if(result>0)
-			System.out.println("Hui gava");
+		int result=0;
+		try {
+		result=stmt.update("update user_master set user_password=? where user_email=?",password,email);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+//		if(result>0)
+//			System.out.println("Hui gava");
 		return result;
 	}
 	
-	public List UserAccountList(int id) {
-		List<AccountBean> list=stmt.query("select top 5 am.account_name,am.account_amount ,ag.account_group_name from account_master as am ,account_group as ag where am.account_group_id=ag.account_group_id and am.account_user_id=? order by am.account_id desc",new Object[] {id}, new UserAccountMapper()); 
+	public List<AccountBean> UserAccountList(int id) {
+		List<AccountBean> list=new ArrayList<AccountBean>();
+		try {
+	
+			list=stmt.query("select top 5 am.account_name,am.account_amount ,ag.account_group_name from account_master as am ,account_group as ag where am.account_group_id=ag.account_group_id and am.account_user_id=? order by am.account_id desc",new Object[] {id}, new UserAccountMapper()); 
+			
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
 		return list;
 	}
 	
@@ -95,5 +119,16 @@ public class UserDao {
 			return abean;
 		}
 		
+	}
+
+	public UserBean getUserProfile(int user_id) {
+		UserBean user=(UserBean) stmt.queryForObject("select * from user_master where user_id=?",new BeanPropertyRowMapper<UserBean>(UserBean.class),new Object[] {user_id});
+		return user;
+	}
+	public int updateUserProfile(UserBean user) {
+//		System.out.println("UserID"+user.getUser_id());
+		int rowsAffected=stmt.update("update user_master set user_name=?,user_gender=?,user_phone=?,user_password=? where user_id=?",user.getUser_name(),user.getUser_gender(),user.getUser_phone(),user.getUser_password(),user.getUser_id());
+//		System.out.println(rowsAffected);
+		return rowsAffected;
 	}
 }

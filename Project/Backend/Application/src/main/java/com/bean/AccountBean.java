@@ -20,6 +20,7 @@ public class AccountBean {
 	private String account_amount;
 	
 	private String account_description;
+	
 	public String getAccount_group_name() {
 		return account_group_name;
 	}

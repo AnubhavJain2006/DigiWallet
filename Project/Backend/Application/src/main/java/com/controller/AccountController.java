@@ -61,13 +61,18 @@ public class AccountController {
 //				+ abean.getAccount_name() + " " + abean.getAccount_amount() + " " + abean.getAccount_description());
 		if(isValidUser(req))
 		{
+			int beanId = getUserId(session);
+			List<AccountBean> account_bean_list = dao.getAllAccount(beanId);
 			System.out.println(result.hasErrors());
 			if (result.hasErrors()) {
 				model.addAttribute("abean", abean);
-				return "redirect:/user/account";
+				List<AccountBean> account_grp_list = dao.getGroupId();
+				model.addAttribute("account_grp_list", account_grp_list);
+				model.addAttribute("account_bean_list", account_bean_list);
+				return "/user/account";
 
 			} else {
-				int beanId = getUserId(session);
+//				int beanId = getUserId(session);
 				boolean flag = dao.accInsert(abean,beanId);
 				model.addAttribute("flag", flag);
 				return "redirect:/user/account";

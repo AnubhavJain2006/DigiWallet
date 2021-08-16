@@ -1,7 +1,7 @@
 package com.bean;
 
 import java.sql.Date;
-
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -23,11 +23,10 @@ public class UserBean {
 	@Size(min = 8, max = 20, message = "Password must be greater than 8 and less than 20")
 	@Pattern(regexp = "^(?=.*[0-9])" + "(?=.*[a-z])(?=.*[A-Z])" + "(?=.*[@#$%^&+=])"
 			+ "(?=\\S+$).{8,20}$", message = "Password must contain 1 Upper case 1 Lower case 1 Special character and 1 Number")
-
 	String user_password;
-
 	String user_gender;
 
+	@Pattern(regexp = "^[0-9]{10}$",message="Phone is not Valid")
 	String user_phone;
 
 	Date user_insertDate;

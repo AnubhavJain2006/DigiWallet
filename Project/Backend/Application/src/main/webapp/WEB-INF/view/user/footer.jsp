@@ -22,5 +22,10 @@
 		})
 	});
 	
+	function logout(){
+	var confirmation=confirm("Do you want to logout..?");
+	return confirmation
+	}
+	
 </script>
 
