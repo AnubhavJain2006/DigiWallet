@@ -192,5 +192,31 @@ public class UserController {
 	}
 	
 //==============================================
+	@RequestMapping(value="/user/profile")
+	public String userProfile(HttpServletRequest req, HttpSession session,Model model,UserBean user) {
+		if(isValidUser(req)) {
+			UserBean ubean=dao.getUserProfile(((UserBean)session.getAttribute("user")).getUser_id());
+			user.setUser_id(((UserBean)session.getAttribute("user")).getUser_id());
+			model.addAttribute("user",ubean);
+//			model.addAttribute("user_id",((UserBean)session.getAttribute("user")).getUser_id());
+			return "/user/profile";
+		}else {
+			return "redirect:/login";
+		}
+	}
+	@RequestMapping(value="/user/updateProfile",method=RequestMethod.POST)
+	public String updateProfile(@Valid @ModelAttribute("user") UserBean user,BindingResult result,HttpSession session) {
+		System.out.println("aaya");
+		if(result.hasErrors())
+		{
+			System.out.println("error");
+			return "/user/profile";
+		}
+		else {
+			user.setUser_id(((UserBean)session.getAttribute("user")).getUser_id());
+			dao.updateUserProfile(user);
+		}
+		return "redirect:/user/profile";
+	}
 	
 }

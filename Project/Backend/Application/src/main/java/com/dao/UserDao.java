@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -95,5 +96,16 @@ public class UserDao {
 			return abean;
 		}
 		
+	}
+
+	public UserBean getUserProfile(int user_id) {
+		UserBean user=(UserBean) stmt.queryForObject("select * from user_master where user_id=?",new BeanPropertyRowMapper<UserBean>(UserBean.class),new Object[] {user_id});
+		return user;
+	}
+	public int updateUserProfile(UserBean user) {
+		System.out.println("UserID"+user.getUser_id());
+		int rowsAffected=stmt.update("update user_master set user_name=?,user_gender=?,user_phone=?,user_password=? where user_id=?",user.getUser_name(),user.getUser_gender(),user.getUser_phone(),user.getUser_password(),user.getUser_id());
+		System.out.println(rowsAffected);
+		return rowsAffected;
 	}
 }

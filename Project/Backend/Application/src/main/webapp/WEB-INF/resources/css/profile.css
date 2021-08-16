@@ -1,0 +1,45 @@
+input[type='radio']:after {
+	width: 15px;
+	height: 15px;
+	border-radius: 15px;
+	top: -2px;
+	left: -1px;
+	position: relative;
+	background-color: #ffffff;
+	content: '';
+	display: inline-block;
+	visibility: visible;
+	border: 2px solid #22e5a5;
+}
+
+input[type='radio']:checked:after {
+	width: 15px;
+	height: 15px;
+	border-radius: 15px;
+	top: -2px;
+	left: -1px;
+	position: relative;
+	background-color: #22e5a5;
+	content: '';
+	display: inline-block;
+	visibility: visible;
+	border: 2px solid black;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+	-moz-appearance: textfield;
+}
+
+a:active {
+	color: #15a362;
+	background: #edfdf6;
+	border-left: 3px solid #15a362;
+	font-weight: 500;
+}
