@@ -29,8 +29,8 @@ public class CategoryController {
 	@Autowired
 	TransactionController transactionController;
 
-	@RequestMapping(value = "/user/addCategory", method = RequestMethod.POST)
-	public String addCategory(HttpServletRequest req, HttpSession session, Model model) {
+	@RequestMapping(value = "/user/addExpenseCategory", method = RequestMethod.POST)
+	public String addExpenseCategory(HttpServletRequest req, HttpSession session, Model model) {
 		if (accountController.isValidUser(req)) {
 			int userId = ((UserBean) session.getAttribute("user")).getUser_id();
 			String categoryName = req.getParameter("categoryInput");
@@ -53,4 +53,30 @@ public class CategoryController {
 			return "redirect:/login";
 		}
 	}
+
+	@RequestMapping(value = "/user/addIncomeCategory", method = RequestMethod.POST)
+	public String addIncomeCategory(HttpServletRequest req, HttpSession session, Model model) {
+		if (accountController.isValidUser(req)) {
+			int userId = ((UserBean) session.getAttribute("user")).getUser_id();
+			String categoryName = req.getParameter("categoryInput");
+			String subCategoryName = req.getParameter("subCategoryInput");
+			int categoryId = categoryDao.addUserCategoryIncome(userId, categoryName);
+
+			if (categoryId > 0) {
+				System.out.println("User Category added");
+				if (subCategoryName != null) {
+					boolean isSubCategoryAdded = subCategoryDao.addUserSubCategory(categoryId, subCategoryName);
+					System.out.println("User Sub Category " + (isSubCategoryAdded ? "inserted" : "not inserted"));
+				} else {
+					System.out.println("Sub category id not provided");
+				}
+			} else {
+				System.out.println("User Category not added");
+			}
+			return transactionController.transaction(req, new TransactionBean(), model, session);
+		} else {
+			return "redirect:/login";
+		}
+	}
+
 }

@@ -58,16 +58,18 @@ public class TransactionController {
 			model.addAttribute("tbean", tbean);
 			List<AccountBean> userAccountList = transactionDao.getUserAccounts(userId);
 			model.addAttribute("account_list", userAccountList);
-			List<CategoryBean> userCategoryList = categoryDao.getUserCategoryExpense(userId);
-			model.addAttribute("category_list", userCategoryList);
+			List<CategoryBean> userExpenseCategoryList = categoryDao.getUserCategoryExpense(userId);
+			model.addAttribute("expense_category_list", userExpenseCategoryList);
+			List<CategoryBean> userIncomeCategoryList = categoryDao.getUserCategoryIncome(userId);
+			model.addAttribute("income_category_list", userIncomeCategoryList);
 			return "user/transaction";
 		} else {
 			return "redirect:/login";
 		}
 	}
 
-	@RequestMapping(value = "/user/addTransaction", method = RequestMethod.POST)
-	public String addTransaction(HttpServletRequest req, @Valid @ModelAttribute("tbean") TransactionBean tbean,
+	@RequestMapping(value = "/user/addExpenseTransaction", method = RequestMethod.POST)
+	public String addExpenseTransaction(HttpServletRequest req, @Valid @ModelAttribute("tbean") TransactionBean tbean,
 			BindingResult result, Model model, HttpSession session) {
 		if (accountController.isValidUser(req)) {
 			String transDate = req.getParameter("trans_date");
@@ -80,6 +82,29 @@ public class TransactionController {
 			}
 			tbean.setTrnas_user_id(accountController.getUserId(session));
 			boolean addedTrans = transactionDao.addExpenseTransaction(tbean);
+			System.out.println("addedTrans " + addedTrans);
+			model.addAttribute("tbean", new TransactionBean());
+			return "redirect:/user/transaction";
+		} else {
+			return "redirect:/login";
+		}
+
+	}
+
+	@RequestMapping(value = "/user/addIncomeTransaction", method = RequestMethod.POST)
+	public String addIncomeTransaction(HttpServletRequest req, @Valid @ModelAttribute("tbean") TransactionBean tbean,
+			BindingResult result, Model model, HttpSession session) {
+		if (accountController.isValidUser(req)) {
+			String transDate = req.getParameter("trans_date");
+			try {
+				Time transTime = MyTime.toTimeFromString(transDate);
+				tbean.setTrans_date(transTime);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			tbean.setTrnas_user_id(accountController.getUserId(session));
+			boolean addedTrans = transactionDao.addIncomeTransaction(tbean);
 			System.out.println("addedTrans " + addedTrans);
 			model.addAttribute("tbean", new TransactionBean());
 			return "redirect:/user/transaction";

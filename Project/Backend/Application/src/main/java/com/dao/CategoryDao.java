@@ -41,4 +41,32 @@ public class CategoryDao {
 		}
 		return -1;
 	}
+
+	public int addUserCategoryIncome(int userId, String categoryName) {
+		try {
+			int rowAffected = stmt.update("insert into category_master values(?,?,?)", userId, categoryName, "INCOME");
+			try {
+				CategoryBean categoryBean = stmt
+						.queryForObject(
+								"select * from category_master where category_user_id = " + userId
+										+ " and category_name = '" + categoryName + "'",
+								new BeanPropertyRowMapper<CategoryBean>(CategoryBean.class));
+				return categoryBean.getCategory_id();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				System.out.println("Error in getting categoryBean object ");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Error in inserting user cartegory to category_master table");
+		}
+		return -1;
+	}
+
+	public List<CategoryBean> getUserCategoryIncome(int userId) {
+		List<CategoryBean> categoryBeanList = stmt.query(
+				"select category_id, category_name from category_master where category_type = 'INCOME' and category_user_id = ?",
+				new BeanPropertyRowMapper<CategoryBean>(CategoryBean.class), userId);
+		return categoryBeanList;
+	}
 }

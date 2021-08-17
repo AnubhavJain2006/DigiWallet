@@ -23,7 +23,7 @@
 			<!-- Button trigger modal -->
 
 			<!-- Modal for category -->
-			<div class="modal fade" id="categoryModal" tabindex="-1"
+			<div class="modal fade" id="categoryExpenseModal" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -33,7 +33,7 @@
 								aria-label="Close"></button>
 						</div>
 
-						<form action="/ExpenseApplication/user/addCategory" method="POST">
+						<form action="/ExpenseApplication/user/addExpenseCategory" method="POST">
 							<div class="modal-body">
 								<div class="mb-3">
 									<label for="categoryInput" class="form-label">Catgory </label>
@@ -58,8 +58,47 @@
 					</div>
 				</div>
 			</div>
-			<!-- Modal for sub category-->
-			<div class="modal fade" id="subCategoryModal" tabindex="-1"
+			
+			<!-- Modal for category -->
+			<div class="modal fade" id="categoryIncomeModal" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Add Catgory</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+
+						<form action="/ExpenseApplication/user/addIncomeCategory" method="POST">
+							<div class="modal-body">
+								<div class="mb-3">
+									<label for="categoryInput" class="form-label">Catgory </label>
+									<input type="text" class="form-control" id="categoryInput"
+										name="categoryInput" placeholder="Enter Category Name"
+										required />
+								</div>
+								<div class="mb-3">
+									<label for="subCategoryInput" class="form-label">Sub
+										Catgory </label> <input type="text" class="form-control"
+										id="subCategoryInput" name="subCategoryInput"
+										placeholder="Enter Sub Category Name">
+								</div>
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">Cancel</button>
+								<button type="submit" class="btn btn-primary">Add</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			
+			<!-- Modal for sub category for expense-->
+			<div class="modal fade" id="subCategoryModalForExpense" tabindex="-1"
 				aria-labelledby="exampleModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -70,13 +109,15 @@
 								aria-label="Close"></button>
 						</div>
 
-						<form action="/ExpenseApplication/user/addUserSubCategory" method="POST">
+						<form action="/ExpenseApplication/user/addUserSubCategory"
+							method="POST">
 							<div class="modal-body">
 								<div class="mb-3">
 									<label for="modalCategory" class="form-label">Sub
 										Catgory </label> <select class="form-select"
-										aria-label="Default select example" id="modalCategory" name="categoryId">
-										<c:forEach items="${category_list}" var="category_list">
+										aria-label="Default select example" id="modalCategory"
+										name="categoryId">
+										<c:forEach items="${expense_category_list}" var="category_list">
 											<option value="${category_list.category_id}">${category_list.category_name}</option>
 										</c:forEach>
 									</select>
@@ -98,8 +139,52 @@
 					</div>
 				</div>
 			</div>
-			<div class="form">
 
+			<!-- Modal for sub category for income-->
+			<div class="modal fade" id="subCategoryModalForIncome" tabindex="-1"
+				aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Add Sub
+								Catgory</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal"
+								aria-label="Close"></button>
+						</div>
+
+						<form action="/ExpenseApplication/user/addUserSubCategory"
+							method="POST">
+							<div class="modal-body">
+								<div class="mb-3">
+									<label for="modalCategory" class="form-label">Sub
+										Catgory </label> <select class="form-select"
+										aria-label="Default select example" id="modalCategory"
+										name="categoryId">
+										<c:forEach items="${income_category_list}" var="category_list">
+											<option value="${category_list.category_id}">${category_list.category_name}</option>
+										</c:forEach>
+									</select>
+								</div>
+								<div class="mb-3">
+									<label for="subCategoryInputInModal" class="form-label">Sub
+										Catgory </label> <input type="text" class="form-control"
+										id="subCategoryInputInModal" name="subCategoryInput"
+										placeholder="Enter Sub Category Name" required>
+								</div>
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">Cancel</button>
+								<button type="submit" class="btn btn-primary">Add</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="form">
 				<ul class="tab-group">
 					<li class="tab active"><a href="#signup">Expense</a></li>
 					<li class="tab"><a href="#login">Income</a></li>
@@ -109,18 +194,20 @@
 					<div id="signup">
 						<h1>Add Expense</h1>
 
-						<f:form modelAttribute="tbean" action="/ExpenseApplication/user/addTransaction" method="Post">
+						<f:form modelAttribute="tbean"
+							action="/ExpenseApplication/user/addExpenseTransaction" method="Post">
 							<div class="row mb-3">
 								<label for="trnas_date" class="col-sm-4 col-form-label">Date</label>
 								<div class="col-sm-7">
-									<f:input  path="trans_date" type="datetime-local" class="form-control"
-										id="trans_date"/>
+									<f:input path="trans_date" type="datetime-local"
+										class="form-control" id="trans_date_for_expense" />
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="inputPassword3" class="col-sm-4 col-form-label">Account</label>
 								<div class="col-sm-7">
-									<f:select path="trans_account_id" class="form-select" aria-label="Default select example">
+									<f:select path="trans_account_id" class="form-select"
+										aria-label="Default select example">
 										<c:forEach items="${account_list}" var="account_list">
 											<option value="${account_list.account_id}">${account_list.account_name}</option>
 										</c:forEach>
@@ -130,9 +217,9 @@
 							<div class="row mb-3">
 								<label for="trans_category_id" class="col-sm-4 col-form-label">Category</label>
 								<div class="col-sm-7">
-									<f:select  path="trans_category_id" class="form-select" aria-label="Default select example"
-										id="trans_category">
-										<c:forEach items="${category_list}" var="category_list">
+									<f:select path="trans_category_id" class="form-select"
+										aria-label="Default select example" id="trans_category_for_expense">
+										<c:forEach items="${expense_category_list}" var="category_list">
 											<option value="${category_list.category_id}">${category_list.category_name}</option>
 										</c:forEach>
 									</f:select>
@@ -141,7 +228,7 @@
 									<!-- <button type="button" > -->
 									<i class="fas fa-plus h3 bg-success rounded-circle"
 										style="color: white; padding: 3px; cursor: pointer;"
-										data-bs-toggle="modal" data-bs-target="#categoryModal"></i>
+										data-bs-toggle="modal" data-bs-target="#categoryExpenseModal"></i>
 									<!-- </button> -->
 								</div>
 
@@ -151,45 +238,49 @@
 								<label for="trans_sub_category" class="col-sm-4 col-form-label">Sub
 									Category</label>
 								<div class="col-sm-7">
-									<f:select class="form-select" path="trans_sub_category_id" aria-label="Default select example"
-										id="trans_sub_category">
+									<f:select class="form-select" path="trans_sub_category_id"
+										aria-label="Default select example" id="trans_sub_category_for_expense">
 									</f:select>
 								</div>
 								<div class="mt-1 col-sm-1 ">
 									<i class="fas fa-plus h3 bg-success rounded-circle"
 										style="color: white; padding: 3px; cursor: pointer;"
-										data-bs-toggle="modal" onclick="callModal()" data-bs-target="#subCategoryModal"
-										id="addSubCategoryBtn"></i>
+										data-bs-toggle="modal" onclick="callModal()"
+										data-bs-target="#subCategoryModalForExpense" id="addSubCategoryBtn"></i>
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_amount" class="col-sm-4 col-form-label">Amount</label>
 								<div class="col-sm-7">
-									<f:input type="text" path="trans_amount" class="form-control" id="trans_amount"/>
+									<f:input type="text" path="trans_amount" class="form-control"
+										id="trans_amount" />
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_label" class="col-sm-4 col-form-label">Label</label>
 								<div class="col-sm-7">
-									<input type="text"  class="form-control" id="trans_label">
+									<input type="text" class="form-control" id="trans_label">
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_note" class="col-sm-4 col-form-label">Note</label>
 								<div class="col-sm-7">
-									<f:input type="text" path="trans_note" class="form-control" id="trans_note"/>
+									<f:input type="text" path="trans_note" class="form-control"
+										id="trans_note" />
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_description" class="col-sm-4 col-form-label">Description</label>
 								<div class="col-sm-7">
-									<f:input type="text" path="trans_description" class="form-control" id="trans_description"/>
+									<f:input type="text" path="trans_description"
+										class="form-control" id="trans_description" />
 								</div>
 							</div>
 							<div class="row mb-3">
 								<label for="trans_image" class="col-sm-4 col-form-label">Image</label>
 								<div class="col-sm-7">
-									<f:input path="trans_image" type="file" class="form-control" id="trans_image"/>
+									<f:input path="trans_image" type="file" class="form-control"
+										id="trans_image" />
 								</div>
 							</div>
 							<div class="row mb-3">
@@ -204,23 +295,103 @@
 					<div id="login">
 						<h1>Add Income</h1>
 
-						<form>
+						<f:form modelAttribute="tbean"
+							action="/ExpenseApplication/user/addIncomeTransaction" method="Post">
 							<div class="row mb-3">
-								<label for="inputEmail3" class="col-sm-4 col-form-label">Date</label>
+								<label for="trnas_date" class="col-sm-4 col-form-label">Date</label>
 								<div class="col-sm-7">
-									<input type="email" class="form-control" id="inputEmail3">
+									<f:input path="trans_date" type="datetime-local"
+										class="form-control" id="trans_date_for_income" />
 								</div>
 							</div>
 							<div class="row mb-3">
-								<label for="inputPassword3" class="col-sm-4 col-form-label">Password</label>
+								<label for="inputPassword3" class="col-sm-4 col-form-label">Account</label>
 								<div class="col-sm-7">
-									<input type="password" class="form-control" id="inputPassword3">
+									<f:select path="trans_account_id" class="form-select"
+										aria-label="Default select example">
+										<c:forEach items="${account_list}" var="account_list">
+											<option value="${account_list.account_id}">${account_list.account_name}</option>
+										</c:forEach>
+									</f:select>
 								</div>
 							</div>
+							<div class="row mb-3">
+								<label for="trans_category_id" class="col-sm-4 col-form-label">Category</label>
+								<div class="col-sm-7">
+									<f:select path="trans_category_id" class="form-select"
+										aria-label="Default select example" id="trans_category_for_income">
+										<c:forEach items="${income_category_list}" var="category_list">
+											<option value="${category_list.category_id}">${category_list.category_name}</option>
+										</c:forEach>
+									</f:select>
+								</div>
+								<div class="mt-1 col-sm-1 ">
+									<!-- <button type="button" > -->
+									<i class="fas fa-plus h3 bg-success rounded-circle"
+										style="color: white; padding: 3px; cursor: pointer;"
+										data-bs-toggle="modal" data-bs-target="#categoryIncomeModal"></i>
+									<!-- </button> -->
+								</div>
 
 
-							<button type="submit" class="btn btn-primary">Sign in</button>
-						</form>
+							</div>
+							<div class="row mb-3">
+								<label for="trans_sub_category" class="col-sm-4 col-form-label">Sub
+									Category</label>
+								<div class="col-sm-7">
+									<f:select class="form-select" path="trans_sub_category_id"
+										aria-label="Default select example" id="trans_sub_category_for_income">
+									</f:select>
+								</div>
+								<div class="mt-1 col-sm-1 ">
+									<i class="fas fa-plus h3 bg-success rounded-circle"
+										style="color: white; padding: 3px; cursor: pointer;"
+										data-bs-toggle="modal" onclick="callModal()"
+										data-bs-target="#subCategoryModalForIncome" id="addSubCategoryBtn"></i>
+								</div>
+							</div>
+							<div class="row mb-3">
+								<label for="trans_amount" class="col-sm-4 col-form-label">Amount</label>
+								<div class="col-sm-7">
+									<f:input type="text" path="trans_amount" class="form-control"
+										id="trans_amount" />
+								</div>
+							</div>
+							<div class="row mb-3">
+								<label for="trans_label" class="col-sm-4 col-form-label">Label</label>
+								<div class="col-sm-7">
+									<input type="text" class="form-control" id="trans_label">
+								</div>
+							</div>
+							<div class="row mb-3">
+								<label for="trans_note" class="col-sm-4 col-form-label">Note</label>
+								<div class="col-sm-7">
+									<f:input type="text" path="trans_note" class="form-control"
+										id="trans_note" />
+								</div>
+							</div>
+							<div class="row mb-3">
+								<label for="trans_description" class="col-sm-4 col-form-label">Description</label>
+								<div class="col-sm-7">
+									<f:input type="text" path="trans_description"
+										class="form-control" id="trans_description" />
+								</div>
+							</div>
+							<div class="row mb-3">
+								<label for="trans_image" class="col-sm-4 col-form-label">Image</label>
+								<div class="col-sm-7">
+									<f:input path="trans_image" type="file" class="form-control"
+										id="trans_image" />
+								</div>
+							</div>
+							<div class="row mb-3">
+								<div class="col-sm-10"></div>
+								<div class="col-sm-2">
+									<button type="submit" class="btn btn-primary">Add</button>
+								</div>
+							</div>
+						</f:form>
+
 					</div>
 
 				</div>
@@ -294,17 +465,29 @@ function callModal(){
 	dateStr += formatting(dt.getDate()) + "T";
 	dateStr += formatting(dt.getHours()) + ":";
 	dateStr += formatting(dt.getMinutes());
-	document.getElementById('trans_date').value = dateStr
+	document.getElementById('trans_date_for_expense').value = dateStr
+	document.getElementById('trans_date_for_income').value = dateStr
 </script>
 <script>
-let categoryDropdown = document.getElementById("trans_category")
-let subCategoryDropdown = document.getElementById("trans_sub_category")
-categoryDropdown.addEventListener('change',() => {
+let categoryDropdownForIncome = document.getElementById("trans_category_for_income")
+let subCategoryDropdownForIncome = document.getElementById("trans_sub_category_for_income")
+categoryDropdownForIncome.addEventListener('change',() => {
     console.log("changed");
-    console.log(categoryDropdown.value);
+    console.log(categoryDropdownForIncome.value);
     (async () => {
-        let response  = await fetch('/ExpenseApplication/user/getUserSubCategory?categoryId='+categoryDropdown.value).then(data => data.text())
-             subCategoryDropdown.innerHTML = response;
+        let response  = await fetch('/ExpenseApplication/user/getUserSubCategory?categoryId='+categoryDropdownForIncome.value).then(data => data.text())
+             subCategoryDropdownForIncome.innerHTML = response;
+            console.log(response);
+    })()
+})
+let categoryDropdownForExpense = document.getElementById("trans_category_for_expense")
+let subCategoryDropdownForExpense = document.getElementById("trans_sub_category_for_expense")
+categoryDropdownForExpense.addEventListener('change',() => {
+    console.log("changed");
+    console.log(categoryDropdownForExpense.value);
+    (async () => {
+        let response  = await fetch('/ExpenseApplication/user/getUserSubCategory?categoryId='+categoryDropdownForExpense.value).then(data => data.text())
+             subCategoryDropdownForExpense.innerHTML = response;
             console.log(response);
     })()
 })
