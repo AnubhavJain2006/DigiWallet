@@ -70,6 +70,10 @@ select am.account_name,ag.account_group_name,am.account_amount from account_mast
 
 select getdate()
 
+select * from user_master
 
+select * from category_master where category_user_id = 3
 
-select * from sub_category
+select * from sub_category where category_id = 159
+
+select * from trans_master

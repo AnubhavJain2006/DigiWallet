@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.bean.TransactionBean;
 import com.bean.UserBean;
 import com.dao.CategoryDao;
 import com.dao.SubCategoryDao;
@@ -47,7 +48,7 @@ public class CategoryController {
 			} else {
 				System.out.println("User Category not added");
 			}
-			return transactionController.transaction(req, null, model, session);
+			return transactionController.transaction(req, new TransactionBean(), model, session);
 		} else {
 			return "redirect:/login";
 		}

@@ -3,7 +3,6 @@
 --create database DigiWallet
 ------------------------------------------------------------------------------------------------------------
 --Use DigiWallet database
-create database DigiWallet
 use DigiWallet
 ------------------------------------------------------------------------------------------------------------
 
@@ -50,7 +49,8 @@ trans_amount money NOT NULL,
 trans_note text DEFAULT NULL,
 trans_description text DEFAULT NULL,
 trans_image text DEFAULT NULL,
-trans_status varchar(10) DEFAULT 'ACTIVE' check(trans_status in ('ACTIVE','DEACTIVE'))
+trans_status varchar(10) DEFAULT 'ACTIVE' check(trans_status in ('ACTIVE','DEACTIVE')),
+trans_isDeleted int DEFAULT 0 check(trans_isDeleted in (0,1))
 )
 ------------------------------------------------------------------------------------------------------------
 -- Create table account_group
@@ -158,10 +158,11 @@ FOREIGN KEY (trans_user_id) REFERENCES user_master(user_id)
 ------------------------------------------------------------------------------------------------------------
 --Add Foreign Key Constraint to trans_master(trans_account_id) to account_master(account_id)
 --Purpose : to connect one user transaction to one user account (one-to-one) relationship
---GO
---ALTER TABLE [DigiWallet].[dbo].[trans_master]
---ADD CONSTRAINT trans_account_id_to_account_id_FK
---FOREIGN KEY (trans_account_id) REFERENCES account_master(account_id)
+GO
+ALTER TABLE [DigiWallet].[dbo].[trans_master]
+ADD CONSTRAINT trans_account_id_to_account_id_FK
+FOREIGN KEY (trans_account_id) REFERENCES account_master(account_id)
+ON DELETE CASCADE
 ------------------------------------------------------------------------------------------------------------
 --Add Foreign Key Constraint to trans_master(trans_category_id) to category_master(category_id)
 --Purpose : to connect one user transaction to one user category (one-to-one) relationship
@@ -170,19 +171,19 @@ ALTER TABLE [DigiWallet].[dbo].[trans_master]
 ADD CONSTRAINT trans_category_id_to_category_id_FK
 FOREIGN KEY (trans_category_id) REFERENCES category_master(category_id)
 ------------------------------------------------------------------------------------------------------------
+--Add UNIQUE Constraint to category_master on category_user_id and category_name and category_type
+--Purpose : one user cannot have duplicate category name on category_name
+GO
+ALTER TABLE [DigiWallet].[dbo].[category_master]
+ADD CONSTRAINT category_user_id_AND_category_type_AND_category_name_UNQ
+UNIQUE(category_user_id,category_name,category_type)
+------------------------------------------------------------------------------------------------------------
 --Add Foreign Key Constraint to trans_master(trans_sub_category_id) to sub_category(sub_category_id)
 --Purpose : to connect one user transaction to one user sub category (one-to-one) relationship
 GO
 ALTER TABLE [DigiWallet].[dbo].[trans_master]
 ADD CONSTRAINT trans_sub_category_id_to_sub_category_id_FK
 FOREIGN KEY (trans_sub_category_id) REFERENCES sub_category(sub_category_id)
-------------------------------------------------------------------------------------------------------------
---Add Foreign Key Constraint to sub_category(category_id) to category_master(category_id)
---Purpose : to connect one category to many sub_category (one-to-many) relationship
-GO
-ALTER TABLE [DigiWallet].[dbo].[sub_category]
-ADD CONSTRAINT sub_category_id_to_category_id_FK
-FOREIGN KEY (category_id) REFERENCES category_master(category_id)
 ------------------------------------------------------------------------------------------------------------
 --Add Foreign Key Constraint to label_master(label_user_id) to user_master(user_id)
 --Purpose : to connect many label to one user (many-to-one) relationship
@@ -207,6 +208,13 @@ ALTER TABLE [DigiWallet].[dbo].[trans_label]
 ADD CONSTRAINT trans_label_trans_id_to_trans_master_trans_id_FK
 FOREIGN KEY (trans_label_trans_id) REFERENCES trans_master(trans_id)
 ON DELETE CASCADE
+------------------------------------------------------------------------------------------------------------
+--Add Foreign Key Constraint to sub_category(category_id) to category_master(category_id)
+--Purpose : to connect one category to many sub_category (one-to-many) relationship
+GO
+ALTER TABLE [DigiWallet].[dbo].[sub_category]
+ADD CONSTRAINT sub_category_id_to_category_id_FK
+FOREIGN KEY (category_id) REFERENCES category_master(category_id)
 ------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------
@@ -239,6 +247,8 @@ AS
 ------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------
+--Create trigger for user_master
+--Purpose : To generate default account table for user
 GO
 CREATE TRIGGER AUTO_DEFAULT_ACCOUNT_INSERT_TG 
 ON [DigiWallet].[dbo].[user_master]
@@ -252,6 +262,8 @@ BEGIN
 	insert into [DigiWallet].[dbo].[account_master] (account_user_id,account_group_id,account_name,account_amount) values (@user_id,3,'Card',0)
 END
 ------------------------------------------------------------------------------------------------------------
+--Create trigger for user_master
+--Purpose : To generate default category and sub category table for user
 GO
 CREATE TRIGGER AUTO_DEFAULT_CATEGORY_INSERT_TG 
 ON [DigiWallet].[dbo].[user_master]
@@ -328,13 +340,15 @@ BEGIN
 	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Other','INCOME')
 END
 ------------------------------------------------------------------------------------------------------------
-GO
-CREATE TRIGGER AUTO_DEACTIVE_TRANS_WHEN_ACCOUNT_DELETE 
-ON [DigiWallet].[dbo].[account_master]
-FOR DELETE
-AS 
-BEGIN
-	DECLARE @account_id INT
-	select @account_id = account_id from deleted
-	update trans_master set trans_status = 'DEACTIVE' where trans_account_id = @account_id
-END
+--Create trigger for account_master
+--Purpose : To deactive transaction when account is deleted
+--GO
+--CREATE TRIGGER AUTO_DEACTIVE_TRANS_WHEN_ACCOUNT_DELETE 
+--ON [DigiWallet].[dbo].[account_master]
+--FOR DELETE
+--AS 
+--BEGIN
+--	DECLARE @account_id INT
+--	select @account_id = account_id from deleted
+--	update trans_master set trans_status = 'DEACTIVE' where trans_account_id = @account_id
+--END
