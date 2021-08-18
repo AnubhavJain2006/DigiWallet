@@ -137,7 +137,7 @@ public class TransactionDao {
 //			System.out.println(rs.getInt("trans_id"));
 			tbean.setTrans_id(rs.getInt("trans_id"));
 			tbean.setTrans_account_id(rs.getInt("trans_account_id"));
-			tbean.setTrans_date(rs.getString("trans_date"));
+			tbean.setTrans_date(rs.getTimestamp("trans_date"));
 			tbean.setTrans_type(rs.getString("trans_type"));
 			tbean.setTrans_category_id(rs.getInt("trans_category_id"));
 			tbean.setTrans_sub_category_id(rs.getInt("trans_sub_category_id"));

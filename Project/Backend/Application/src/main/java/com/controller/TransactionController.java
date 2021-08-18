@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +59,8 @@ public class TransactionController {
 	@RequestMapping(value = "/user/transaction")
 	public String transaction(HttpServletRequest req, TransactionBean tbean, Model model, HttpSession session) {
 		if (isValidUser(req)) {
-			activeLink="transaction";
-			model.addAttribute("activeLink",activeLink);
+			activeLink = "transaction";
+			model.addAttribute("activeLink", activeLink);
 			int userId = getUserId(session);
 			model.addAttribute("tbean", tbean);
 			List<AccountBean> userAccountList = transactionDao.getUserAccounts(userId);
@@ -90,7 +91,7 @@ public class TransactionController {
 		if (accountController.isValidUser(req)) {
 			String transDate = req.getParameter("trans_date");
 			try {
-				String transTime = MyTime.toTimeFromString(transDate).toString();
+				Timestamp transTime = MyTime.toTimestampFromString(transDate);
 				tbean.setTrans_date(transTime);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
@@ -113,7 +114,7 @@ public class TransactionController {
 		if (accountController.isValidUser(req)) {
 			String transDate = req.getParameter("trans_date");
 			try {
-				String transTime = MyTime.toTimeFromString(transDate).toString();
+				Timestamp transTime = MyTime.toTimestampFromString(transDate);
 				tbean.setTrans_date(transTime);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block

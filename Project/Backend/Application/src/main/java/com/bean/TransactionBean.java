@@ -1,12 +1,16 @@
 package com.bean;
+
+import java.sql.Timestamp;
+
 import javax.validation.constraints.Pattern;
+
 import org.springframework.stereotype.Component;
 
 @Component
 public class TransactionBean {
 	private int trans_id;
 	private int trans_user_id;
-	private String trans_date;
+	private Timestamp trans_date;
 	private int trans_account_id;
 	private int trans_category_id;
 	private int trans_sub_category_id;
@@ -20,6 +24,7 @@ public class TransactionBean {
 	private String trans_image;
 	private String trans_status;
 	private String trans_type;
+
 	public int getTrans_user_id() {
 		return trans_user_id;
 	}
@@ -60,7 +65,6 @@ public class TransactionBean {
 		this.trans_account_name = trans_account_name;
 	}
 
-	
 	@Override
 	public String toString() {
 		return "TransactionBean [trans_id=" + trans_id + ", trans_user_id=" + trans_user_id + ", trans_date="
@@ -69,8 +73,6 @@ public class TransactionBean {
 				+ ", trans_note=" + trans_note + ", trans_description=" + trans_description + ", trans_image="
 				+ trans_image + ", trans_status=" + trans_status + "]";
 	}
-
-	
 
 	public int getTrans_id() {
 		return trans_id;
@@ -88,13 +90,11 @@ public class TransactionBean {
 		this.trans_user_id = trnas_user_id;
 	}
 
-
-
-	public String getTrans_date() {
+	public Timestamp getTrans_date() {
 		return trans_date;
 	}
 
-	public void setTrans_date(String trans_date) {
+	public void setTrans_date(Timestamp trans_date) {
 		this.trans_date = trans_date;
 	}
 
