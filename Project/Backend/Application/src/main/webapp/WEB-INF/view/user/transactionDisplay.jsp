@@ -11,13 +11,6 @@
 	<!--//col-auto-->
 </div>
 <!--//row-->
-
-<script>
-		
-		re='<%=session.getAttribute("rowsAffected")%>';
-	var h=re;
-	console.log("Value is "+h)
-</script>
 <nav id="orders-table-tab"
 	class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
 	<a class="flex-sm-fill text-sm-center nav-link active"

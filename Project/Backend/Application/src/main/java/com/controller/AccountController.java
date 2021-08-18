@@ -22,6 +22,7 @@ import com.dao.AccountDao;
 public class AccountController {
 	@Autowired
 	AccountDao dao;
+	String activeLink;
 
 	public int getUserId(HttpSession session) {
 		return ((UserBean) session.getAttribute("user")).getUser_id();
@@ -41,6 +42,8 @@ public class AccountController {
 	@RequestMapping(value = "/user/account")
 	public String Account(HttpServletRequest req,Model model, AccountBean abean,HttpSession session) {
 		if (isValidUser(req)) {
+			activeLink="account";
+			model.addAttribute("activeLink",activeLink);
 			int beanId = getUserId(session);
 			List<AccountBean> account_grp_list = dao.getGroupId();
 			List<AccountBean> account_bean_list = dao.getAllAccount(beanId);

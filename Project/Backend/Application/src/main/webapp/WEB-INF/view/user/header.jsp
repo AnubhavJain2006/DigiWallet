@@ -97,7 +97,7 @@
                         <!--//nav-item-->
                         <li class="nav-item">
                             <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                            <a class="nav-link <%if(request.getAttribute("activeLink")=="account"){%>active<% }%>"" href="account">
+                            <a class="nav-link <%if(request.getAttribute("activeLink")=="account"){%>active<% }%>" href="account">
                                 <span class="nav-icon">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-folder"
                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -114,7 +114,7 @@
                         <!--//nav-item-->
                         <li class="nav-item">
                             <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-                            <a class="nav-link" href="transaction">
+                            <a class="nav-link <%if(request.getAttribute("activeLink")=="transaction"){%>active<% }%>"" href="transaction">
                                 <span class="nav-icon">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-list"
                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">

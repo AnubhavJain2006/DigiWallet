@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -19,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.bean.AccountBean;
+import com.bean.TransactionBean;
 import com.bean.UserBean;
+import com.dao.TransactionDao;
 import com.dao.UserDao;
 import com.service.EmailService;
 
@@ -27,6 +30,9 @@ import com.service.EmailService;
 public class UserController {
 	@Autowired
 	UserDao dao;
+	@Autowired
+	TransactionDao transactionDao;
+	
 	String activeLink;
 	int rowsAffected = 10;
 
@@ -184,10 +190,12 @@ public class UserController {
 			int userId = ((UserBean) session.getAttribute("user")).getUser_id();
 			List<AccountBean> userAccountList = dao.UserAccountList(userId);
 			List<Integer> userDashboardDetails = dao.getUserDashboardDetail(userId);
-
+			ArrayList<TransactionBean> allTransactionList=(ArrayList<TransactionBean>) transactionDao.getAllExpense(userId);
 //			for (Integer i : dao.getUserDashboardDetail(userId)) {
 //				System.out.println(i);
 //			}
+			
+			model.addAttribute("allTransactionList",allTransactionList);
 			model.addAttribute("userDashboardDetails", userDashboardDetails);
 			model.addAttribute("userAccountList", userAccountList);
 			return "/user/dashboard";
