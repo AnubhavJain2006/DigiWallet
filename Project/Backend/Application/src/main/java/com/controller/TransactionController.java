@@ -1,7 +1,7 @@
 package com.controller;
 
-import java.sql.Time;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,6 +27,7 @@ import com.util.MyTime;
 
 @Controller
 public class TransactionController {
+	int rowsAffected;
 
 	@Autowired
 	TransactionDao transactionDao;
@@ -62,6 +64,11 @@ public class TransactionController {
 			model.addAttribute("expense_category_list", userExpenseCategoryList);
 			List<CategoryBean> userIncomeCategoryList = categoryDao.getUserCategoryIncome(userId);
 			model.addAttribute("income_category_list", userIncomeCategoryList);
+			ArrayList<TransactionBean> list = getAllExpenses(session);
+			model.addAttribute("allRecordsList", list);
+			model.addAttribute("rowsAffected", rowsAffected);
+			System.out.print("Method RE "+rowsAffected);
+			rowsAffected = 0;
 			return "user/transaction";
 		} else {
 			return "redirect:/login";
@@ -74,7 +81,7 @@ public class TransactionController {
 		if (accountController.isValidUser(req)) {
 			String transDate = req.getParameter("trans_date");
 			try {
-				Time transTime = MyTime.toTimeFromString(transDate);
+				String transTime = MyTime.toTimeFromString(transDate).toString();
 				tbean.setTrans_date(transTime);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
@@ -97,7 +104,7 @@ public class TransactionController {
 		if (accountController.isValidUser(req)) {
 			String transDate = req.getParameter("trans_date");
 			try {
-				Time transTime = MyTime.toTimeFromString(transDate);
+				String transTime = MyTime.toTimeFromString(transDate).toString();
 				tbean.setTrans_date(transTime);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
@@ -112,5 +119,22 @@ public class TransactionController {
 			return "redirect:/login";
 		}
 
+	}
+
+	public ArrayList<TransactionBean> getAllExpenses(HttpSession session) {
+		ArrayList<TransactionBean> allExpenseList = (ArrayList<TransactionBean>) transactionDao
+				.getAllExpense(accountController.getUserId(session));
+		return allExpenseList;
+	}
+
+	@RequestMapping(value = "/user/transaction/delete/{id}")
+	public String deleteTransaction(@PathVariable("id") int trans_id) {
+//		System.out.println(trans_id + " Transaction ID");
+		int rowsAffected = transactionDao.deleteTransaction(trans_id);
+		if (rowsAffected > 0) {
+			rowsAffected = 1;
+			System.out.println(rowsAffected);
+		}
+		return "redirect:/user/transaction";
 	}
 }
