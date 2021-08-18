@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,6 +61,11 @@ public class TransactionController {
 			model.addAttribute("tbean", tbean);
 			List<AccountBean> userAccountList = transactionDao.getUserAccounts(userId);
 			model.addAttribute("account_list", userAccountList);
+			JSONObject userAccountListInJson = new JSONObject();
+			for (AccountBean abean : userAccountList) {
+				userAccountListInJson.put(abean.getAccount_id(), abean.getAccount_amount());
+			}
+			model.addAttribute("account_list_json", userAccountListInJson.toJSONString());
 			List<CategoryBean> userExpenseCategoryList = categoryDao.getUserCategoryExpense(userId);
 			model.addAttribute("expense_category_list", userExpenseCategoryList);
 			List<CategoryBean> userIncomeCategoryList = categoryDao.getUserCategoryIncome(userId);
@@ -67,7 +73,7 @@ public class TransactionController {
 			ArrayList<TransactionBean> list = getAllExpenses(session);
 			model.addAttribute("allRecordsList", list);
 			model.addAttribute("rowsAffected", rowsAffected);
-			System.out.print("Method RE "+rowsAffected);
+			System.out.print("Method RE " + rowsAffected);
 			rowsAffected = 0;
 			return "user/transaction";
 		} else {

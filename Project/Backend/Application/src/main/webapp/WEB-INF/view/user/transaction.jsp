@@ -230,12 +230,13 @@
 								<div class="row mb-3">
 									<label for="inputPassword3" class="col-sm-4 col-form-label">Account</label>
 									<div class="col-sm-7">
-										<f:select path="trans_account_id" class="form-select"
+										<f:select path="trans_account_id" id="trans_account_expense" class="form-select"
 											aria-label="Default select example">
 											<c:forEach items="${account_list}" var="account_list">
 												<option value="${account_list.account_id}">${account_list.account_name}</option>
 											</c:forEach>
 										</f:select>
+										<p style="margin:0px 10px; font-size:80%; color:#5CB377;">Your current balance is <span id="span_account_amount_expense"></span></p>
 									</div>
 								</div>
 								<div class="row mb-3">
@@ -534,6 +535,29 @@ categoryDropdownForExpense.addEventListener('change',() => {
             console.log(response);
     })()
 })
+</script>
+<script type="text/javascript">
+	function stringToRupees(value){
+	    let dollarIndianLocale = Intl.NumberFormat('en-IN');
+	    return "&#8377 "+ dollarIndianLocale.format(value)
+	}
+	
+	let accountListJson='<%=request.getAttribute("account_list_json")%>'
+	let accountObj = JSON.parse(accountListJson);
+	/* let accountDropDown = document.getElementById('trans_account_expense') ;
+	accountDropDown.addEventListener('change',() => {
+	    document.getElementById('span_account_amount_expense').innerText = accountObj[accountDropDown.value]
+	});
+	 */
+	 
+	 $( document ).ready(function() {
+		    console.log( "ready!" );
+			$('#trans_account_expense').on('load change focus',function(e){
+				document.getElementById('span_account_amount_expense').innerHTML = stringToRupees(accountObj[this.value]);
+			});
+			document.getElementById('span_account_amount_expense').innerHTML = stringToRupees(accountObj[document.getElementById('trans_account_expense').value]);		
+	});
+	
 </script>
 </body>
 <%@include file="footer.jsp"%>
