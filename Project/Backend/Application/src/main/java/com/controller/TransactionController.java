@@ -38,6 +38,7 @@ public class TransactionController {
 
 	@Autowired
 	AccountController accountController;
+	String activeLink;
 
 	public int getUserId(HttpSession session) {
 		return ((UserBean) session.getAttribute("user")).getUser_id();
@@ -57,6 +58,8 @@ public class TransactionController {
 	@RequestMapping(value = "/user/transaction")
 	public String transaction(HttpServletRequest req, TransactionBean tbean, Model model, HttpSession session) {
 		if (isValidUser(req)) {
+			activeLink="transaction";
+			model.addAttribute("activeLink",activeLink);
 			int userId = getUserId(session);
 			model.addAttribute("tbean", tbean);
 			List<AccountBean> userAccountList = transactionDao.getUserAccounts(userId);

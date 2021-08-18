@@ -33,7 +33,6 @@ public class UserDao {
 	}
 
 	public UserBean checkUser(UserBean user) {
-		// TODO Auto-generated method stub
 		UserBean userbean = null;
 		try {
 			/*
@@ -64,7 +63,7 @@ public class UserDao {
 	}
 
 	public boolean checkEmail(String emailId) {
-		// TODO Auto-generated method stub
+		
 		UserBean userbean = null;
 		boolean isFound = false;
 		try {
@@ -81,7 +80,7 @@ public class UserDao {
 	}
 
 	public int updatePassword(String password, String email) {
-		// TODO Auto-generated method stub
+	
 		int result = 0;
 		try {
 			result = stmt.update("update user_master set user_password=? where user_email=?", password, email);
@@ -93,6 +92,7 @@ public class UserDao {
 		return result;
 	}
 
+	@SuppressWarnings("deprecation")
 	public List<AccountBean> UserAccountList(int id) {
 		List<AccountBean> list = new ArrayList<AccountBean>();
 		try {
