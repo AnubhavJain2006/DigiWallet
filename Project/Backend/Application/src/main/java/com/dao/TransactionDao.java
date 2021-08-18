@@ -1,15 +1,19 @@
 package com.dao;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.bean.AccountBean;
 import com.bean.TransactionBean;
+
 
 @Repository
 public class TransactionDao {
@@ -112,4 +116,45 @@ public class TransactionDao {
 		return rowAffected > 0 && rowAffectedForAccount > 0 ? true : false;
 
 	}
+
+	public List<TransactionBean> getAllExpense(int id) {
+		List<TransactionBean> list =new ArrayList<TransactionBean>();
+		try {
+			list=stmt.query("select tm.trans_date,tm.trans_id ,tm.trans_account_id, am.account_name, tm.trans_category_id,tm.trans_type, cm.category_name, tm.trans_sub_category_id, sc.sub_category_name, tm.trans_amount, tm.trans_note from trans_master as tm inner join account_master as am on tm.trans_account_id = am.account_id inner join category_master as cm on tm.trans_category_id = cm.category_id inner join sub_category as sc on tm.trans_sub_category_id = sc.sub_category_id where tm.trans_user_id=?",new Object[] {id},new TransactionBeanRowMapper());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		return list;
+	
+	}
+
+	class TransactionBeanRowMapper implements RowMapper<TransactionBean>{
+		public TransactionBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+			//account_name,category_name,subcategory_name,
+			TransactionBean tbean=new TransactionBean();
+//			System.out.println(rs.getInt("trans_id"));
+			tbean.setTrans_id(rs.getInt("trans_id"));
+			tbean.setTrans_account_id(rs.getInt("trans_account_id"));
+			tbean.setTrans_date(rs.getString("trans_date"));
+			tbean.setTrans_type(rs.getString("trans_type"));
+			tbean.setTrans_category_id(rs.getInt("trans_category_id"));
+			tbean.setTrans_sub_category_id(rs.getInt("trans_sub_category_id"));
+			tbean.setTrans_amount(rs.getString("trans_amount"));
+			tbean.setTrans_note(rs.getString("trans_note"));
+			tbean.setTrans_account_name(rs.getString("account_name"));
+			tbean.setTrans_category_name(rs.getString("category_name"));
+			tbean.setTrans_sub_category_name(rs.getString("sub_category_name"));
+			return tbean;
+			
+		}
+		
+	}
+
+	public int deleteTransaction(int trans_id) {
+		// TODO Auto-generated method stub
+		int rowsAffected=stmt.update("delete from trans_master where trans_id=?",trans_id);
+		return rowsAffected;
+	}	
 }

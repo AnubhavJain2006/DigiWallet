@@ -1,20 +1,66 @@
 package com.bean;
-
-import java.sql.Time;
-
 import javax.validation.constraints.Pattern;
-
 import org.springframework.stereotype.Component;
 
 @Component
 public class TransactionBean {
 	private int trans_id;
 	private int trans_user_id;
-	private Time trans_date;
+	private String trans_date;
 	private int trans_account_id;
 	private int trans_category_id;
 	private int trans_sub_category_id;
+	private String trans_category_name;
+	private String trans_sub_category_name;
+	private String trans_account_name;
+	@Pattern(regexp = "^[0-9]+$", message = "*Amount should be a number")
+	private String trans_amount;
+	private String trans_note;
+	private String trans_description;
+	private String trans_image;
+	private String trans_status;
+	private String trans_type;
+	public int getTrans_user_id() {
+		return trans_user_id;
+	}
 
+	public String getTrans_type() {
+		return trans_type;
+	}
+
+	public void setTrans_type(String trans_type) {
+		this.trans_type = trans_type;
+	}
+
+	public void setTrans_user_id(int trans_user_id) {
+		this.trans_user_id = trans_user_id;
+	}
+
+	public String getTrans_category_name() {
+		return trans_category_name;
+	}
+
+	public void setTrans_category_name(String trans_category_name) {
+		this.trans_category_name = trans_category_name;
+	}
+
+	public String getTrans_sub_category_name() {
+		return trans_sub_category_name;
+	}
+
+	public void setTrans_sub_category_name(String trans_sub_category_name) {
+		this.trans_sub_category_name = trans_sub_category_name;
+	}
+
+	public String getTrans_account_name() {
+		return trans_account_name;
+	}
+
+	public void setTrans_account_name(String trans_account_name) {
+		this.trans_account_name = trans_account_name;
+	}
+
+	
 	@Override
 	public String toString() {
 		return "TransactionBean [trans_id=" + trans_id + ", trans_user_id=" + trans_user_id + ", trans_date="
@@ -24,12 +70,7 @@ public class TransactionBean {
 				+ trans_image + ", trans_status=" + trans_status + "]";
 	}
 
-	@Pattern(regexp = "^[0-9]+$", message = "*Amount should be a number")
-	private String trans_amount;
-	private String trans_note;
-	private String trans_description;
-	private String trans_image;
-	private String trans_status;
+	
 
 	public int getTrans_id() {
 		return trans_id;
@@ -47,11 +88,13 @@ public class TransactionBean {
 		this.trans_user_id = trnas_user_id;
 	}
 
-	public Time getTrans_date() {
+
+
+	public String getTrans_date() {
 		return trans_date;
 	}
 
-	public void setTrans_date(Time trans_date) {
+	public void setTrans_date(String trans_date) {
 		this.trans_date = trans_date;
 	}
 

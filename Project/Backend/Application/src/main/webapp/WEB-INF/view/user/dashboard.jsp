@@ -18,7 +18,7 @@
 						class="app-card app-card-stat shadow-lg p-3 mb-5 bg-body rounded">
 						<div class="app-card-body p-3 p-lg-4">
 							<h4 class="stats-type mb-1">Income</h4>
-							<div class="stats-figure">25000</div>
+							<div class="stats-figure">${userDashboardDetails['0']}</div>
 						</div>
 						<!--//app-card-body-->
 					</div>
@@ -31,7 +31,7 @@
 						class="app-card app-card-stat shadow-lg p-3 mb-5 bg-body rounded">
 						<div class="app-card-body p-3 p-lg-4">
 							<h4 class="stats-type mb-1">Expenses</h4>
-							<div class="stats-figure">5000</div>
+							<div class="stats-figure">${userDashboardDetails['1']}</div>
 						</div>
 						<!--//app-card-body-->
 					</div>
@@ -42,8 +42,8 @@
 					<div
 						class="app-card app-card-stat shadow-lg p-3 mb-5 bg-body rounded">
 						<div class="app-card-body p-3 p-lg-4">
-							<h4 class="stats-type mb-1">Total Expense</h4>
-							<div class="stats-figure">10000</div>
+							<h4 class="stats-type mb-1">Total Account</h4>
+							<div class="stats-figure">${userDashboardDetails['2']}</div>
 
 						</div>
 						<!--//app-card-body-->
@@ -55,8 +55,8 @@
 					<div
 						class="app-card app-card-stat shadow-lg p-3 mb-5 bg-body rounded">
 						<div class="app-card-body p-3 p-lg-4">
-							<h4 class="stats-type mb-1">Number of Transaction</h4>
-							<div class="stats-figure">2</div>
+							<h4 class="stats-type mb-1">Total Transaction</h4>
+							<div class="stats-figure">${userDashboardDetails['3']}</div>
 						</div>
 						<!--//app-card-body-->
 					</div>

@@ -56,12 +56,11 @@ public class UserController {
 			return "signup";
 		} else {
 			rowsAffected = dao.insert(user);
-			if(rowsAffected==5)
-			{
-				model.addAttribute("result",rowsAffected);
+			if (rowsAffected == 5) {
+				model.addAttribute("result", rowsAffected);
 				return "Login";
 			}
-			rowsAffected=10;
+			rowsAffected = 10;
 //			System.out.println("SaveUser"+rowsAffected);
 			return "redirect:/login";
 		}
@@ -131,7 +130,7 @@ public class UserController {
 //==================================================================================================================
 
 	public boolean isValidUser(HttpServletRequest req) {
-		HttpSession session=req.getSession(false);
+		HttpSession session = req.getSession(false);
 //		System.out.println(session.getAttribute("user"));
 		UserBean user = (UserBean) session.getAttribute("user");
 		if ((UserBean) session.getAttribute("user") != null) {
@@ -150,11 +149,11 @@ public class UserController {
 			session.setAttribute("user", userbean);
 			switch (Integer.parseInt(userbean.getUser_role())) {
 			case 1:
-				System.out.println(((UserBean)session.getAttribute("user")).getUser_name());
+				System.out.println(((UserBean) session.getAttribute("user")).getUser_name());
 				return "redirect:/user/dashboard";
 
 			case 2:
-				System.out.println(((UserBean)session.getAttribute("user")).getUser_name());
+				System.out.println(((UserBean) session.getAttribute("user")).getUser_name());
 				return "redirect:/user/dashboard";
 
 			}
@@ -168,61 +167,68 @@ public class UserController {
 //		System.out.println("Called...");
 		return "Login";
 	}
+
 	@RequestMapping(value = "/user/header")
 	public String header() {
 		return "/user/header";
-		
-		
+
 	}
-	
-	@RequestMapping(value="/user/dashboard")
-	public String UserDashboard(HttpServletRequest req,Model model,HttpSession session) {
-		activeLink="dashboard";
+
+	@RequestMapping(value = "/user/dashboard")
+	public String UserDashboard(HttpServletRequest req, Model model, HttpSession session) {
+		activeLink = "dashboard";
 //		HttpSession session=req.getSession(false);
-		model.addAttribute("user",new UserBean());
-		model.addAttribute("activeLink",activeLink);
-		if(isValidUser(req)) {
-			List<AccountBean> userAccountList=dao.UserAccountList(((UserBean)session.getAttribute("user")).getUser_id());
-			model.addAttribute("userAccountList",userAccountList);
+		model.addAttribute("user", new UserBean());
+		model.addAttribute("activeLink", activeLink);
+		if (isValidUser(req)) {
+			int userId = ((UserBean) session.getAttribute("user")).getUser_id();
+			List<AccountBean> userAccountList = dao.UserAccountList(userId);
+			List<Integer> userDashboardDetails = dao.getUserDashboardDetail(userId);
+
+//			for (Integer i : dao.getUserDashboardDetail(userId)) {
+//				System.out.println(i);
+//			}
+			model.addAttribute("userDashboardDetails", userDashboardDetails);
+			model.addAttribute("userAccountList", userAccountList);
 			return "/user/dashboard";
-		}
-		else
-			return "redirect:/login";	
+		} else
+			return "redirect:/login";
 	}
+
 	@RequestMapping(value = "user/logout")
-	public String logout(HttpServletRequest req,HttpSession session, Model model) {
+	public String logout(HttpServletRequest req, HttpSession session, Model model) {
 		session.invalidate();
-		session=req.getSession(false);
+		session = req.getSession(false);
 		model.addAttribute("user", new UserBean());
 		return "redirect:/login";
 	}
-	
+
 //==============================================
-	@RequestMapping(value="/user/profile")
-	public String userProfile(HttpServletRequest req, HttpSession session,Model model,UserBean user) {
-		if(isValidUser(req)) {
-			UserBean ubean=dao.getUserProfile(((UserBean)session.getAttribute("user")).getUser_id());
-			user.setUser_id(((UserBean)session.getAttribute("user")).getUser_id());
-			model.addAttribute("user",ubean);
+	@RequestMapping(value = "/user/profile")
+	public String userProfile(HttpServletRequest req, HttpSession session, Model model, UserBean user) {
+		if (isValidUser(req)) {
+			UserBean ubean = dao.getUserProfile(((UserBean) session.getAttribute("user")).getUser_id());
+			user.setUser_id(((UserBean) session.getAttribute("user")).getUser_id());
+			model.addAttribute("user", ubean);
 //			model.addAttribute("user_id",((UserBean)session.getAttribute("user")).getUser_id());
 			return "/user/profile";
-		}else {
+		} else {
 			return "redirect:/login";
 		}
 	}
-	@RequestMapping(value="/user/updateProfile",method=RequestMethod.POST)
-	public String updateProfile(@Valid @ModelAttribute("user") UserBean user,BindingResult result,HttpSession session) {
+
+	@RequestMapping(value = "/user/updateProfile", method = RequestMethod.POST)
+	public String updateProfile(@Valid @ModelAttribute("user") UserBean user, BindingResult result,
+			HttpSession session) {
 		System.out.println("aaya");
-		if(result.hasErrors())
-		{
+		if (result.hasErrors()) {
 			System.out.println("error");
 			return "/user/profile";
-		}
-		else {
-			user.setUser_id(((UserBean)session.getAttribute("user")).getUser_id());
+		} else {
+			user.setUser_id(((UserBean) session.getAttribute("user")).getUser_id());
 			dao.updateUserProfile(user);
 		}
 		return "redirect:/user/profile";
 	}
-	
+
 }
