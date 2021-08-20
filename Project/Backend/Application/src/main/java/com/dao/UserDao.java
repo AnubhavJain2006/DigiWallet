@@ -149,8 +149,9 @@ public class UserDao {
 		PreparedStatement pst = null;
 		try {
 			pst = getPreparedStatement(
-					"select sum(trans_amount) from trans_master where trans_type = 'INCOME' and trans_user_id = ?");
+					"Select (select sum(account_amount) from account_master where account_user_id=? group by account_user_id) -(select sum(trans_amount) from trans_master where trans_type='EXPENSE' and trans_user_id=? group by trans_user_id)");
 			pst.setInt(1, user_id);
+			pst.setInt(2, user_id);
 			result.add(0, getSingleCellData(pst));
 
 			pst = getPreparedStatement(

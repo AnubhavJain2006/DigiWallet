@@ -505,7 +505,7 @@ function callModal(){
 	var dt = new Date()
 	var dateStr = "";
 	dateStr += dt.getFullYear() + "-";
-	dateStr += formatting(dt.getMonth()) + "-";
+	dateStr += formatting(dt.getMonth()+1) + "-";
 	dateStr += formatting(dt.getDate()) + "T";
 	dateStr += formatting(dt.getHours()) + ":";
 	dateStr += formatting(dt.getMinutes());
