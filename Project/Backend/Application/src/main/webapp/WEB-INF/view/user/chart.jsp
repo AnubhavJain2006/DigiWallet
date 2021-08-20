@@ -62,17 +62,46 @@
 				</div>
 			</form>
 			<hr>
-			<div class="container">
-
-				<canvas id="chartByData"></canvas>
-
+			
+			<nav id="orders-table-tab"
+			class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
+			<a
+				class="flex-sm-fill text-sm-center nav-link"
+				id="transaction-expense-tab" data-bs-toggle="tab"
+				href="#transaction-expense" role="tab"
+				aria-controls="transaction-expense" aria-selected="false">Expense</a>
+			<a class="flex-sm-fill text-sm-center nav-link"
+				id="transaction-income-tab" data-bs-toggle="tab"
+				href="#transaction-income" role="tab"
+				aria-controls="transaction-income" aria-selected="false">Income</a>
+			</nav>
+		<div class="tab-content" id="orders-table-tab-content">
+			<div class="tab-pane fade show active" id="transaction-expense"
+				role="tabpanel" aria-labelledby="transaction-all-tab">
+					<div class="container">
+						<canvas id="chartByDataForExpense"></canvas>
+					</div>
 			</div>
+			<!--//tab-pane-->
+
+			<div class="tab-pane fade" id="transaction-income" role="tabpanel"
+				aria-labelledby="transaction-expense-tab">
+					<div class="container">
+						<canvas id="chartByDataForIncome"></canvas>
+					</div>
+			</div>
+			<!--//tab-pane-->
+
+		</div>
+			
+			
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
-		let chartHandler = document.getElementById('chartByData').getContext('2d');
-		let chartCreator = new Chart(chartHandler, {});
+		let chartHandler;
+
+		let chartCreator ;
 		function getChart(data){
 			if(chartCreator != undefined){
 				console.log('chart is being to destroy')
@@ -176,9 +205,12 @@
 					if(year && week){
 						let date = getDateOfISOWeek(week,year);
 						console.log(date);
-						let url = "/ExpenseApplication/user/chart/week/"+date.startDate.getTime()+"/"+date.endDate.getTime();
-						console.log(url);
-						getChartAJAX(url);
+						let urlForExpense = "/ExpenseApplication/user/chart/week/EXPENSE/"+date.startDate.getTime()+"/"+date.endDate.getTime();
+						console.log(urlForExpense);
+						getChartAJAX(urlForExpense,'EXPENSE');
+						let urlForIncome = "/ExpenseApplication/user/chart/week/INCOME/"+date.startDate.getTime()+"/"+date.endDate.getTime();
+						console.log(urlForIncome);
+						getChartAJAX(urlForIncome,'INCOME');
 					}
 				}
 				if(parentDiv.is('#monthCalender')){
@@ -187,9 +219,12 @@
 					let [year,month] = calenderInputValue.split("-");
 					if(year && month){
 						console.log("valid");
-						let url = "/ExpenseApplication/user/chart/month/"+month+"/"+year;
-						console.log(url);
-						getChartAJAX(url);
+						let urlForExpense = "/ExpenseApplication/user/chart/month/EXPENSE/"+month+"/"+year;
+						console.log(urlForExpense);
+						getChartAJAX(urlForExpense,'EXPENSE');
+						let urlForIncome = "/ExpenseApplication/user/chart/month/INCOME/"+month+"/"+year;
+						console.log(urlForIncome);
+						getChartAJAX(urlForIncome,'INCOME');
 					}
 				}
 				if(parentDiv.is('#annualCalender')){
@@ -198,9 +233,12 @@
 					let year = calenderInputValue;
 					if(year <= 3000 && year>=1900) {
 						console.log("valid");
-						let url = "/ExpenseApplication/user/chart/year/"+year;
+						let urlForExpense = "/ExpenseApplication/user/chart/year/EXPENSE/"+year;
 						console.log(url);
-						getChartAJAX(url);
+						getChartAJAX(urlForExpense,'EXPENSE');
+						let urlForIncome = "/ExpenseApplication/user/chart/year/INCOME/"+year;
+						console.log(urlForIncome);
+						getChartAJAX(urlForIncome,'INCOME');
 					}
 				}
 				if(parentDiv.is('#periodCalender')){
@@ -209,9 +247,12 @@
 					console.log(startDate);
 					if(startDate){
 						console.log("valid");
-						let url = "/ExpenseApplication/user/chart/date/"+startDate.getTime();
-						console.log(url);
-						getChartAJAX(url);
+						let urlForExpense = "/ExpenseApplication/user/chart/date/EXPENSE/"+startDate.getTime();
+						console.log(urlForExpense);
+						getChartAJAX(urlForExpense,'EXPENSE');
+						let urlForIncome = "/ExpenseApplication/user/chart/date/INCOME/"+startDate.getTime();
+						console.log(urlForIncome);
+						getChartAJAX(urlForIncome,'INCOME');
 					}
 				}
 				
@@ -220,10 +261,20 @@
 		</script>
 
 <script type="text/javascript">
-		async function getChartAJAX (url) {
+		async function getChartAJAX (url,type) {
 	        let response  = await fetch(url).then(data => data.text())
 	            /* $('.displayChart')[0].innerHTML = response; */
 	            console.log(response);
+	            if(type=='INCOME'){
+	            	
+	            	chartHandler = document.getElementById('chartByDataForExpense').getContext('2d')
+	            	chartCreator = new Chart(chartHandler, {});
+	            }
+	            if(type=='EXPENSE'){
+	            	
+	            	chartHandler = document.getElementById('chartByDataForIncome').getContext('2d')
+	            	chartCreator = new Chart(chartHandler, {});
+	            }
 	            getChart(response);
 	    }
 		</script>

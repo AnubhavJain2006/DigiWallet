@@ -42,49 +42,51 @@ public class ChartController {
 
 	}
 
-	@RequestMapping(value = "/user/chart/year/{year}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/chart/year/{trans_type}/{year}", method = RequestMethod.GET)
 	public void chartByYear(Model model, HttpServletRequest request, HttpSession session, HttpServletResponse resp,
-			@PathVariable int year) throws Exception {
+			@PathVariable String trans_type, @PathVariable int year) throws Exception {
 		int userId = (new AccountController()).getUserId(session);
 		System.out.println(userId);
-		Object data = chartDao.getExpByYear(userId, "EXPENSE", year);
+		Object data = chartDao.getExpByYear(userId, trans_type, year);
 		model.addAttribute("obj", data);
 		System.out.println(data);
 		resp.getWriter().println(data);
 	}
 
-	@RequestMapping(value = "/user/chart/month/{month}/{year}", method = RequestMethod.GET)
-	public void chartByMonth(Model model, HttpServletRequest request, HttpSession session, @PathVariable int month,
-			@PathVariable int year, HttpServletResponse resp) throws Exception {
+	@RequestMapping(value = "/user/chart/month/{trans_type}/{month}/{year}", method = RequestMethod.GET)
+	public void chartByMonth(Model model, HttpServletRequest request, HttpSession session,
+			@PathVariable String trans_type, @PathVariable int month, @PathVariable int year, HttpServletResponse resp)
+			throws Exception {
 		int userId = (new AccountController()).getUserId(session);
 		System.out.println(userId);
-		Object data = chartDao.getExpByMonth(userId, "EXPENSE", month, year);
+		Object data = chartDao.getExpByMonth(userId, trans_type, month, year);
 //		model.addAttribute("obj", chartDao.getExpByMonth(userId, "EXPENSE", month, year));
 		System.out.println(data);
 		resp.getWriter().println(data);
 	}
 
-	@RequestMapping(value = "/user/chart/week/{startDate}/{endDate}", method = RequestMethod.GET)
-	public void chartByWeek(Model model, HttpServletRequest request, HttpSession session, @PathVariable long startDate,
-			@PathVariable long endDate, HttpServletResponse resp) throws IOException {
+	@RequestMapping(value = "/user/chart/week/{trans_type}/{startDate}/{endDate}", method = RequestMethod.GET)
+	public void chartByWeek(Model model, HttpServletRequest request, HttpSession session,
+			@PathVariable String trans_type, @PathVariable long startDate, @PathVariable long endDate,
+			HttpServletResponse resp) throws IOException {
 		int userId = (new AccountController()).getUserId(session);
 		System.out.println(userId);
 		String startDateS = new Timestamp(startDate).toString();
 		String endDateS = new Timestamp(endDate).toString();
 		// int week = 5; //Integer.valueOf(request.getParameter("month"));
-		Object data = chartDao.getExpByWeek(userId, "EXPENSE", startDateS, endDateS);
+		Object data = chartDao.getExpByWeek(userId, trans_type, startDateS, endDateS);
 		System.out.println(data);
 		resp.getWriter().println(data);
 	}
 
-	@RequestMapping(value = "/user/chart/date/{startDate}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/chart/date/{trans_type}/{startDate}", method = RequestMethod.GET)
 	public void chartByDate(Model model, HttpServletRequest request, HttpSession session, HttpServletResponse resp,
-			@PathVariable long startDate) throws IOException {
+			@PathVariable String trans_type, @PathVariable long startDate) throws IOException {
 		int userId = (new AccountController()).getUserId(session);
 		System.out.println(userId);
 		String date = new Timestamp(startDate).toString();
 		// int week = 5; //Integer.valueOf(request.getParameter("month"));
-		Object data = chartDao.getExpByDate(userId, "EXPENSE", date);
+		Object data = chartDao.getExpByDate(userId, trans_type, date);
 //		model.addAttribute("obj", chartDao.getExpByDate(userId, "EXPENSE", dates));
 		System.out.println(data);
 		resp.getWriter().println(data);
