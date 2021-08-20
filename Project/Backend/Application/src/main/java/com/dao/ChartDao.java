@@ -128,7 +128,6 @@ public class ChartDao {
 		}
 		String[] abc = date.split(" ");
 		obj.put("label", "Expanse by date : " + abc[0]);
-
 		System.out.println("\nIn Json String");
 		System.out.println(obj.toJSONString());
 		return obj;

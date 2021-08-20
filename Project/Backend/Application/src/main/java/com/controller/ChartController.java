@@ -90,5 +90,6 @@ public class ChartController {
 //		model.addAttribute("obj", chartDao.getExpByDate(userId, "EXPENSE", dates));
 		System.out.println(data);
 		resp.getWriter().println(data);
+
 	}
 }

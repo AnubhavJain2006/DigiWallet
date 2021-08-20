@@ -23,7 +23,7 @@
 		<div class="container-xl">
 			<form>
 				<div class="row mb-3">
-					<div class="col-4" id="allCalender">
+					<div class="col-3" id="allCalender">
 						<div class="" id="weekCalender">
 							<input class="form-control" type="week">
 						</div>
@@ -39,9 +39,9 @@
 						</div>
 					</div>
 					<div class="col-3"></div>
-					<div class="col-3">
+					<div class="col-2">
 						<div class="form-group">
-							<select class="form-control" id="reportCategory">
+							<select class="form-select" id="reportCategory">
 								<option value="Weekly">Weekly</option>
 								<option value="Monthly">Monthly</option>
 								<option value="Annually">Annually</option>
@@ -52,7 +52,10 @@
 					<div class="col-2">
 						<button type="button" class="btn"
 							style="background-color: #51B37F;" id="renderData">Submit</button>
+
 					</div>
+
+
 				</div>
 			</form>
 			<hr>
@@ -166,6 +169,16 @@
 			})
 			
 		</script>
+
+		<script
+			src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
+		<script>
+	function GeneratePdf() {
+		const mainTable = document.getElementById('myTable');
+		html2pdf().from(mainTable).save();
+	}
+</script>
 
 		<script type="text/javascript">
 		async function getTransactionAJAX (url) {
