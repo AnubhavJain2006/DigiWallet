@@ -142,7 +142,8 @@
 
 						<li class="nav-item">
 							<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> <a
-							class="nav-link" href="#"> <span class="nav-icon"> <svg
+							class="nav-link <%if (request.getAttribute("activeLink") == "chart") {%>active<%}%>"
+							" href="chart"> <span class="nav-icon"> <svg
 										width="1em" height="1em" viewBox="0 0 16 16"
 										class="bi bi-bar-chart-line" fill="currentColor"
 										xmlns="http://www.w3.org/2000/svg">
