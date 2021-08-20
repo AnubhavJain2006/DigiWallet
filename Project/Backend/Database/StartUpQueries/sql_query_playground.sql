@@ -76,4 +76,59 @@ select * from category_master where category_user_id = 3
 
 select * from sub_category where category_id = 159
 
+select tm.*,am.* from trans_master as tm, account_master as am where tm.trans_type = 'EXPENSE' and tm.trans_user_id = 3 and tm.trans_account_id = am.account_id
+
+select * from sub_category where category_id = 47
+
 select * from trans_master
+
+--Query to get total income of user
+select sum(trans_amount) from trans_master where trans_type = 'INCOME' and trans_user_id = 3
+
+--Query to get total expense of user
+select sum(trans_amount) from trans_master where trans_type = 'EXPENSE' and trans_user_id = 3
+
+--Query to get total number of user account
+select	count(*) from account_master where account_user_id = 3
+
+-- Query to get total number of transaction
+select count(*) from trans_master where trans_user_id = 3
+
+	select * from trans_master
+
+use DigiWallet
+
+--Query for weekly
+select * from trans_master where trans_user_id = 3 and trans_date between '2021-08-16 20:57:43.210' and '2021-08-22 20:57:43.210'
+
+--Query for monthly
+select tm.trans_date,tm.trans_id ,tm.trans_account_id, am.account_name, tm.trans_category_id,tm.trans_type, cm.category_name, tm.trans_sub_category_id, sc.sub_category_name, tm.trans_amount, tm.trans_note from trans_master as tm inner join account_master as am on tm.trans_account_id = am.account_id inner join category_master as cm on tm.trans_category_id = cm.category_id inner join sub_category as sc on tm.trans_sub_category_id = sc.sub_category_id where tm.trans_user_id=3 and  MONTH(trans_date) = 7 AND YEAR(trans_date) = 2021 order by tm.trans_date desc
+select * from trans_master WHERE MONTH(trans_date) = 7 AND YEAR(trans_date) = 2021
+
+--Query for annually
+select * from trans_master WHERE YEAR(trans_date) = 2020
+
+--Query for period
+select * from trans_master where trans_user_id = 3 and trans_date between '2021-08-16 20:57:43.210' and '2021-08-22 20:57:43.210'
+
+select tm.trans_date,tm.trans_id ,tm.trans_account_id, am.account_name, tm.trans_category_id,tm.trans_type, cm.category_name, tm.trans_sub_category_id, sc.sub_category_name, tm.trans_amount, tm.trans_note from trans_master as tm inner join account_master as am on tm.trans_account_id = am.account_id inner join category_master as cm on tm.trans_category_id = cm.category_id inner join sub_category as sc on tm.trans_sub_category_id = sc.sub_category_id where tm.trans_user_id=3 and trans_date between '2021-08-16 20:57:43.210' and '2021-08-22 20:57:43.210' order by tm.trans_date desc
+
+
+
+
+
+
+select  CONVERT(DATE,trans_date) as dates , sum(trans_amount) as amount from trans_master group by trans_user_id, DATEPART(MONTH, trans_date), DATEPART(DAY, trans_date),trans_type,CONVERT(DATE,trans_date) having trans_type = 'EXPENSE' and trans_user_id = 3 AND (CONVERT(DATE,trans_date) between CONVERT(DATE, '2021-08-16 00:00:00.0') and CONVERT(DATE,'2021-08-22 00:00:00.0')) 
+
+select CONVERT(DATE,trans_date) from trans_master where CONVERT(DATE,trans_date) between CONVERT(DATE, '2021-08-16 00:00:00.0') and CONVERT(DATE,'2021-08-22 00:00:00.0')
+
+
+select  DATEPART(DAY, trans_date) as days , sum(trans_amount) as amount from trans_master where DATEPART(YEAR, trans_date) = 2021 group by trans_user_id, DATEPART(MONTH, trans_date), DATEPART(DAY, trans_date),trans_type order by MONTHS desc  
+
+select DATEPART(DAY, trans_date) as days , sum(trans_amount) as amount from trans_master where trans_user_id = 3 and trans_type = 'EXPENSE' and DATEPART(YEAR, trans_date) = 2021 and DATEPART(MONTH, trans_date) = 8 group by DATEPART(DAY, trans_date)  order by days desc                                           
+
+
+
+
+
+

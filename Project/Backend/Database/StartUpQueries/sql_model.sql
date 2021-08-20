@@ -334,9 +334,21 @@ BEGIN
 	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Other','EXPENSE')
 	
 	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Allowance','INCOME')
+	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Petrol')
+	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Home')
+	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Medicine')
+
 	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Salary','INCOME')
+	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'PF')
+	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Wages')
+	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Bonus')
+	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Salary')
+
 	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Petty cash','INCOME')
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Bonus','INCOME')
+	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Gift')
+	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Found')
+	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Overtime')
+
 	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Other','INCOME')
 END
 ------------------------------------------------------------------------------------------------------------
