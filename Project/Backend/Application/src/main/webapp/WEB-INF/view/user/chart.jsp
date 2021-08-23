@@ -100,15 +100,35 @@
 	</div>
 </div>
 <script type="text/javascript">
-		let chartHandler;
-
-		let chartCreator ;
+		var chartHandlerExpense = document.getElementById('chartByDataForExpense').getContext('2d');
+		var chartHandlerIncome = document.getElementById('chartByDataForIncome').getContext('2d');
+		var chartsCanvas = {
+				INCOME: chartHandlerIncome,
+				EXPENSE: chartHandlerExpense
+		};
+		var chartCreatorIncome = new Chart(chartHandlerIncome, {});
+		var chartCreatorExpense = new Chart(chartHandlerExpense, {});
+		var chartCreatorList = {
+				INCOME: chartCreatorIncome,
+				EXPENSE: chartCreatorExpense
+		}
+		/* chartsCanvas["INCOME"] = chartHandlerIncome; */
+		var useChart;
+		var chartCreator;
 		function getChart(data){
-			if(chartCreator != undefined){
+			if(chartCreatorList[useChart]) {			
+				chartCreatorList[useChart].destroy();
+			}
+			/* if(useChart == "INCOME") {				
+	        	chartCreator = new Chart(chartHandler, {});
+			} else if(useChart == "EXPENSE") {
+	        	chartCreator = new Chart(chartHandler, {});
+			} */
+			/* if(chartCreator != undefined){
 				console.log('chart is being to destroy')
 				chartCreator.destroy();
 				console.log('chart is destroy')
-			}
+			} */
 			var obj= data;
 			const chartData = JSON.parse(obj);
 			console.log(chartData);
@@ -132,9 +152,7 @@
 					chartValues.push(ordered[k]);
 				}
 			}
-			
-
-			chartCreator = new Chart(chartHandler, {
+			chartCreatorList[useChart] = new Chart(chartsCanvas[useChart], {
 				type : 'bar',
 				data : {
 					labels : chartKeys,
@@ -235,7 +253,7 @@
 					if(year <= 3000 && year>=1900) {
 						console.log("valid");
 						let urlForExpense = "/ExpenseApplication/user/chart/year/EXPENSE/"+year;
-						console.log(url);
+						console.log(urlForExpense);
 						getChartAJAX(urlForExpense,'EXPENSE');
 						let urlForIncome = "/ExpenseApplication/user/chart/year/INCOME/"+year;
 						console.log(urlForIncome);
@@ -263,18 +281,21 @@
 
 <script type="text/javascript">
 		async function getChartAJAX (url,type) {
+			/* if (chartCreator) {
+				chartCreator.destroy();
+			} */
 	        let response  = await fetch(url).then(data => data.text())
 	            /* $('.displayChart')[0].innerHTML = response; */
 	            console.log(response);
-	            if(type=='INCOME'){
-	            	
-	            	chartHandler = document.getElementById('chartByDataForExpense').getContext('2d')
-	            	chartCreator = new Chart(chartHandler, {});
+	            if(type == 'INCOME'){
+	            	useChart = 'INCOME';
+	            	/* chartHandler = document.getElementById('chartByDataForExpense').getContext('2d')
+	            	chartCreator = new Chart(chartHandler, {}); */
 	            }
-	            if(type=='EXPENSE'){
-	            	
-	            	chartHandler = document.getElementById('chartByDataForIncome').getContext('2d')
-	            	chartCreator = new Chart(chartHandler, {});
+	            else if(type == 'EXPENSE'){
+	            	useChart = 'EXPENSE';
+	            	/* chartHandler = document.getElementById('chartByDataForIncome').getContext('2d')
+	            	chartCreator = new Chart(chartHandler, {}); */
 	            }
 	            getChart(response);
 	    }

@@ -54,6 +54,7 @@ public class ReportController {
 		if (isValidUser(req)) {
 			int userId = getUserId(session);
 			System.out.println(userId);
+			UserBean user=(UserBean)session.getAttribute("user");
 //		System.out.println("startDate is " + startDate);
 //		System.out.println("endDate is " + endDate);
 			Timestamp startTimestamp = new Timestamp(startDate);
@@ -68,6 +69,8 @@ public class ReportController {
 //		}
 			model.addAttribute("transactionListByWeek", transactionListByWeek);
 			model.addAttribute("display", "week");
+			model.addAttribute("userName",user.getUser_name());
+			model.addAttribute("userEmail",user.getUser_email());
 			return "/user/displayReport";
 		} else {
 			return "redirect:/login";
@@ -92,6 +95,9 @@ public class ReportController {
 //			for (ReportBean reportBean : allTransaction) {
 //				System.out.println(reportBean.getTransactionBean());
 //			}
+			UserBean user=(UserBean)session.getAttribute("user");
+			model.addAttribute("userName",user.getUser_name());
+			model.addAttribute("userEmail",user.getUser_email());
 			model.addAttribute("transactionListByPeriod", transactionListByPeriod);
 			model.addAttribute("display", "period");
 			model.addAttribute("startDate", new java.sql.Date(startTimestamp.getTime()).toString());
@@ -118,6 +124,9 @@ public class ReportController {
 //			for (ReportBean reportBean : allTransaction) {
 //				System.out.println(reportBean.getTransactionBean());
 //			}
+			UserBean user=(UserBean)session.getAttribute("user");
+			model.addAttribute("userName",user.getUser_name());
+			model.addAttribute("userEmail",user.getUser_email());
 			model.addAttribute("transactionListByMonth", transactionListByMonth);
 			model.addAttribute("display", "month");
 			model.addAttribute("month", months[month]);
@@ -142,10 +151,13 @@ public class ReportController {
 //			for (ReportBean reportBean : allTransaction) {
 //				System.out.println(reportBean.getTransactionBean());
 //			}
+			UserBean user=(UserBean)session.getAttribute("user");
 			model.addAttribute("transactionListByYear", transactionListByYear);
 			model.addAttribute("display", "annual");
 //			model.addAttribute("month", months[month]);
 			model.addAttribute("year", year);
+			model.addAttribute("userName",user.getUser_name());
+			model.addAttribute("userEmail",user.getUser_email());
 			return "/user/displayReport";
 		} else {
 			return "redirect:/login";

@@ -30,8 +30,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	</jsp-config>
 
 	<error-page>
-	<error-code>404</error-code>
-	<location>/WEB-INF/view/404.jsp</location>
+	<location>/error</location>
 	</error-page>
 	
 	<error-page>

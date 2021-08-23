@@ -154,7 +154,29 @@ public class TransactionDao {
 
 	public int deleteTransaction(int trans_id) {
 		// TODO Auto-generated method stub
+		TransactionBean tbean=(TransactionBean) stmt.queryForObject("select trans_id,trans_amount,trans_account_id,trans_type from trans_master where trans_id=?",new TransRowMapper(),new Object[] {trans_id});
 		int rowsAffected = stmt.update("delete from trans_master where trans_id=?", trans_id);
+		if(tbean.getTrans_type().equals("EXPENSE"))
+		{
+			double amount=Double.parseDouble(tbean.getTrans_amount());
+			stmt.update("update account_master set account_amount=account_amount + ? where account_id=?",amount,tbean.getTrans_account_id());
+		}
+		else
+		{
+			double amount=Double.parseDouble(tbean.getTrans_amount());
+			stmt.update("update account_master set account_amount=account_amount - ? where account_id=?",amount,tbean.getTrans_account_id());
+		}
 		return rowsAffected;
+	}
+	class TransRowMapper implements RowMapper<TransactionBean>{
+
+		public TransactionBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+			TransactionBean tbean=new TransactionBean();
+			tbean.setTrans_id(rs.getInt(1));
+			tbean.setTrans_amount(rs.getString(2));
+			tbean.setTrans_account_id(rs.getInt(3));
+			tbean.setTrans_type(rs.getString(4));
+			return tbean;
+		}
 	}
 }

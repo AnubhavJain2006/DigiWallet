@@ -26,6 +26,8 @@ public class UserDao {
 		try {
 			result = stmt.update("insert into user_master(user_name,user_email,user_password) values(?,?,?)",
 					user.getUser_name(), user.getUser_email(), user.getUser_password());
+			result=1;
+			return result;
 		} catch (Exception e) {
 			result = 5;
 		}
@@ -149,9 +151,9 @@ public class UserDao {
 		PreparedStatement pst = null;
 		try {
 			pst = getPreparedStatement(
-					"Select (select sum(account_amount) from account_master where account_user_id=? group by account_user_id) -(select sum(trans_amount) from trans_master where trans_type='EXPENSE' and trans_user_id=? group by trans_user_id)");
+					"Select (select sum(account_amount) from account_master where account_user_id=? group by account_user_id)");
 			pst.setInt(1, user_id);
-			pst.setInt(2, user_id);
+//			pst.setInt(2, user_id);
 			result.add(0, getSingleCellData(pst));
 
 			pst = getPreparedStatement(

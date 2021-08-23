@@ -63,8 +63,9 @@
 		</div>
 		<div class="displayTransaction"></div>
 
-		<%@include file="footer.jsp"%>
+
 		</body>
+		<%@include file="footer.jsp"%>
 		<script type="text/javascript">
 			$('#reportCategory').change(function() {
 				hideAllCalender();

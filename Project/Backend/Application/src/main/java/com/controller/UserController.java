@@ -62,11 +62,11 @@ public class UserController {
 			return "signup";
 		} else {
 			rowsAffected = dao.insert(user);
-			if (rowsAffected == 5) {
+			if (rowsAffected == 5){
 				model.addAttribute("result", rowsAffected);
 				return "Login";
 			}
-			rowsAffected = 10;
+			
 //			System.out.println("SaveUser"+rowsAffected);
 			return "redirect:/login";
 		}
@@ -194,8 +194,10 @@ public class UserController {
 //			for (Integer i : dao.getUserDashboardDetail(userId)) {
 //				System.out.println(i);
 //			}
-			
-			model.addAttribute("allTransactionList",allTransactionList);
+			if(allTransactionList.size()>5)
+				model.addAttribute("allTransactionList",allTransactionList.subList(0, 5));
+			else
+				model.addAttribute("allTransactionList",allTransactionList);
 			model.addAttribute("userDashboardDetails", userDashboardDetails);
 			model.addAttribute("userAccountList", userAccountList);
 			return "/user/dashboard";

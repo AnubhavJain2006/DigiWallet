@@ -19,7 +19,7 @@ import com.dao.ChartDao;
 
 @Controller
 public class ChartController {
-
+	String activeLink;
 	@Autowired
 	ChartDao chartDao;
 
@@ -29,6 +29,8 @@ public class ChartController {
 	@RequestMapping(value = "/user/chart")
 	public String displayChart(Model model, HttpServletRequest req, HttpSession session) {
 		if (userController.isValidUser(req)) {
+			activeLink="chart";
+			model.addAttribute("activeLink",activeLink);
 			int userId = (new AccountController()).getUserId(session);
 			System.out.println(userId);
 			String dates = new Timestamp(new Date().getTime()).toString();
