@@ -78,6 +78,7 @@ public class AccountDao {
 		int acc_delete = stmt.update("delete from account_master where account_user_id=? and account_id=?", userId,
 				acc_id);
 		System.out.println(acc_delete + "deleted");
+		
 	}
 
 	public boolean updateAccount(int userId, AccountBean abean) {
@@ -87,7 +88,10 @@ public class AccountDao {
 				abean.getAccount_group_id(), abean.getAccount_name(), abean.getAccount_amount(),
 				abean.getAccount_description(), abean.getAccount_id(), userId);
 		if (flag)
+		{
+			flag=true;
 			System.out.println("Updated");
+		}
 		return flag;
 	}
 

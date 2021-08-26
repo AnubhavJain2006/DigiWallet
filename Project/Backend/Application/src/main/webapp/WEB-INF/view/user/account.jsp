@@ -30,11 +30,37 @@ a:active {
 </head>
 <%@include file="header.jsp"%>
 <div class="app-wrapper">
-
-
-
 	<div class="app-content pt-3 p-md-3 p-lg-4">
 		<div class="container-xl">
+			<c:choose>
+				<c:when test="${insertFlag=='true'}">
+					<div class="alert alert-warning alert-dismissible fade show"
+						role="alert" id="insertDiv">
+						<strong>Congratulations...!!!</strong>Account Inserted
+						Successfully.
+						<button type="button" class="btn-close" data-bs-dismiss="alert"
+							aria-label="Close"></button>
+					</div>
+
+				</c:when>
+				<c:when test="${deleteFlag=='true'}">
+					<div class="alert alert-warning alert-dismissible fade show"
+						role="alert" id="deleteDiv">
+						<strong>Account has been successfully deleted.</strong>
+						<button type="button" class="btn-close" data-bs-dismiss="alert"
+							aria-label="Close"></button>
+					</div>
+				</c:when>
+				<c:when test="${updateFlag=='true'}">
+					<div class="alert alert-warning alert-dismissible fade show"
+						role="alert" id="updateDiv">
+						<strong>Account has been successfully updated.</strong>
+						<button type="button" class="btn-close" data-bs-dismiss="alert"
+							aria-label="Close"></button>
+					</div>
+
+				</c:when>
+			</c:choose>
 			<!-- Write code here -->
 			<!-- Modal -->
 			<div class="modal fade" id="exampleModal" tabindex="-1"
@@ -249,6 +275,20 @@ a:active {
 		var confirmation = confirm("Are you sure.... ?")
 		return confirmation;
 	}
+	setInterval(function(){
+		insertDiv=document.getElementById('insertDiv')
+		deleteDiv=document.getElementById('deleteDiv')
+		updateDiv=document.getElementById('updateDiv')
+		if(insertDiv!=null)
+			insertDiv.style.display="none"
+	
+		if(deleteDiv!=null)
+			deleteDiv.style.display="none"
+			
+		if(updateDiv!=null)
+			updateDiv.style.display="none"
+					
+	}, 3000);
 			edit = document.getElementsByClassName('edit');
         	Array.from(edit).forEach((Element) => {
             Element.addEventListener("click", (e) => {

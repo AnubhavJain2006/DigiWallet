@@ -48,7 +48,7 @@
 					<div class="col-3"></div>
 					<div class="col-3">
 						<div class="form-group">
-							<select class="form-control" id="reportCategory">
+							<select class="form-select" id="reportCategory">
 								<option value="Weekly">Weekly</option>
 								<option value="Monthly">Monthly</option>
 								<option value="Annually">Annually</option>

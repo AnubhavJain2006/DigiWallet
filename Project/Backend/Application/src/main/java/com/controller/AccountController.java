@@ -23,6 +23,10 @@ public class AccountController {
 	@Autowired
 	AccountDao dao;
 	String activeLink;
+	
+	boolean deleteFlag=false;
+	boolean updateFlag=false;
+	boolean insertFlag=false;
 
 	public int getUserId(HttpSession session) {
 		return ((UserBean) session.getAttribute("user")).getUser_id();
@@ -31,7 +35,7 @@ public class AccountController {
 	public boolean isValidUser(HttpServletRequest req) {
 		HttpSession session = req.getSession(false);
 //		System.out.println(session.getAttribute("user"));
-		UserBean user = (UserBean) session.getAttribute("user");
+//		UserBean user = (UserBean) session.getAttribute("user");
 		if ((UserBean) session.getAttribute("user") != null) {
 			return true;
 		} else {
@@ -43,7 +47,13 @@ public class AccountController {
 	public String Account(HttpServletRequest req,Model model, AccountBean abean,HttpSession session) {
 		if (isValidUser(req)) {
 			activeLink="account";
+			model.addAttribute("deleteFlag",deleteFlag);
 			model.addAttribute("activeLink",activeLink);
+			model.addAttribute("updateFlag",updateFlag);
+			model.addAttribute("insertFlag",insertFlag);
+			deleteFlag=false;
+			updateFlag=false;
+			insertFlag=false;
 			int beanId = getUserId(session);
 			List<AccountBean> account_grp_list = dao.getGroupId();
 			List<AccountBean> account_bean_list = dao.getAllAccount(beanId);
@@ -76,8 +86,8 @@ public class AccountController {
 
 			} else {
 //				int beanId = getUserId(session);
-				boolean flag = dao.accInsert(abean,beanId);
-				model.addAttribute("flag", flag);
+				insertFlag= dao.accInsert(abean,beanId);
+//				model.addAttribute("flag", flag);
 				return "redirect:/user/account";
 
 			}
@@ -91,6 +101,7 @@ public class AccountController {
 	{
 		int userId=getUserId(session);
 		dao.deleteAccount(userId,acc_id);
+		deleteFlag=true;
 		return "redirect:/user/account";
 	}
 	
@@ -101,6 +112,7 @@ public class AccountController {
 		boolean flag=dao.updateAccount(userId,abean);
 		List<AccountBean> account_grp_list = dao.getGroupId();
 		model.addAttribute("account_grp_list", account_grp_list);
+		updateFlag=true;
 		return "redirect:/user/account";
 	}
 }

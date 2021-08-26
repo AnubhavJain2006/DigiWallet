@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -75,6 +76,7 @@ public class TransactionController {
 			List<CategoryBean> userIncomeCategoryList = categoryDao.getUserCategoryIncome(userId);
 			model.addAttribute("income_category_list", userIncomeCategoryList);
 			ArrayList<TransactionBean> list = getAllExpenses(session);
+			System.out.println(list);
 			model.addAttribute("allRecordsList", list);
 			model.addAttribute("rowsAffected", rowsAffected);
 			System.out.print("Method RE " + rowsAffected);
@@ -147,4 +149,32 @@ public class TransactionController {
 		}
 		return "redirect:/user/transaction";
 	}
+	
+	@PostMapping(value = "/user/updateTransaction")
+	public String updateTransaction(@Valid @ModelAttribute("tbean") TransactionBean tbean, BindingResult result,Model model,HttpSession session,HttpServletRequest request) {
+		System.out.println("\n"+tbean.getTrans_id() + " abc Transaction ID");
+		
+		try {
+			tbean.setTrans_date(MyTime.toTimestampFromString(request.getParameter("trans_date")));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		int userId=getUserId(session);
+		tbean.setTrans_user_id(userId);
+		
+		boolean flag=transactionDao.updateExpence(tbean);
+		if (flag) {
+			System.out.println(" flag of update : "+flag);
+			model.addAttribute("msg","update successfull");
+		}else {
+			System.out.println(" flag of update : "+flag);
+			model.addAttribute("msg","No any fields are updated!");
+		}
+		System.out.println("end of transup");
+		return "redirect:/user/transaction";
+	}
+	
+	
 }

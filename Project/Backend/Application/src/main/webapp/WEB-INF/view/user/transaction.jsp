@@ -230,13 +230,16 @@
 								<div class="row mb-3">
 									<label for="inputPassword3" class="col-sm-4 col-form-label">Account</label>
 									<div class="col-sm-7">
-										<f:select path="trans_account_id" id="trans_account_expense" class="form-select"
-											aria-label="Default select example">
+										<f:select path="trans_account_id" id="trans_account_expense"
+											class="form-select" aria-label="Default select example">
 											<c:forEach items="${account_list}" var="account_list">
 												<option value="${account_list.account_id}">${account_list.account_name}</option>
 											</c:forEach>
 										</f:select>
-										<p style="margin:0px 10px; font-size:80%; color:#5CB377;">Your current balance is <span id="span_account_amount_expense"></span></p>
+										<p style="margin: 0px 10px; font-size: 80%; color: #5CB377;">
+											Your current balance is <span
+												id="span_account_amount_expense"></span>
+										</p>
 									</div>
 								</div>
 								<div class="row mb-3">
@@ -441,7 +444,6 @@
 
 	</div>
 </div>
-</div>
 <script type="text/javascript">
 function confirmDelete() {
 	var confirmation = confirm("Are you sure.... ?")
@@ -511,6 +513,17 @@ function callModal(){
 	dateStr += formatting(dt.getMinutes());
 	document.getElementById('trans_date_for_expense').value = dateStr
 	document.getElementById('trans_date_for_income').value = dateStr
+	
+	function convertJsToDatetimeLocal(strDate){
+		var dt = new Date(strDate)
+		var dateStr = "";
+		dateStr += dt.getFullYear() + "-";
+		dateStr += formatting(dt.getMonth()+1) + "-";
+		dateStr += formatting(dt.getDate()) + "T";
+		dateStr += formatting(dt.getHours()) + ":";
+		dateStr += formatting(dt.getMinutes());
+		return dateStr;
+	}
 </script>
 <script>
 let categoryDropdownForIncome = document.getElementById("trans_category_for_income")
@@ -535,6 +548,7 @@ categoryDropdownForExpense.addEventListener('change',() => {
             console.log(response);
     })()
 })
+
 </script>
 <script type="text/javascript">
 	function stringToRupees(value){
@@ -557,7 +571,141 @@ categoryDropdownForExpense.addEventListener('change',() => {
 			});
 			document.getElementById('span_account_amount_expense').innerHTML = stringToRupees(accountObj[document.getElementById('trans_account_expense').value]);		
 	});
+	 
 	
+	
+</script>
+<script>
+
+	
+	function confirmDelete() {
+		var confirmation = confirm("Are you sure.... ?")
+		return confirmation;
+	}
+	
+	let categoryDropdownForExpense1 = document.getElementById("trans_category_for_expense1")
+	let subCategoryDropdownForExpense1 = document.getElementById("trans_sub_category_for_expense1")
+	categoryDropdownForExpense1.addEventListener('change',() => {
+	    console.log("changed");
+	    console.log(categoryDropdownForExpense1.value);
+	    (async () => {
+	        let response  = await fetch('/ExpenseApplication/user/getUserSubCategory?categoryId='+categoryDropdownForExpense1.value).then(data => data.text())
+	             subCategoryDropdownForExpense1.innerHTML = response;
+	            console.log(response);
+	    })()
+	})
+	
+			editExpence = document.getElementsByClassName('editExpence');
+        	Array.from(editExpence).forEach((Element) => {
+            Element.addEventListener("click", (e) => {
+                tr = e.target.parentNode.parentNode;
+                trans_date_for_expense1.value			=	convertJsToDatetimeLocal(tr.getElementsByTagName("td")[0].innerText);
+                
+                trans_account_expense1.value			=	tr.getElementsByTagName("td")[1].id
+                
+                $( document ).ready(function() {
+        		    console.log( "ready!" );
+        			$('#trans_account_expense1').on('load change focus',function(e){
+        				document.getElementById('span_account_amount_expense1').innerHTML = stringToRupees(accountObj[this.value]);
+        			});
+        			document.getElementById('span_account_amount_expense1').innerHTML = stringToRupees(accountObj[document.getElementById('trans_account_expense1').value]);		
+        		});
+                
+                
+                trans_category_for_expense1.value		=	tr.getElementsByTagName("td")[2].id
+                
+                trans_sub_category_for_expense1.value	=	tr.getElementsByTagName("td")[3].id;
+                
+                (async () => {
+        	        let response  = await fetch('/ExpenseApplication/user/getUserSubCategory?categoryId='+categoryDropdownForExpense1.value).then(data => data.text())
+        	            subCategoryDropdownForExpense1.innerHTML = response;
+        	        	trans_sub_category_for_expense1.value	=	tr.getElementsByTagName("td")[3].id;
+        	            console.log(subCategoryDropdownForExpense1.value);
+        	            console.log("ho gaya");
+        	            
+        	    })()
+                
+                
+                trans_amount1.value						=	tr.getElementsByTagName("td")[4].innerText;
+                
+                trans_note1.value						=	tr.getElementsByTagName("td")[5].innerText;
+                
+                trans_id1.value							=	e.target.id
+                
+                console.log(trans_account_expense1)
+                console.log("Value "+trans_sub_category_for_expense1)
+
+				
+				$('#updateModalForExpense').modal('toggle');
+                
+           /*  	console.log("e.target.id is "+e) */
+            })
+        })
+        
+        
+        
+        
+let categoryDropdownForIncome1 = document.getElementById("trans_category_for_income1")
+let subCategoryDropdownForIncome1 = document.getElementById("trans_sub_category_for_income1")
+categoryDropdownForIncome1.addEventListener('change',() => {
+    console.log("changed");
+    console.log(categoryDropdownForIncome1.value);
+    (async () => {
+        let response  = await fetch('/ExpenseApplication/user/getUserSubCategory?categoryId='+categoryDropdownForIncome1.value).then(data => data.text())
+             subCategoryDropdownForIncome1.innerHTML = response;
+            console.log(response);
+    })()
+})
+     
+
+editIncome = document.getElementsByClassName('editIncome');
+Array.from(editIncome).forEach((Element) => {
+	Element.addEventListener("click", (e) => {
+ 		tr = e.target.parentNode.parentNode;
+        trans_date_for_income1.value			=	convertJsToDatetimeLocal(tr.getElementsByTagName("td")[0].innerText);
+           
+        trans_account_income1.value			=	tr.getElementsByTagName("td")[1].id
+           
+        $( document ).ready(function() {
+    		console.log( "ready!" );
+    		$('#trans_account_income1').on('load change focus',function(e){
+    			document.getElementById('span_account_amount_income1').innerHTML = stringToRupees(accountObj[this.value]);
+    		});
+    		document.getElementById('span_account_amount_income1').innerHTML = stringToRupees(accountObj[document.getElementById('trans_account_income1').value]);		
+    	});
+            
+            
+        trans_category_for_income1.value		=	tr.getElementsByTagName("td")[2].id
+        
+        trans_sub_category_for_income1.value	=	tr.getElementsByTagName("td")[3].id;
+        
+        (async () => {
+            let response  = await fetch('/ExpenseApplication/user/getUserSubCategory?categoryId='+categoryDropdownForIncome1.value).then(data => data.text())
+                subCategoryDropdownForIncome1.innerHTML = response;
+            	trans_sub_category_for_income1.value	=	tr.getElementsByTagName("td")[3].id;
+                console.log(response);
+        })()
+            
+            
+        trans_amount_income1.value						=	tr.getElementsByTagName("td")[4].innerText;
+            
+		trans_note_income1.value						=	tr.getElementsByTagName("td")[5].innerText;
+            
+        trans_id2.value							=	e.target.id
+            
+        console.log(trans_account_expense1)
+        console.log("Value qwe "+e.target.id)
+
+
+		$('#updateModalForIncome').modal('toggle');
+            
+       /*  	console.log("e.target.id is "+e) */
+	})
+})
+
+
+
+        	
 </script>
 </body>
 <%@include file="footer.jsp"%>

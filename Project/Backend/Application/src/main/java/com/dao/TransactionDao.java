@@ -58,7 +58,7 @@ public class TransactionDao {
 							"update account_master set account_amount = account_amount - ? where account_id = ?",
 							Double.parseDouble(tbean.getTrans_amount()), tbean.getTrans_account_id());
 
-					rowAffected = stmt.update("insert into trans_master values(?,?,?,?,?,?,?,?,?,?,?,?)", params,
+					rowAffected = stmt.update("insert into trans_master(trans_user_id ,trans_type ,trans_date ,trans_account_id ,trans_category_id ,trans_sub_category_id ,trans_amount ,trans_note ,trans_description ,trans_image ,trans_status ,trans_isDeleted) values(?,?,?,?,?,?,?,?,?,?,?,?)", params,
 							types);
 
 				} catch (Exception e) {
@@ -102,7 +102,7 @@ public class TransactionDao {
 							"update account_master set account_amount = account_amount + ? where account_id = ?",
 							Double.parseDouble(tbean.getTrans_amount()), tbean.getTrans_account_id());
 
-					rowAffected = stmt.update("insert into trans_master values(?,?,?,?,?,?,?,?,?,?,?,?)", params,
+					rowAffected = stmt.update("insert into trans_master(trans_user_id ,trans_type ,trans_date ,trans_account_id ,trans_category_id ,trans_sub_category_id ,trans_amount ,trans_note ,trans_description ,trans_image ,trans_status ,trans_isDeleted) values(?,?,?,?,?,?,?,?,?,?,?,?)", params,
 							types);
 
 				} catch (Exception e) {
@@ -178,5 +178,29 @@ public class TransactionDao {
 			tbean.setTrans_type(rs.getString(4));
 			return tbean;
 		}
+	}
+	
+
+	public boolean updateExpence(TransactionBean tbean) {
+		TransactionBean oldbean = (TransactionBean) stmt.queryForObject("select trans_id,trans_amount,trans_account_id,trans_type  from trans_master where trans_id=?",new TransRowMapper(),new Object[] {tbean.getTrans_id()});
+		int affectedRows=0;
+		System.out.println(tbean+" In method "+oldbean);
+		affectedRows = stmt.update("update trans_master set trans_date =? , trans_account_id =?, trans_category_id=?,trans_sub_category_id=?, trans_amount=?,trans_note=?,trans_description=?,trans_image=?, trans_updatedAt = GETDATE() where trans_id =  ? ",tbean.getTrans_date(),tbean.getTrans_account_id(),tbean.getTrans_category_id(),tbean.getTrans_sub_category_id(),
+				tbean.getTrans_amount(),tbean.getTrans_note(),tbean.getTrans_description(),tbean.getTrans_image(),tbean.getTrans_id());
+		
+		double amount=Double.parseDouble(oldbean.getTrans_amount())-Double.parseDouble(tbean.getTrans_amount());
+		if(oldbean.getTrans_type().equals("EXPENSE")) {
+			stmt.update("update account_master set account_amount=account_amount + ? where account_id=?",amount,tbean.getTrans_account_id());
+		}
+		else
+		{
+			
+			stmt.update("update account_master set account_amount=account_amount - ? where account_id=?",amount,tbean.getTrans_account_id());
+		}
+		System.out.println("in mathod up");
+		if(affectedRows > 0) {
+			return true;
+		}
+		return false;
 	}
 }
