@@ -78,29 +78,35 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/admin/saveUser", method = RequestMethod.POST)
-	public String saveUser(Model model, @Valid @ModelAttribute("user") UserBean user, BindingResult result) {
+	public String saveUser(Model model, @Valid @ModelAttribute("user") UserBean user, BindingResult result,HttpServletRequest req) {
 
-		if (result.hasErrors()) {
-			System.out.println("Has Error" + result.hasErrors());
-			model.addAttribute("user", user);
-		} else {
-			System.out.println(user.getUser_role());
-			userDao.insert(user);
+		if(isValidUser(req))
+		{
+			if (result.hasErrors()) {
+				System.out.println("Has Error" + result.hasErrors());
+				model.addAttribute("user", user);
+			} else {
+				System.out.println(user.getUser_role());
+				userDao.insert(user);
+			}
+			return "redirect:/admin/allUser";
 		}
-		return "redirect:/admin/allUser";
+		return "redirect:/login";
 	}
 
 	@RequestMapping(value = "/admin/deleteUser/{userId}")
-	public String deletUser(@PathVariable("userId") int userId,HttpServletRequest req) throws MalformedURLException {
+	public String deleteUser(@PathVariable("userId") int userId,HttpServletRequest req) {
 //		System.out.println(userId);		
-
-		String url=req.getRequestURL().toString();
-		String mainurl=urlCheck(url);
-		int result = userDao.deleteUser(userId);
-		if(activeLink.equals("admin"))
-			return "redirect:/admin/allAdmin";
+		if(isValidUser(req))
+		{
+			int result = userDao.deleteUser(userId);
+			if(activeLink.equals("admin"))
+				return "redirect:/admin/allAdmin";
+			else
+				return "redirect:/admin/allUser";
+		}
 		else
-			return "redirect:/admin/allUser";
+			return "redirect:/login";
 	
 	}
 
@@ -126,15 +132,19 @@ public class AdminController {
 
 	@PostMapping("/admin/updateProfile")
 	public String updateAdminProfile(@Valid @ModelAttribute("user") UserBean user, BindingResult result,
-			HttpSession session) {
-		if (result.hasErrors()) {
-//			System.out.println("error");
-			return "/admin/profile";
-		} else {
-			user.setUser_id(((UserBean) session.getAttribute("user")).getUser_id());
-			userDao.updateUserProfile(user);
+			HttpSession session,HttpServletRequest req) {
+		if(isValidUser(req))
+		{
+			if (result.hasErrors()) {
+//				System.out.println("error");
+				return "/admin/profile";
+			} else {
+				user.setUser_id(((UserBean) session.getAttribute("user")).getUser_id());
+				userDao.updateUserProfile(user);
+			}
+			return "redirect:/admin/profile";
 		}
-		return "redirect:/admin/profile";
+		else return "redirect:/login";
 	}
 	
 	@RequestMapping(value="/admin/allAdmin")
@@ -151,12 +161,21 @@ public class AdminController {
 		
 		
 	}
+	@RequestMapping(value="/admin/getUser")
+	public String getUser() {
+		return "redirect:/admin/getUser";
+	}
 	@RequestMapping(value="/admin/getUser/{userId}")
-	public String getUser(@PathVariable("userId") int userId ,Model model) {
-		UserBean user=userDao.getUserProfile(userId);
-		model.addAttribute("user",user);
-		
-		return "/admin/getUser";
+	public String getUser(@PathVariable("userId") int userId ,Model model,HttpServletRequest req) {
+		if(isValidUser(req))
+		{
+			UserBean user=userDao.getUserProfile(userId);
+			model.addAttribute("user",user);
+			return "/admin/getUser";
+		}
+		else {
+			return "redirect:/login";
+		}
 	}
 	
 }

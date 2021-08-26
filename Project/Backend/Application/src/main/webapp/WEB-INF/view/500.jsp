@@ -23,7 +23,7 @@
 	    <div class="row">
 		    <div class="col-12 col-md-11 col-lg-7 col-xl-6 mx-auto">
 			    <div class="app-branding text-center mb-5">
-		            <a class="app-logo" href="/ExpenseApplication/user/dashboard"><img class="logo-icon me-2" src="<c:url value="/resources/images/app-logo.svg"/>" alt="logo"><span class="logo-text">PORTAL</span></a>
+		            <a class="app-logo" href="./dashboard"><img class="logo-icon me-2" src="<c:url value="/resources/images/app-logo.svg"/>" alt="logo"><span class="logo-text">PORTAL</span></a>
 	
 		        </div><!--//app-branding-->  
 			    <div class="app-card p-5 text-center shadow-sm">
@@ -31,7 +31,7 @@
 				    <div class="mb-4">
 					    We are facing some technical issue.Try again later..... 
 				    </div>
-				    <a class="btn app-btn-primary" href="/ExpenseApplication/login">Go to home page</a>
+				    <a class="btn app-btn-primary" href="./login">Go to home page</a>
 			    </div>
 		    </div><!--//col-->
 	    </div><!--//row-->

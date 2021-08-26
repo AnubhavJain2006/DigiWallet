@@ -51,6 +51,8 @@ trans_description text DEFAULT NULL,
 trans_image text DEFAULT NULL,
 trans_status varchar(10) DEFAULT 'ACTIVE' check(trans_status in ('ACTIVE','DEACTIVE')),
 trans_isDeleted int DEFAULT 0 check(trans_isDeleted in (0,1))
+trans_createdAt datetime DEFAULT getdate(),
+trans_updatedAt datetime DEFAULT NULL
 )
 ------------------------------------------------------------------------------------------------------------
 -- Create table account_group
@@ -77,7 +79,8 @@ create table [DigiWallet].[dbo].[category_master] (
 category_id int primary key identity,
 category_user_id int NOT NULL,
 category_name varchar(30) NOT NULL,
-category_type varchar(20) NOT NULL CHECK(category_type IN ('INCOME','EXPENSE'))
+category_type varchar(20) NOT NULL CHECK(category_type IN ('INCOME','EXPENSE')),
+category_isDeleted int DEFAULT 0 CHECK(category_isDeleted IN (0,1))
 )
 ------------------------------------------------------------------------------------------------------------
 -- Create table sub_category
@@ -85,7 +88,8 @@ GO
 create table [DigiWallet].[dbo].[sub_category] (
 sub_category_id int primary key identity,
 category_id int NOT NULL,
-sub_category_name varchar(30) NOT NULL
+sub_category_name varchar(30) NOT NULL,
+sub_category_isDeleted int DEFAULT 0 CHECK(sub_category_isDeleted IN (0,1))
 )
 ------------------------------------------------------------------------------------------------------------
 -- Create table label_master
@@ -166,6 +170,7 @@ ON DELETE CASCADE
 ------------------------------------------------------------------------------------------------------------
 --Add Foreign Key Constraint to trans_master(trans_category_id) to category_master(category_id)
 --Purpose : to connect one user transaction to one user category (one-to-one) relationship
+--Drawback : to insert default category this constraint will create an issue 
 GO
 ALTER TABLE [DigiWallet].[dbo].[trans_master]
 ADD CONSTRAINT trans_category_id_to_category_id_FK
@@ -263,93 +268,94 @@ BEGIN
 END
 ------------------------------------------------------------------------------------------------------------
 --Create trigger for user_master
---Purpose : To generate default category and sub category table for user
+--Purpose : To generate default category and sub category table for each and every user
+
 GO
 CREATE TRIGGER AUTO_DEFAULT_CATEGORY_INSERT_TG 
 ON [DigiWallet].[dbo].[user_master]
 FOR INSERT
 AS 
 BEGIN
-	DECLARE @user_id INT
-	select @user_id = user_id from inserted
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Food','EXPENSE')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Lunch')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Dinner')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Eating Out')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Beverages')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Social Life','EXPENSE')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Friend')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Fellowship')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Alumni')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Dues')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Self-devlopment','EXPENSE')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Transportation','EXPENSE')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Bus')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Subway')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Taxi')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Car')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Culture','EXPENSE')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Books')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Movie')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Music')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Apps')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Household','EXPENSE')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Appliances')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Furniture')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Kitchen')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Toiletries')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Chandlery')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Apparel','EXPENSE')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Clothing')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Fashion')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Shoes')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Laundary')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Beauty','EXPENSE')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Cosmetics')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Makeup')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Accessories')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Beauty')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Health','EXPENSE')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Gym')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Yoga')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Hospital')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Medicine')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Education','EXPENSE')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Schooling')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Textbooks')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'School supplies')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Academy')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Gift','EXPENSE')
+DECLARE @user_id INT
+select @user_id = user_id from inserted
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Food','EXPENSE')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Lunch')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Dinner')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Eating Out')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Beverages')
 
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Other','EXPENSE')
-	
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Allowance','INCOME')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Petrol')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Home')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Medicine')
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Social Life','EXPENSE')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Friend')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Fellowship')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Alumni')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Dues')
 
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Salary','INCOME')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'PF')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Wages')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Bonus')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Salary')
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Self-devlopment','EXPENSE')
 
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Petty cash','INCOME')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Gift')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Found')
-	insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Overtime')
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Transportation','EXPENSE')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Bus')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Subway')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Taxi')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Car')
 
-	insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Other','INCOME')
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Culture','EXPENSE')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Books')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Movie')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Music')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Apps')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Household','EXPENSE')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Appliances')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Furniture')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Kitchen')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Toiletries')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Chandlery')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Apparel','EXPENSE')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Clothing')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Fashion')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Shoes')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Laundary')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Beauty','EXPENSE')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Cosmetics')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Makeup')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Accessories')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Beauty')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Health','EXPENSE')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Gym')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Yoga')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Hospital')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Medicine')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Education','EXPENSE')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Schooling')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Textbooks')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'School supplies')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Academy')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Gift','EXPENSE')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Other','EXPENSE')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Allowance','INCOME')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Petrol')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Home')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Medicine')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Salary','INCOME')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'PF')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Wages')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Bonus')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Salary')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Petty cash','INCOME')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Gift')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Found')
+insert into [DigiWallet].[dbo].[sub_category] (category_id,sub_category_name) values ((select top(1) category_id from category_master where category_user_id = @user_id ORDER BY category_id DESC),'Overtime')
+
+insert into [DigiWallet].[dbo].[category_master] (category_user_id,category_name,category_type) values (@user_id,'Other','INCOME')
 END
 ------------------------------------------------------------------------------------------------------------
 --Create trigger for account_master
@@ -364,3 +370,20 @@ END
 --	select @account_id = account_id from deleted
 --	update trans_master set trans_status = 'DEACTIVE' where trans_account_id = @account_id
 --END
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--Create trigger for category_master
+--Purpose : To deactivate all corresponding sub category when category is deactivate 
+GO
+CREATE TRIGGER AUTO_DEACTIVE_SUB_CATEGORY_WHEN_CATEGORY_DEACTIVE_TG
+ON [DigiWallet].[dbo].[category_master]
+FOR UPDATE
+AS 
+BEGIN
+	DECLARE @category_id INT
+	DECLARE @category_isDeleted INT
+	select @category_id = category_id, @category_isDeleted = category_isDeleted from inserted
+	if (@category_isDeleted = 1)
+	BEGIN
+		update sub_category set sub_category_isDeleted = 1 where category_id = @category_id
+	END
+END

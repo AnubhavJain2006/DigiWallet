@@ -11,8 +11,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bean.SubCategoryBean;
 import com.bean.TransactionBean;
@@ -47,6 +49,18 @@ public class SubCategoryController {
 		out.println(data);
 	}
 
+	@RequestMapping(value = "/user/getDisplaySubCategory/{subCatId}", method = RequestMethod.GET)
+	public String getDisplaySubCategory(@PathVariable("subCatId") int subCatId, HttpSession session,
+			HttpServletRequest req, Model model) {
+		if (accountController.isValidUser(req)) {
+			List<SubCategoryBean> subCategoryList = subCategoryDao.getUserSubCategoryByCategoryId(subCatId);
+			model.addAttribute("subCategoryList", subCategoryList);
+			return "user/displaySubCategory";
+		} else {
+			return "redirect:/login";
+		}
+	}
+
 	@RequestMapping(value = "/user/addUserSubCategory", method = RequestMethod.POST)
 	public String addUserSubCategory(HttpServletRequest req, HttpSession session, Model model) {
 		if (accountController.isValidUser(req)) {
@@ -56,6 +70,30 @@ public class SubCategoryController {
 			return transactionController.transaction(req, new TransactionBean(), model, session);
 		} else {
 			return "redirect:/login";
+		}
+	}
+
+	@RequestMapping(value = "/user/subcategory/delete/{subCatId}", method = RequestMethod.GET)
+	@ResponseBody
+	public Boolean deleteSubCategory(@PathVariable("subCatId") int subCatId, HttpServletRequest req) {
+		if (accountController.isValidUser(req)) {
+			return subCategoryDao.deleteSubCategory(subCatId);
+		} else {
+			return false;
+		}
+	}
+
+	@RequestMapping(value = "/user/subcategory/update/{id}/{name}")
+	@ResponseBody
+	public Boolean updateSubCategory(@PathVariable("id") int catId, @PathVariable("name") String catName,
+			HttpServletRequest req) {
+		if (accountController.isValidUser(req)) {
+			SubCategoryBean cbean = new SubCategoryBean();
+			cbean.setSub_category_id(catId);
+			cbean.setSub_category_name(catName);
+			return subCategoryDao.updateSubCategory(cbean);
+		} else {
+			return false;
 		}
 	}
 }

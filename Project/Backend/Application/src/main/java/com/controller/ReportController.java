@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.bean.ReportBean;
+import com.bean.TransactionBean;
 import com.bean.UserBean;
 import com.dao.ReportDao;
 
@@ -64,6 +65,13 @@ public class ReportController {
 
 			List<ReportBean> transactionListByWeek = reportDao.getUserTransactionByWeek(userId,
 					startTimestamp.toString(), endTimestamp.toString());
+			
+			System.out.println("transactionListByWeek list : "+transactionListByWeek);
+			
+			List<TransactionBean> weeklyList = reportDao.getDaysTransByWeek(userId, startTimestamp.toString(), endTimestamp.toString());
+			System.out.println("weeklyList list : "+weeklyList);
+			
+			model.addAttribute("weeklyList", weeklyList);
 //		for (ReportBean reportBean : allTransaction) {
 //			System.out.println(reportBean.getTransactionBean());
 //		}
@@ -86,22 +94,30 @@ public class ReportController {
 // 			System.out.println("startDate is " + startDate);
 //			System.out.println("endDate is " + endDate);
 			Timestamp startTimestamp = new Timestamp(startDate);
-			Timestamp endTimestamp = new Timestamp(endDate);
-//			System.out.println("startTimestamp is " + startTimestamp);
-//			System.out.println("endTimestamp is " + endTimestamp);
+			Timestamp endTimestamp = new Timestamp(endDate+86400000);
+			System.out.println("startTimestamp is " + startTimestamp);
+			System.out.println("endTimestamp is " + endTimestamp);
 
 			List<ReportBean> transactionListByPeriod = reportDao.getUserTransactionByPeriod(userId,
 					startTimestamp.toString(), endTimestamp.toString());
 //			for (ReportBean reportBean : allTransaction) {
 //				System.out.println(reportBean.getTransactionBean());
 //			}
+//			List<TransactionBean> periodlyList = reportDao.getDaysTransByWeek(userId, startTimestamp.toString(), endTimestamp.toString());
+//			System.out.println("periodlyList list : "+periodlyList);
+//			
+//			List<TransactionBean> periodlyMonthList = reportDao.getMonthsTransByPeriod(userId, startTimestamp.toString(), endTimestamp.toString());
+//			System.out.println("periodlyMonthList list : "+periodlyMonthList);
+//			
+//			model.addAttribute("periodlyList", periodlyList);
+//			model.addAttribute("periodlyMonthList", periodlyMonthList);
 			UserBean user=(UserBean)session.getAttribute("user");
 			model.addAttribute("userName",user.getUser_name());
 			model.addAttribute("userEmail",user.getUser_email());
 			model.addAttribute("transactionListByPeriod", transactionListByPeriod);
 			model.addAttribute("display", "period");
 			model.addAttribute("startDate", new java.sql.Date(startTimestamp.getTime()).toString());
-			model.addAttribute("endDate", new java.sql.Date(endTimestamp.getTime()).toString());
+			model.addAttribute("endDate", new java.sql.Date(endTimestamp.getTime()-86400000).toString());
 			return "/user/displayReport";
 		} else {
 			return "redirect:/login";
@@ -124,10 +140,15 @@ public class ReportController {
 //			for (ReportBean reportBean : allTransaction) {
 //				System.out.println(reportBean.getTransactionBean());
 //			}
+			System.out.println("transactionListByMonth list : "+transactionListByMonth);
+			List<TransactionBean> monthlyList = reportDao.getTransDaysByMonths(userId, month, year);
+			System.out.println("monthlyList list : "+monthlyList);
+			
 			UserBean user=(UserBean)session.getAttribute("user");
 			model.addAttribute("userName",user.getUser_name());
 			model.addAttribute("userEmail",user.getUser_email());
 			model.addAttribute("transactionListByMonth", transactionListByMonth);
+			model.addAttribute("monthlyList",monthlyList);
 			model.addAttribute("display", "month");
 			model.addAttribute("month", months[month]);
 			model.addAttribute("year", year);
@@ -148,11 +169,15 @@ public class ReportController {
 			System.out.println("userYear is " + year);
 
 			List<ReportBean> transactionListByYear = reportDao.getUserTransactionByYear(userId, year);
+			System.out.println("transactionListByYear list : "+transactionListByYear);
+			List<TransactionBean> yearlyList = reportDao.getTransMonthsByYear(userId, year);
+			System.out.println("yearlyList list : "+yearlyList);
 //			for (ReportBean reportBean : allTransaction) {
 //				System.out.println(reportBean.getTransactionBean());
 //			}
 			UserBean user=(UserBean)session.getAttribute("user");
 			model.addAttribute("transactionListByYear", transactionListByYear);
+			model.addAttribute("yearlyList",yearlyList);
 			model.addAttribute("display", "annual");
 //			model.addAttribute("month", months[month]);
 			model.addAttribute("year", year);

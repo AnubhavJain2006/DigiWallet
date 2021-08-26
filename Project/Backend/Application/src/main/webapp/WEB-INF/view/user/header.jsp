@@ -29,16 +29,16 @@
 							<i class="search-mobile-trigger-icon fas fa-search"></i>
 						</div>
 						<!--//col-->
-						<div class="app-search-box col">
+						<!-- <div class="app-search-box col">
 							<form class="app-search-form">
 								<input type="text" placeholder="Search..." name="search"
-									class="form-control search-input">
+									class="form-control search-input" data-filter="true">
 								<button type="submit" class="btn search-btn btn-primary"
 									value="Search">
 									<i class="fas fa-search"></i>
 								</button>
 							</form>
-						</div>
+						</div> -->
 						<!--//app-search-box-->
 
 						<div class="app-utilities col-auto">
@@ -166,8 +166,15 @@
 							</span> <span class="nav-link-text">Report</span>
 						</a>
 						</li>
-						<!--//nav-item-->
-
+<li class="nav-item">
+							<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> <a
+							class="nav-link <%if (request.getAttribute("activeLink") == "category") {%>active<%}%>"
+							" href="category"> <span class="nav-icon"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list-nested" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M4.5 11.5A.5.5 0 0 1 5 11h10a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 1 3h10a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5z"/>
+</svg>
+							</span> <span class="nav-link-text">Category</span>
+						</a>
+						</li>
 						<!--//nav-item-->
 					</ul>
 					<!--//app-menu-->

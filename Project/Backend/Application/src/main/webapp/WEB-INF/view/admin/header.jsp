@@ -46,11 +46,11 @@
 										<a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown"
 											href="#" role="button" aria-expanded="false"><img src="<c:url value="/resources/images/user.png" />"></a>
 										<ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
-											<li><a class="dropdown-item" href="profile">My Profile</a></li>
+											<li><a class="dropdown-item" href="/ExpenseApplication/admin/profile">My Profile</a></li>
 											<li>
 												<hr class="dropdown-divider">
 											</li>
-											<li><a class="dropdown-item" href="logout" onclick="return logout()">Log
+											<li><a class="dropdown-item" href="/ExpenseApplication/admin/logout" onclick="return logout()">Log
 													Out</a></li>
 										</ul>
 									</div>
@@ -70,7 +70,7 @@
 					<div class="sidepanel-inner d-flex flex-column">
 						<a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
 						<div class="app-branding">
-							<a class="app-logo" href="dashboard"><img class="logo-icon me-2" src="<c:url value="/resources/images/app-logo.svg" />" alt="logo"><span
+							<a class="app-logo" href="../dashboard"><img class="logo-icon me-2" src="<c:url value="/resources/images/app-logo.svg" />" alt="logo"><span
 									class="logo-text">PORTAL</span></a>
 
 						</div>
@@ -81,7 +81,7 @@
 									<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> <a
 										class="nav-link <%if (request.getAttribute(" activeLink")=="dashboard" )
 										{%>active<%}%>"
-											href="dashboard"> <span class="nav-icon"> <svg width="1em" height="1em"
+											href="/ExpenseApplication/admin/dashboard"> <span class="nav-icon"> <svg width="1em" height="1em"
 													viewBox="0 0 16 16" class="bi bi-house-door" fill="currentColor"
 													xmlns="http://www.w3.org/2000/svg">
 													<path fill-rule="evenodd"
@@ -121,10 +121,10 @@
 									<div id="submenu-2" class="collapse submenu submenu-2"
 										data-bs-parent="#menu-accordion">
 										<ul class="submenu-list list-unstyled">
-											<li class="submenu-item"><a class="submenu-link" href="allAdmin">Admin</a>
+											<li class="submenu-item"><a class="submenu-link" href="/ExpenseApplication/admin/allAdmin">Admin</a>
 											</li>
 											<li class="submenu-item"><a class="submenu-link"
-													href="allUser">User</a></li>
+													href="/ExpenseApplication/admin/allUser">User</a></li>
 										</ul>
 									</div>
 								</li>
@@ -133,7 +133,7 @@
 								<!--//nav-item-->
 								<li class="nav-item">
 									<!--//Bootstrap Icons: https://icons.getbootstrap.com/ --> <a
-										class="nav-link" " href=" transaction"> <span class="nav-icon">
+										class="nav-link" " href="/ExpenseApplication/admin/transaction"> <span class="nav-icon">
 											<svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-card-list"
 												fill="currentColor" xmlns="http://www.w3.org/2000/svg">
 												<path fill-rule="evenodd"

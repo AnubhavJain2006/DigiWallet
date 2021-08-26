@@ -24,4 +24,11 @@ public class ReportBean {
 	public void setTransactionBean(TransactionBean transactionBean) {
 		this.transactionBean = transactionBean;
 	}
+
+	@Override
+	public String toString() {
+		return "ReportBean [transactionBean=" + transactionBean + ", month=" + month + "]";
+	}
+	
+	
 }

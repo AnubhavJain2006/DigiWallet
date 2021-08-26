@@ -31,4 +31,3 @@ INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password
 INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password,user_role_id) values ('Ruchi Dixit','ruchi1506@gmail.com','ljdgijr435',2)
 INSERT INTO [DigiWallet].[dbo].[user_master] (user_name,user_email,user_password,user_role_id) values ('Smit Mehta','smitmethta69@hotmail.com','jdsk7883fdf',2)
 ------------------------------------------------------------------------------------------------------------
-

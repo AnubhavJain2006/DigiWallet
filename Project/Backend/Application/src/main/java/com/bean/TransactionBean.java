@@ -24,6 +24,42 @@ public class TransactionBean {
 	private String trans_image;
 	private String trans_status;
 	private String trans_type;
+	private String months;
+	private String amount;
+	private int nrow;
+	private int days;
+
+	public int getDays() {
+		return days;
+	}
+
+	public void setDays(int days) {
+		this.days = days;
+	}
+
+	public String getMonths() {
+		return months;
+	}
+
+	public void setMonths(String months) {
+		this.months = months;
+	}
+
+	public String getAmount() {
+		return amount;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = amount;
+	}
+
+	public int getNrow() {
+		return nrow;
+	}
+
+	public void setNrow(int nrow) {
+		this.nrow = nrow;
+	}
 
 	public int getTrans_user_id() {
 		return trans_user_id;
@@ -69,10 +105,15 @@ public class TransactionBean {
 	public String toString() {
 		return "TransactionBean [trans_id=" + trans_id + ", trans_user_id=" + trans_user_id + ", trans_date="
 				+ trans_date + ", trans_account_id=" + trans_account_id + ", trans_category_id=" + trans_category_id
-				+ ", trans_sub_category_id=" + trans_sub_category_id + ", trans_amount=" + trans_amount
-				+ ", trans_note=" + trans_note + ", trans_description=" + trans_description + ", trans_image="
-				+ trans_image + ", trans_status=" + trans_status + "]";
+				+ ", trans_sub_category_id=" + trans_sub_category_id + ", trans_category_name=" + trans_category_name
+				+ ", trans_sub_category_name=" + trans_sub_category_name + ", trans_account_name=" + trans_account_name
+				+ ", trans_amount=" + trans_amount + ", trans_note=" + trans_note + ", trans_description="
+				+ trans_description + ", trans_image=" + trans_image + ", trans_status=" + trans_status
+				+ ", trans_type=" + trans_type + ", months=" + months + ", amount=" + amount + ", nrow=" + nrow
+				+ ", days=" + days + "]";
 	}
+	
+	
 
 	public int getTrans_id() {
 		return trans_id;

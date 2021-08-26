@@ -4,10 +4,29 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CategoryBean {
+	@Override
+	public String toString() {
+		return "CategoryBean [category_id=" + category_id + ", category_user_id=" + category_user_id
+				+ ", category_name=" + category_name + ", category_type=" + category_type + ", category_isDeleted="
+				+ category_isDeleted + ", getCategory_isDeleted()=" + getCategory_isDeleted() + ", getCategory_id()="
+				+ getCategory_id() + ", getCategory_user_id()=" + getCategory_user_id() + ", getCategory_name()="
+				+ getCategory_name() + ", getCategory_type()=" + getCategory_type() + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+	}
+
 	private int category_id;
 	private int category_user_id;
 	private String category_name;
 	private String category_type;
+	private int category_isDeleted;
+
+	public int getCategory_isDeleted() {
+		return category_isDeleted;
+	}
+
+	public void setCategory_isDeleted(int category_isDeleted) {
+		this.category_isDeleted = category_isDeleted;
+	}
 
 	public CategoryBean() {
 	}

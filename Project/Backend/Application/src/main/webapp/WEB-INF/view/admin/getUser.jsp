@@ -6,7 +6,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <%@include file="head.jsp"%>
-<title>Admin</title>
+<title>Get User</title>
 </head>
 <%@include file="header.jsp"%>
 <%@include file="addUser.jsp"%>

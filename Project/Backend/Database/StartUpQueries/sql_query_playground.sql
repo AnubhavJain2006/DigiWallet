@@ -128,7 +128,32 @@ select  DATEPART(DAY, trans_date) as days , sum(trans_amount) as amount from tra
 select DATEPART(DAY, trans_date) as days , sum(trans_amount) as amount from trans_master where trans_user_id = 3 and trans_type = 'EXPENSE' and DATEPART(YEAR, trans_date) = 2021 and DATEPART(MONTH, trans_date) = 8 group by DATEPART(DAY, trans_date)  order by days desc                                           
 
 
+--------------------------------------------------------------------------------------------------------------
+select cd.category_id, cd.category_name, cd.category_type, scd.sub_category_id, scd.category_id, scd.sub_category_name from category_default as cd
+inner join sub_category_default as scd
+on cd.category_id = scd.category_id
+Order by cd.category_id desc, scd.sub_category_id desc
 
 
 
+select category_id, category_name from category_default where category_type = 'EXPENSE' order by category_id desc 
+
+select sub_category_id, sub_category_name from sub_category_default where category_id = -1 order by sub_category_id desc
+
+select * from category_master
+
+select category_id, category_name, category_isDeleted from category_master where category_type = 'EXPENSE' and category_user_id = 3 
+
+
+select * from sub_category where category_id = 34
+
+update category_master set category_isDeleted = 1 where category_user_id = 3 and category_id = 34
+
+update category_master set category_name = 'self development 1' where category_user_id = 3 and category_id = 35
+
+
+update sub_category set sub_category_isDeleted = 1 where sub_category_id = ?		
+
+
+select * from category_master
 
