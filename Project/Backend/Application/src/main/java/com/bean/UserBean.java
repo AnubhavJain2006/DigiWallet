@@ -34,11 +34,21 @@ public class UserBean {
 	Date user_updateDate;
 
 	String user_role;
+	
+	String user_status;
 
 	String user_image;
 
 	String user_full_name;
 
+
+	public String getUser_status() {
+		return user_status;
+	}
+
+	public void setUser_status(String user_status) {
+		this.user_status = user_status;
+	}
 	public String getUser_full_name() {
 		return user_full_name;
 	}

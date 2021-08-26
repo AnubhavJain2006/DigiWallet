@@ -66,7 +66,6 @@ public class UserController {
 				model.addAttribute("result", rowsAffected);
 				return "Login";
 			}
-			
 //			System.out.println("SaveUser"+rowsAffected);
 			return "redirect:/login";
 		}
@@ -123,9 +122,9 @@ public class UserController {
 			rowsAffected = 4;
 			dao.updatePassword(password, email);
 			model.addAttribute("result", rowsAffected);
-			rowsAffected = 10;
+//			rowsAffected = 10;
 			model.addAttribute("user", new UserBean());
-			return "redirect:/Login";
+			return "redirect:/login";
 		} else {
 			boolean flag = true;
 			model.addAttribute("flag", flag);
@@ -138,7 +137,7 @@ public class UserController {
 	public boolean isValidUser(HttpServletRequest req) {
 		HttpSession session = req.getSession(false);
 //		System.out.println(session.getAttribute("user"));
-		UserBean user = (UserBean) session.getAttribute("user");
+//		UserBean user = (UserBean) session.getAttribute("user");
 		if ((UserBean) session.getAttribute("user") != null) {
 			return true;
 		} else {
@@ -152,11 +151,16 @@ public class UserController {
 		/* System.out.println("HEllo"); */
 		UserBean userbean = dao.checkUser(user);
 		if (userbean != null) {
+			if(userbean.getUser_status().equals("DEACTIVE"))
+			{
+				rowsAffected=7;
+				return "redirect:/login";
+			}
 			session.setAttribute("user", userbean);
 			switch (Integer.parseInt(userbean.getUser_role())) {
 			case 1:
 				System.out.println(((UserBean) session.getAttribute("user")).getUser_name());
-				return "redirect:/user/dashboard";
+				return "redirect:/admin/dashboard";
 
 			case 2:
 				System.out.println(((UserBean) session.getAttribute("user")).getUser_name());
@@ -230,7 +234,7 @@ public class UserController {
 	@RequestMapping(value = "/user/updateProfile", method = RequestMethod.POST)
 	public String updateProfile(@Valid @ModelAttribute("user") UserBean user, BindingResult result,
 			HttpSession session) {
-		System.out.println("aaya");
+//		System.out.println("aaya");
 		if (result.hasErrors()) {
 			System.out.println("error");
 			return "/user/profile";

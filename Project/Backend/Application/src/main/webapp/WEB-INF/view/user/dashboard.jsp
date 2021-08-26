@@ -78,7 +78,8 @@
 
 					<div class=" mx-2 mt-4 bg-white shadow rounded ">
 						<div class="table-responsive">
-							<table class="table table-bordered table-hover rounded text-center">
+							<table
+								class="table table-bordered table-hover rounded text-center">
 								<thead class="table-secondary">
 									<tr>
 										<th class="cell">Date</th>
@@ -92,12 +93,12 @@
 
 									</tr>
 								</thead>
-									
+
 								<tbody>
 									<!-- allRecordsList -->
-							
-									
-									<c:forEach  items="${allTransactionList}" var="tbean">
+
+
+									<c:forEach items="${allTransactionList}" var="tbean">
 										<tr>
 											<td class="cell">${tbean.trans_date}</td>
 											<c:choose>
@@ -115,7 +116,7 @@
 											<td class="cell">${tbean.trans_note}</td>
 										</tr>
 									</c:forEach>
-									
+
 								</tbody>
 							</table>
 						</div>

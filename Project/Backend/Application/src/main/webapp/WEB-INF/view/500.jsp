@@ -31,7 +31,7 @@
 				    <div class="mb-4">
 					    We are facing some technical issue.Try again later..... 
 				    </div>
-				    <a class="btn app-btn-primary" href="/ExpenseApplication/user/dashboard">Go to home page</a>
+				    <a class="btn app-btn-primary" href="/ExpenseApplication/login">Go to home page</a>
 			    </div>
 		    </div><!--//col-->
 	    </div><!--//row-->

@@ -24,11 +24,22 @@ public class UserDao {
 	public int insert(UserBean user) {
 		int result = 0;
 		try {
-			result = stmt.update("insert into user_master(user_name,user_email,user_password) values(?,?,?)",
-					user.getUser_name(), user.getUser_email(), user.getUser_password());
-			result=1;
+
+			if (user.getUser_role() != null) {
+				System.out.println(user.getUser_role());
+				result = stmt.update("insert into user_master(user_name,user_email,user_password,user_role_id) values(?,?,?,?)",
+						user.getUser_name(), user.getUser_email(), user.getUser_password(),user.getUser_role());
+
+			} else {
+				result = stmt.update("insert into user_master(user_name,user_email,user_password) values(?,?,?)",
+						user.getUser_name(), user.getUser_email(), user.getUser_password());
+
+			}
+
+			result = 1;
 			return result;
 		} catch (Exception e) {
+		System.out.println(e.getMessage());
 			result = 5;
 		}
 		return result;
@@ -59,13 +70,14 @@ public class UserDao {
 			user.setUser_name(rs.getString("user_name"));
 			user.setUser_email(rs.getString("user_email"));
 			user.setUser_password(rs.getString("user_password"));
+			user.setUser_status(rs.getString("user_status"));
 			user.setUser_role(rs.getString(9));
 			return user;
 		}
 	}
 
 	public boolean checkEmail(String emailId) {
-		
+
 		UserBean userbean = null;
 		boolean isFound = false;
 		try {
@@ -82,7 +94,7 @@ public class UserDao {
 	}
 
 	public int updatePassword(String password, String email) {
-	
+
 		int result = 0;
 		try {
 			result = stmt.update("update user_master set user_password=? where user_email=?", password, email);
@@ -170,6 +182,42 @@ public class UserDao {
 			result.add(3, getSingleCellData(pst));
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public List<UserBean> getAllUserRecords(int userRoleId) {
+		List<UserBean> list = new ArrayList<UserBean>();
+		try {
+			list = stmt.query("select * from user_master where user_role_id=? ",
+					new BeanPropertyRowMapper<UserBean>(UserBean.class),new Object[] {userRoleId});
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		return list;
+	}
+
+	public int deleteUser(int userId) {
+		int result=0;
+		try {
+			result=stmt.update("update user_master set user_status='DEACTIVE' where user_id=?",userId);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		return result;
+	}
+
+	public int updateUser(UserBean user) {
+		int result=0;
+		try {
+			result=stmt.update("update user_master set user_name=?,user_email=?,user_status=?, user_updatedate=GETDATE() where user_id=?",user.getUser_name(),user.getUser_email(),user.getUser_status(),user.getUser_id());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e.getMessage());
 		}
 		return result;
 	}
