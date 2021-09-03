@@ -121,7 +121,7 @@ public class TransactionDao {
 		List<TransactionBean> list = new ArrayList<TransactionBean>();
 		try {
 			list = stmt.query(
-					"select tm.trans_date,tm.trans_id ,tm.trans_account_id, am.account_name, tm.trans_category_id,tm.trans_type, cm.category_name, tm.trans_sub_category_id, sc.sub_category_name, tm.trans_amount, tm.trans_note from trans_master as tm inner join account_master as am on tm.trans_account_id = am.account_id inner join category_master as cm on tm.trans_category_id = cm.category_id inner join sub_category as sc on tm.trans_sub_category_id = sc.sub_category_id where tm.trans_user_id=? order by tm.trans_date desc",
+					"select tm.trans_date,tm.trans_id, payee.payee_name ,tm.trans_account_id, am.account_name, tm.trans_category_id,tm.trans_type, cm.category_name, tm.trans_sub_category_id, sc.sub_category_name, tm.trans_amount, tm.trans_note from trans_master as tm inner join account_master as am on tm.trans_account_id = am.account_id inner join category_master as cm on tm.trans_category_id = cm.category_id inner join payee_master as payee on tm.trans_payee_id=payee.payee_id inner join sub_category as sc on tm.trans_sub_category_id = sc.sub_category_id where tm.trans_user_id=? order by tm.trans_date desc",
 					new Object[] { id }, new TransactionBeanRowMapper());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -148,6 +148,7 @@ public class TransactionDao {
 			// account_name,category_name,subcategory_name,
 			TransactionBean tbean = new TransactionBean();
 //			System.out.println(rs.getInt("trans_id"));
+			tbean.setTrans_payee_name(rs.getString("payee_name"));
 			tbean.setTrans_id(rs.getInt("trans_id"));
 			tbean.setTrans_account_id(rs.getInt("trans_account_id"));
 			tbean.setTrans_date(rs.getTimestamp("trans_date"));

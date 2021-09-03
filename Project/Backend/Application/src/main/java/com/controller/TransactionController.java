@@ -87,7 +87,7 @@ public class TransactionController {
 			System.out.println(list);
 			model.addAttribute("allRecordsList", list);
 			model.addAttribute("rowsAffected", rowsAffected);
-			System.out.print("Method RE " + rowsAffected);
+		
 			rowsAffected = 0;
 			return "user/transaction";
 		} else {
@@ -135,6 +135,7 @@ public class TransactionController {
 				tbean.setTrans_date(transTime);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			tbean.setTrnas_user_id(accountController.getUserId(session));

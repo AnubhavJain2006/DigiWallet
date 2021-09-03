@@ -291,7 +291,7 @@
 								<th class="cell">Sub Category Name</th>
 								<th class="cell">Amount</th>
 								<th class="cell">Note</th>
-								
+								<th class="cell">Payee Name</th>
 								<th class="cell">Income/Expense</th>
 								<th class="cell">Action</th>
 							</tr>
@@ -301,12 +301,13 @@
 							<c:forEach items="${allRecordsList}" var="tbean">
 								<tr>
 									<td class="cell">${tbean.trans_date}</td>
-									
+
 									<td class="cell" id="${tbean.trans_account_id}">${tbean.trans_account_name }</td>
 									<td class="cell" id="${tbean.trans_category_id}">${tbean.trans_category_name}</td>
 									<td class="cell" id="${tbean.trans_sub_category_id}">${tbean.trans_sub_category_name}</td>
 									<td class="cell">${tbean.trans_amount}</td>
 									<td class="cell">${tbean.trans_note}</td>
+									<td class="cell">${tbean.trans_payee_name}</td>
 									<c:choose>
 										<c:when test="${tbean.trans_type=='EXPENSE'}">
 											<td class="cell"><span class="badge bg-danger">${tbean.trans_type}</span></td>
@@ -318,29 +319,29 @@
 									<c:choose>
 										<c:when test="${tbean.trans_type=='EXPENSE'}">
 											<td class="cell">
-										<button type="submit" class="editExpence btn btn-warning"
-											data-bs-toggle="modal"
-											data-bs-target="#updateModalForExpense"
-											id="${tbean.trans_id}">Update</button> <a
-										href="transaction/delete/${tbean.trans_id}"><button
-												type="submit" class="btn btn-danger"
-												onclick="return confirmDelete()">Delete</button></a>
-									</td>
+												<button type="submit" class="editExpence btn btn-warning"
+													data-bs-toggle="modal"
+													data-bs-target="#updateModalForExpense"
+													id="${tbean.trans_id}">Update</button> <a
+												href="transaction/delete/${tbean.trans_id}"><button
+														type="submit" class="btn btn-danger"
+														onclick="return confirmDelete()">Delete</button></a>
+											</td>
 										</c:when>
 										<c:when test="${tbean.trans_type=='INCOME'}">
 											<td class="cell">
-										<button type="submit" class="editIncome btn btn-warning"
-											data-bs-toggle="modal"
-											data-bs-target="#updateModalForIncome"
-											id="${tbean.trans_id}">Update</button> <a
-										href="transaction/delete/${tbean.trans_id}"><button
-												type="submit" class="btn btn-danger"
-												onclick="return confirmDelete()">Delete</button></a>
-									</td>
+												<button type="submit" class="editIncome btn btn-warning"
+													data-bs-toggle="modal"
+													data-bs-target="#updateModalForIncome"
+													id="${tbean.trans_id}">Update</button> <a
+												href="transaction/delete/${tbean.trans_id}"><button
+														type="submit" class="btn btn-danger"
+														onclick="return confirmDelete()">Delete</button></a>
+											</td>
 										</c:when>
 									</c:choose>
-									
-									
+
+
 
 									<!-- <i class="fas fa-plus h3 bg-success rounded-circle"
 											style="color: white; padding: 3px; cursor: pointer;"
@@ -376,6 +377,7 @@
 								<th class="cell">Category Name</th>
 								<th class="cell">Sub Category Name</th>
 								<th class="cell">Amount</th>
+								<th class="cell">Payee Name</th>
 								<th class="cell">Note</th>
 								<th class="cell">Action</th>
 							</tr>
@@ -390,6 +392,7 @@
 										<td class="cell" id="${tbean.trans_category_id}">${tbean.trans_category_name}</td>
 										<td class="cell" id="${tbean.trans_sub_category_id}">${tbean.trans_sub_category_name}</td>
 										<td class="cell">${tbean.trans_amount}</td>
+										<td class="cell">${tbean.trans_payee_name}</td>
 										<td class="cell">${tbean.trans_note}</td>
 										<td class="cell">
 											<button type="submit" class="editExpence btn btn-warning"
@@ -428,6 +431,7 @@
 								<th class="cell">Category Name</th>
 								<th class="cell">Sub Category Name</th>
 								<th class="cell">Amount</th>
+								<th class="cell">Payee Name</th>
 								<th class="cell">Note</th>
 								<th class="cell">Action</th>
 							</tr>
@@ -442,6 +446,7 @@
 										<td class="cell" id="${tbean.trans_category_id}">${tbean.trans_category_name}</td>
 										<td class="cell" id="${tbean.trans_sub_category_id}">${tbean.trans_sub_category_name}</td>
 										<td class="cell">${tbean.trans_amount}</td>
+										<td class="cell">${tbean.trans_payee_name}</td>
 										<td class="cell">${tbean.trans_note}</td>
 										<td class="cell">
 											<button type="submit" class="editIncome btn btn-warning"

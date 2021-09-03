@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionBean {
 	private int trans_id;
+	private String trans_payee_name;
 	private String user_name;
 	private int trans_user_id;
 	private Timestamp trans_date;
@@ -30,6 +31,14 @@ public class TransactionBean {
 	private int nrow;
 	private int days;
 	private int trans_payee_id;
+
+	public String getTrans_payee_name() {
+		return trans_payee_name;
+	}
+
+	public void setTrans_payee_name(String trans_payee_name) {
+		this.trans_payee_name = trans_payee_name;
+	}
 
 	public int getTrans_payee_id() {
 		return trans_payee_id;

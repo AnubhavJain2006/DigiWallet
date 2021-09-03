@@ -17,474 +17,500 @@
 <%@include file="header.jsp"%>
 <div class="app-wrapper">
 	<div class="app-content pt-3 p-md-3 p-lg-4">
-		<div class="container-xl">
-			<c:choose>
-				<c:when test="${rowsAffected==1}">
-					<div class="alert alert-warning alert-dismissible fade show"
-						role="alert">
-						<strong>Congratulations</strong> Your data has been successfully
-						deleted..
-						<button type="button" class="close" data-dismiss="alert"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-				</c:when>
-			</c:choose>
+		<c:choose>
+			<c:when test="${empty account_list}">
 
-
-			<!-- Button trigger modal -->
-
-			<!-- Modal for category -->
-			<div class="modal fade" id="categoryExpenseModal" tabindex="-1"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Add Catgory</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-
-						<form action="/ExpenseApplication/user/addExpenseCategory"
-							method="POST">
-							<div class="modal-body">
-								<div class="mb-3">
-									<label for="categoryInput" class="form-label">Catgory </label>
-									<input type="text" class="form-control" id="categoryInput"
-										name="categoryInput" placeholder="Enter Category Name"
-										required />
-								</div>
-								<div class="mb-3">
-									<label for="subCategoryInput" class="form-label">Sub
-										Catgory </label> <input type="text" class="form-control"
-										id="subCategoryInput" name="subCategoryInput"
-										placeholder="Enter Sub Category Name">
-								</div>
-							</div>
-
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">Cancel</button>
-								<button type="submit" class="btn btn-primary">Add</button>
-							</div>
-						</form>
-					</div>
+				<div class="alert alert-danger" role="alert">
+					<h4 class="alert-heading text-center">Sorry</h4>
+					<p class="text-center">You don't have any account.Please add one account.
+						<a href="account">Add Accounts</a>
+					</p>
+					<hr>
+				
 				</div>
-			</div>
 
-			<!-- Modal for category -->
-			<div class="modal fade" id="categoryIncomeModal" tabindex="-1"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Add Catgory</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
+			</c:when>
+			<c:otherwise>
 
-						<form action="/ExpenseApplication/user/addIncomeCategory"
-							method="POST">
-							<div class="modal-body">
-								<div class="mb-3">
-									<label for="categoryInput" class="form-label">Catgory </label>
-									<input type="text" class="form-control" id="categoryInput"
-										name="categoryInput" placeholder="Enter Category Name"
-										required />
-								</div>
-								<div class="mb-3">
-									<label for="subCategoryInput" class="form-label">Sub
-										Catgory </label> <input type="text" class="form-control"
-										id="subCategoryInput" name="subCategoryInput"
-										placeholder="Enter Sub Category Name">
-								</div>
+				<div class="container-xl">
+					<c:choose>
+						<c:when test="${rowsAffected==1}">
+							<div class="alert alert-warning alert-dismissible fade show"
+								role="alert">
+								<strong>Congratulations</strong> Your data has been successfully
+								deleted..
+								<button type="button" class="close" data-dismiss="alert"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
 							</div>
-
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">Cancel</button>
-								<button type="submit" class="btn btn-primary">Add</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
+						</c:when>
+					</c:choose>
 
 
-			<!-- Modal for sub category for expense-->
-			<div class="modal fade" id="subCategoryModalForExpense" tabindex="-1"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Add Sub
-								Catgory</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
+					<!-- Button trigger modal -->
 
-						<form action="/ExpenseApplication/user/addUserSubCategory"
-							method="POST">
-							<div class="modal-body">
-								<div class="mb-3">
-									<label for="modalCategory" class="form-label">Sub
-										Catgory </label> <select class="form-select"
-										aria-label="Default select example"
-										id="modalSelectCategoryForExpense" name="categoryId">
-										<c:forEach items="${expense_category_list}"
-											var="category_list">
-											<option value="${category_list.category_id}">${category_list.category_name}</option>
-										</c:forEach>
-									</select>
+					<!-- Modal for category -->
+					<div class="modal fade" id="categoryExpenseModal" tabindex="-1"
+						aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Add Catgory</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
 								</div>
-								<div class="mb-3">
-									<label for="subCategoryInputInModal" class="form-label">Sub
-										Catgory </label> <input type="text" class="form-control"
-										id="subCategoryInputInModal" name="subCategoryInput"
-										placeholder="Enter Sub Category Name" required>
-								</div>
-							</div>
 
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">Cancel</button>
-								<button type="submit" class="btn btn-primary">Add</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-
-			<!-- Modal for sub category for income-->
-			<div class="modal fade" id="subCategoryModalForIncome" tabindex="-1"
-				aria-labelledby="exampleModalLabel" aria-hidden="true">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title" id="exampleModalLabel">Add Sub
-								Catgory</h5>
-							<button type="button" class="btn-close" data-bs-dismiss="modal"
-								aria-label="Close"></button>
-						</div>
-
-						<form action="/ExpenseApplication/user/addUserSubCategory"
-							method="POST">
-							<div class="modal-body">
-								<div class="mb-3">
-									<label for="modalCategory" class="form-label">Sub
-										Catgory </label> <select class="form-select"
-										aria-label="Default select example"
-										id="modalSelectCategoryForIncome" name="categoryId">
-										<c:forEach items="${income_category_list}" var="category_list">
-											<option value="${category_list.category_id}">${category_list.category_name}</option>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="mb-3">
-									<label for="subCategoryInputInModal" class="form-label">Sub
-										Catgory </label> <input type="text" class="form-control"
-										id="subCategoryInputInModal" name="subCategoryInput"
-										placeholder="Enter Sub Category Name" required>
-								</div>
-							</div>
-
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">Cancel</button>
-								<button type="submit" class="btn btn-primary">Add</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-
-
-			<div class="form">
-				<nav id="orders-table-tab"
-					class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-					<a class="flex-sm-fill text-sm-center nav-link active"
-						id="transaction-all-tab" data-bs-toggle="tab" href="#orders-all"
-						role="tab" aria-controls="orders-all" aria-selected="true">Expense</a>
-					<a class="flex-sm-fill text-sm-center nav-link"
-						id="orders-paid-tab" data-bs-toggle="tab" href="#orders-paid"
-						role="tab" aria-controls="orders-paid" aria-selected="false">Income</a>
-				</nav>
-
-				<div class="tab-content" id="orders-table-tab-content">
-					<div class="tab-pane fade show active" id="orders-all"
-						role="tabpanel" aria-labelledby="transaction-all-tab">
-						<div class="app-card-orders-table mb-5">
-							<h1>Add Expense</h1>
-
-							<f:form modelAttribute="tbean"
-								action="/ExpenseApplication/user/addExpenseTransaction"
-								method="Post">
-								<div class="row mb-3">
-									<label for="trnas_date" class="col-sm-4 col-form-label">Date</label>
-									<div class="col-sm-7">
-										<f:input path="trans_date" type="datetime-local"
-											class="form-control" id="trans_date_for_expense" />
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="inputPassword3" class="col-sm-4 col-form-label">Account</label>
-									<div class="col-sm-7">
-										<f:select path="trans_account_id" id="trans_account_expense"
-											class="form-select" aria-label="Default select example">
-											<c:forEach items="${account_list}" var="account_list">
-												<option value="${account_list.account_id}">${account_list.account_name}</option>
-											</c:forEach>
-										</f:select>
-										<p style="margin: 0px 10px; font-size: 80%; color: #5CB377;">
-											Your <a href="account" style="text-decoration: underline;"><span
-												class="span_account_name_expense">Account Name</span></a>
-											balance is <span class="span_account_amount_expense"></span>
-										</p>
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="trans_category_id" class="col-sm-4 col-form-label">Category</label>
-									<div class="col-sm-7">
-										<f:select path="trans_category_id" class="form-select"
-											aria-label="Default select example"
-											id="trans_category_for_expense">
-											<c:forEach items="${expense_category_list}"
-												var="category_list">
-												<option value="${category_list.category_id}">${category_list.category_name}</option>
-											</c:forEach>
-										</f:select>
-									</div>
-									<div class="mt-1 col-sm-1 ">
-										<!-- <button type="button" > -->
-										<i class="fas fa-plus h3 bg-success rounded-circle"
-											style="color: white; padding: 3px; cursor: pointer;"
-											data-bs-toggle="modal" data-bs-target="#categoryExpenseModal"></i>
-										<!-- </button> -->
+								<form action="/ExpenseApplication/user/addExpenseCategory"
+									method="POST">
+									<div class="modal-body">
+										<div class="mb-3">
+											<label for="categoryInput" class="form-label">Catgory
+											</label> <input type="text" class="form-control" id="categoryInput"
+												name="categoryInput" placeholder="Enter Category Name"
+												required />
+										</div>
+										<div class="mb-3">
+											<label for="subCategoryInput" class="form-label">Sub
+												Catgory </label> <input type="text" class="form-control"
+												id="subCategoryInput" name="subCategoryInput"
+												placeholder="Enter Sub Category Name">
+										</div>
 									</div>
 
-
-								</div>
-								<div class="row mb-3">
-									<label for="trans_sub_category" class="col-sm-4 col-form-label">Sub
-										Category</label>
-									<div class="col-sm-7">
-										<f:select class="form-select" path="trans_sub_category_id"
-											aria-label="Default select example"
-											id="trans_sub_category_for_expense">
-										</f:select>
-									</div>
-									<div class="mt-1 col-sm-1 ">
-										<i class="fas fa-plus h3 bg-success rounded-circle"
-											style="color: white; padding: 3px; cursor: pointer;"
-											data-bs-toggle="modal" onclick="callModal()"
-											data-bs-target="#subCategoryModalForExpense"
-											id="addSubCategoryBtn"></i>
-									</div>
-								</div>
-								
-								<!-- payee input for expense div start -->
-
-								<div class="row mb-3">
-
-									<label for="browser" class="col-sm-4 col-form-label">Pay
-										To</label>
-									<div class="col-sm-7">
-										<input list="payee_for_expense" name="payee_name" id="payee_name"
-											class="form-control" autocomplete="off">
-
-										<datalist id="payee_for_expense">
-											<!-- <option value="Edge"> -->
-
-										</datalist>
-									</div>
-								</div>
-
-								<!-- payee input for expense div end -->
-								
-								
-								<div class="row mb-3">
-									<label for="trans_amount" class="col-sm-4 col-form-label">Amount</label>
-									<div class="col-sm-7">
-										<f:input type="text" path="trans_amount" class="form-control"
-											id="trans_amount" />
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="trans_label" class="col-sm-4 col-form-label">Label</label>
-									<div class="col-sm-7">
-										<input type="text" class="form-control" id="trans_label">
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="trans_note" class="col-sm-4 col-form-label">Note</label>
-									<div class="col-sm-7">
-										<f:input type="text" path="trans_note" class="form-control"
-											id="trans_note" />
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="trans_description" class="col-sm-4 col-form-label">Description</label>
-									<div class="col-sm-7">
-										<f:input type="text" path="trans_description"
-											class="form-control" id="trans_description" />
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="trans_image" class="col-sm-4 col-form-label">Image</label>
-									<div class="col-sm-7">
-										<f:input path="trans_image" type="file" class="form-control"
-											id="trans_image" />
-									</div>
-								</div>
-								<div class="row mb-3">
-									<div class="col-sm-10"></div>
-									<div class="col-sm-2">
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Cancel</button>
 										<button type="submit" class="btn btn-primary">Add</button>
 									</div>
-								</div>
-							</f:form>
+								</form>
+							</div>
 						</div>
 					</div>
 
-					<div class="tab-pane fade" id="orders-paid" role="tabpanel"
-						aria-labelledby="orders-paid-tab">
-						<div class="app-card-orders-table mb-5">
-							<h1>Add Income</h1>
-
-							<f:form modelAttribute="tbean"
-								action="/ExpenseApplication/user/addIncomeTransaction"
-								method="Post">
-								<div class="row mb-3">
-									<label for="trnas_date" class="col-sm-4 col-form-label">Date</label>
-									<div class="col-sm-7">
-										<f:input path="trans_date" type="datetime-local"
-											class="form-control" id="trans_date_for_income" />
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="inputPassword3" class="col-sm-4 col-form-label">Account</label>
-									<div class="col-sm-7">
-										<f:select path="trans_account_id" class="form-select"
-											aria-label="Default select example">
-											<c:forEach items="${account_list}" var="account_list">
-												<option value="${account_list.account_id}">${account_list.account_name}</option>
-											</c:forEach>
-										</f:select>
-										<p style="margin: 0px 10px; font-size: 80%; color: #5CB377;">
-											Your <a href="account" style="text-decoration: underline;"><span
-												class="span_account_name_income">Account Name</span></a> balance
-											is <span class="span_account_amount_income"></span>
-										</p>
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="trans_category_id" class="col-sm-4 col-form-label">Category</label>
-									<div class="col-sm-7">
-										<f:select path="trans_category_id" class="form-select"
-											aria-label="Default select example"
-											id="trans_category_for_income">
-											<c:forEach items="${income_category_list}"
-												var="category_list">
-												<option value="${category_list.category_id}">${category_list.category_name}</option>
-											</c:forEach>
-										</f:select>
-									</div>
-									<div class="mt-1 col-sm-1 ">
-										<!-- <button type="button" > -->
-										<i class="fas fa-plus h3 bg-success rounded-circle"
-											style="color: white; padding: 3px; cursor: pointer;"
-											data-bs-toggle="modal" data-bs-target="#categoryIncomeModal"></i>
-										<!-- </button> -->
-									</div>
-
-
-								</div>
-								<div class="row mb-3">
-									<label for="trans_sub_category" class="col-sm-4 col-form-label">Sub
-										Category</label>
-									<div class="col-sm-7">
-										<f:select class="form-select" path="trans_sub_category_id"
-											aria-label="Default select example"
-											id="trans_sub_category_for_income">
-										</f:select>
-									</div>
-									<div class="mt-1 col-sm-1 ">
-										<i class="fas fa-plus h3 bg-success rounded-circle"
-											style="color: white; padding: 3px; cursor: pointer;"
-											data-bs-toggle="modal" onclick="callModal()"
-											data-bs-target="#subCategoryModalForIncome"
-											id="addSubCategoryBtn"></i>
-									</div>
-								</div>
-								
-								<!-- payee input for income div start -->
-
-								<div class="row mb-3">
-
-									<label for="payee" class="col-sm-4 col-form-label">Pay
-										By</label>
-									<div class="col-sm-7">
-										<input list="payee_for_income" name="payee_name" id="payee_name"
-											class="form-control">
-
-										<datalist id="payee_for_income">
-											<!-- <option value="Edge"> -->
-
-										</datalist>
-									</div>
+					<!-- Modal for category -->
+					<div class="modal fade" id="categoryIncomeModal" tabindex="-1"
+						aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Add Catgory</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
 								</div>
 
-								<!-- payee input for income div end -->
-								
-								<div class="row mb-3">
-									<label for="trans_amount" class="col-sm-4 col-form-label">Amount</label>
-									<div class="col-sm-7">
-										<f:input type="text" path="trans_amount" class="form-control"
-											id="trans_amount" />
+								<form action="/ExpenseApplication/user/addIncomeCategory"
+									method="POST">
+									<div class="modal-body">
+										<div class="mb-3">
+											<label for="categoryInput" class="form-label">Catgory
+											</label> <input type="text" class="form-control" id="categoryInput"
+												name="categoryInput" placeholder="Enter Category Name"
+												required />
+										</div>
+										<div class="mb-3">
+											<label for="subCategoryInput" class="form-label">Sub
+												Catgory </label> <input type="text" class="form-control"
+												id="subCategoryInput" name="subCategoryInput"
+												placeholder="Enter Sub Category Name">
+										</div>
 									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="trans_label" class="col-sm-4 col-form-label">Label</label>
-									<div class="col-sm-7">
-										<input type="text" class="form-control" id="trans_label">
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="trans_note" class="col-sm-4 col-form-label">Note</label>
-									<div class="col-sm-7">
-										<f:input type="text" path="trans_note" class="form-control"
-											id="trans_note" />
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="trans_description" class="col-sm-4 col-form-label">Description</label>
-									<div class="col-sm-7">
-										<f:input type="text" path="trans_description"
-											class="form-control" id="trans_description" />
-									</div>
-								</div>
-								<div class="row mb-3">
-									<label for="trans_image" class="col-sm-4 col-form-label">Image</label>
-									<div class="col-sm-7">
-										<f:input path="trans_image" type="file" class="form-control"
-											id="trans_image" />
-									</div>
-								</div>
-								<div class="row mb-3">
-									<div class="col-sm-10"></div>
-									<div class="col-sm-2">
+
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Cancel</button>
 										<button type="submit" class="btn btn-primary">Add</button>
 									</div>
-								</div>
-							</f:form>
+								</form>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
-			<!-- tab-content -->
 
-		</div>
+
+					<!-- Modal for sub category for expense-->
+					<div class="modal fade" id="subCategoryModalForExpense"
+						tabindex="-1" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Add Sub
+										Catgory</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+
+								<form action="/ExpenseApplication/user/addUserSubCategory"
+									method="POST">
+									<div class="modal-body">
+										<div class="mb-3">
+											<label for="modalCategory" class="form-label">Sub
+												Catgory </label> <select class="form-select"
+												aria-label="Default select example"
+												id="modalSelectCategoryForExpense" name="categoryId">
+												<c:forEach items="${expense_category_list}"
+													var="category_list">
+													<option value="${category_list.category_id}">${category_list.category_name}</option>
+												</c:forEach>
+											</select>
+										</div>
+										<div class="mb-3">
+											<label for="subCategoryInputInModal" class="form-label">Sub
+												Catgory </label> <input type="text" class="form-control"
+												id="subCategoryInputInModal" name="subCategoryInput"
+												placeholder="Enter Sub Category Name" required>
+										</div>
+									</div>
+
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Cancel</button>
+										<button type="submit" class="btn btn-primary">Add</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<!-- Modal for sub category for income-->
+					<div class="modal fade" id="subCategoryModalForIncome"
+						tabindex="-1" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Add Sub
+										Catgory</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+
+								<form action="/ExpenseApplication/user/addUserSubCategory"
+									method="POST">
+									<div class="modal-body">
+										<div class="mb-3">
+											<label for="modalCategory" class="form-label">Sub
+												Catgory </label> <select class="form-select"
+												aria-label="Default select example"
+												id="modalSelectCategoryForIncome" name="categoryId">
+												<c:forEach items="${income_category_list}"
+													var="category_list">
+													<option value="${category_list.category_id}">${category_list.category_name}</option>
+												</c:forEach>
+											</select>
+										</div>
+										<div class="mb-3">
+											<label for="subCategoryInputInModal" class="form-label">Sub
+												Catgory </label> <input type="text" class="form-control"
+												id="subCategoryInputInModal" name="subCategoryInput"
+												placeholder="Enter Sub Category Name" required>
+										</div>
+									</div>
+
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Cancel</button>
+										<button type="submit" class="btn btn-primary">Add</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+
+					<div class="form">
+						<nav id="orders-table-tab"
+							class="orders-table-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
+							<a class="flex-sm-fill text-sm-center nav-link active"
+								id="transaction-all-tab" data-bs-toggle="tab" href="#orders-all"
+								role="tab" aria-controls="orders-all" aria-selected="true">Expense</a>
+							<a class="flex-sm-fill text-sm-center nav-link"
+								id="orders-paid-tab" data-bs-toggle="tab" href="#orders-paid"
+								role="tab" aria-controls="orders-paid" aria-selected="false">Income</a>
+						</nav>
+
+						<div class="tab-content" id="orders-table-tab-content">
+							<div class="tab-pane fade show active" id="orders-all"
+								role="tabpanel" aria-labelledby="transaction-all-tab">
+								<div class="app-card-orders-table mb-5">
+									<h1>Add Expense</h1>
+
+									<f:form modelAttribute="tbean"
+										action="/ExpenseApplication/user/addExpenseTransaction"
+										method="Post">
+										<div class="row mb-3">
+											<label for="trnas_date" class="col-sm-4 col-form-label">Date</label>
+											<div class="col-sm-7">
+												<f:input path="trans_date" type="datetime-local"
+													class="form-control" id="trans_date_for_expense" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="inputPassword3" class="col-sm-4 col-form-label">Account</label>
+											<div class="col-sm-7">
+												<f:select path="trans_account_id" id="trans_account_expense"
+													class="form-select" aria-label="Default select example">
+													<c:forEach items="${account_list}" var="account_list">
+														<option value="${account_list.account_id}">${account_list.account_name}</option>
+													</c:forEach>
+												</f:select>
+												<p style="margin: 0px 10px; font-size: 80%; color: #5CB377;">
+													Your <a href="account" style="text-decoration: underline;"><span
+														class="span_account_name_expense">Account Name</span></a>
+													balance is <span class="span_account_amount_expense"></span>
+												</p>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="trans_category_id"
+												class="col-sm-4 col-form-label">Category</label>
+											<div class="col-sm-7">
+												<f:select path="trans_category_id" class="form-select"
+													aria-label="Default select example"
+													id="trans_category_for_expense">
+													<c:forEach items="${expense_category_list}"
+														var="category_list">
+														<option value="${category_list.category_id}">${category_list.category_name}</option>
+													</c:forEach>
+												</f:select>
+											</div>
+											<div class="mt-1 col-sm-1 ">
+												<!-- <button type="button" > -->
+												<i class="fas fa-plus h3 bg-success rounded-circle"
+													style="color: white; padding: 3px; cursor: pointer;"
+													data-bs-toggle="modal"
+													data-bs-target="#categoryExpenseModal"></i>
+												<!-- </button> -->
+											</div>
+
+
+										</div>
+										<div class="row mb-3">
+											<label for="trans_sub_category"
+												class="col-sm-4 col-form-label">Sub Category</label>
+											<div class="col-sm-7">
+												<f:select class="form-select" path="trans_sub_category_id"
+													aria-label="Default select example"
+													id="trans_sub_category_for_expense">
+												</f:select>
+											</div>
+											<div class="mt-1 col-sm-1 ">
+												<i class="fas fa-plus h3 bg-success rounded-circle"
+													style="color: white; padding: 3px; cursor: pointer;"
+													data-bs-toggle="modal" onclick="callModal()"
+													data-bs-target="#subCategoryModalForExpense"
+													id="addSubCategoryBtn"></i>
+											</div>
+										</div>
+
+										<!-- payee input for expense div start -->
+
+										<div class="row mb-3">
+
+											<label for="browser" class="col-sm-4 col-form-label">Pay
+												To</label>
+											<div class="col-sm-7">
+												<input list="payee_for_expense" name="payee_name"
+													id="payee_name" class="form-control" autocomplete="off">
+
+												<datalist id="payee_for_expense">
+													<!-- <option value="Edge"> -->
+
+												</datalist>
+											</div>
+										</div>
+
+										<!-- payee input for expense div end -->
+
+
+										<div class="row mb-3">
+											<label for="trans_amount" class="col-sm-4 col-form-label">Amount</label>
+											<div class="col-sm-7">
+												<f:input type="text" path="trans_amount"
+													class="form-control" id="trans_amount" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="trans_label" class="col-sm-4 col-form-label">Label</label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" id="trans_label">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="trans_note" class="col-sm-4 col-form-label">Note</label>
+											<div class="col-sm-7">
+												<f:input type="text" path="trans_note" class="form-control"
+													id="trans_note" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="trans_description"
+												class="col-sm-4 col-form-label">Description</label>
+											<div class="col-sm-7">
+												<f:input type="text" path="trans_description"
+													class="form-control" id="trans_description" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="trans_image" class="col-sm-4 col-form-label">Image</label>
+											<div class="col-sm-7">
+												<f:input path="trans_image" type="file" class="form-control"
+													id="trans_image" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm-10"></div>
+											<div class="col-sm-2">
+												<button type="submit" class="btn btn-primary">Add</button>
+											</div>
+										</div>
+									</f:form>
+								</div>
+							</div>
+
+							<div class="tab-pane fade" id="orders-paid" role="tabpanel"
+								aria-labelledby="orders-paid-tab">
+								<div class="app-card-orders-table mb-5">
+									<h1>Add Income</h1>
+
+									<f:form modelAttribute="tbean"
+										action="/ExpenseApplication/user/addIncomeTransaction"
+										method="Post">
+										<div class="row mb-3">
+											<label for="trnas_date" class="col-sm-4 col-form-label">Date</label>
+											<div class="col-sm-7">
+												<f:input path="trans_date" type="datetime-local"
+													class="form-control" id="trans_date_for_income" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="inputPassword3" class="col-sm-4 col-form-label">Account</label>
+											<div class="col-sm-7">
+												<f:select path="trans_account_id" class="form-select"
+													aria-label="Default select example">
+													<c:forEach items="${account_list}" var="account_list">
+														<option value="${account_list.account_id}">${account_list.account_name}</option>
+													</c:forEach>
+												</f:select>
+												<p style="margin: 0px 10px; font-size: 80%; color: #5CB377;">
+													Your <a href="account" style="text-decoration: underline;"><span
+														class="span_account_name_income">Account Name</span></a>
+													balance is <span class="span_account_amount_income"></span>
+												</p>
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="trans_category_id"
+												class="col-sm-4 col-form-label">Category</label>
+											<div class="col-sm-7">
+												<f:select path="trans_category_id" class="form-select"
+													aria-label="Default select example"
+													id="trans_category_for_income">
+													<c:forEach items="${income_category_list}"
+														var="category_list">
+														<option value="${category_list.category_id}">${category_list.category_name}</option>
+													</c:forEach>
+												</f:select>
+											</div>
+											<div class="mt-1 col-sm-1 ">
+												<!-- <button type="button" > -->
+												<i class="fas fa-plus h3 bg-success rounded-circle"
+													style="color: white; padding: 3px; cursor: pointer;"
+													data-bs-toggle="modal"
+													data-bs-target="#categoryIncomeModal"></i>
+												<!-- </button> -->
+											</div>
+
+
+										</div>
+										<div class="row mb-3">
+											<label for="trans_sub_category"
+												class="col-sm-4 col-form-label">Sub Category</label>
+											<div class="col-sm-7">
+												<f:select class="form-select" path="trans_sub_category_id"
+													aria-label="Default select example"
+													id="trans_sub_category_for_income">
+												</f:select>
+											</div>
+											<div class="mt-1 col-sm-1 ">
+												<i class="fas fa-plus h3 bg-success rounded-circle"
+													style="color: white; padding: 3px; cursor: pointer;"
+													data-bs-toggle="modal" onclick="callModal()"
+													data-bs-target="#subCategoryModalForIncome"
+													id="addSubCategoryBtn"></i>
+											</div>
+										</div>
+
+										<!-- payee input for income div start -->
+
+										<div class="row mb-3">
+
+											<label for="payee" class="col-sm-4 col-form-label">Pay
+												By</label>
+											<div class="col-sm-7">
+												<input list="payee_for_income" name="payee_name"
+													id="payee_name" class="form-control">
+
+												<datalist id="payee_for_income">
+													<!-- <option value="Edge"> -->
+
+												</datalist>
+											</div>
+										</div>
+
+										<!-- payee input for income div end -->
+
+										<div class="row mb-3">
+											<label for="trans_amount" class="col-sm-4 col-form-label">Amount</label>
+											<div class="col-sm-7">
+												<f:input type="text" path="trans_amount"
+													class="form-control" id="trans_amount" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="trans_label" class="col-sm-4 col-form-label">Label</label>
+											<div class="col-sm-7">
+												<input type="text" class="form-control" id="trans_label">
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="trans_note" class="col-sm-4 col-form-label">Note</label>
+											<div class="col-sm-7">
+												<f:input type="text" path="trans_note" class="form-control"
+													id="trans_note" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="trans_description"
+												class="col-sm-4 col-form-label">Description</label>
+											<div class="col-sm-7">
+												<f:input type="text" path="trans_description"
+													class="form-control" id="trans_description" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<label for="trans_image" class="col-sm-4 col-form-label">Image</label>
+											<div class="col-sm-7">
+												<f:input path="trans_image" type="file" class="form-control"
+													id="trans_image" />
+											</div>
+										</div>
+										<div class="row mb-3">
+											<div class="col-sm-10"></div>
+											<div class="col-sm-2">
+												<button type="submit" class="btn btn-primary">Add</button>
+											</div>
+										</div>
+									</f:form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- tab-content -->
+
+				</div>
+			</c:otherwise>
+		</c:choose>
 		<!-- /form -->
 
 		<%@include file="transactionDisplay.jsp"%>
