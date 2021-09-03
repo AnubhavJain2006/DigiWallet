@@ -46,19 +46,19 @@ public class TransactionDao {
 				Object[] params = new Object[] { tbean.getTrnas_user_id(), "EXPENSE", tbean.getTrans_date(),
 						tbean.getTrans_account_id(), tbean.getTrans_category_id(), tbean.getTrans_sub_category_id(),
 						tbean.getTrans_amount(), tbean.getTrans_note(), tbean.getTrans_description(),
-						tbean.getTrans_image(), "ACTIVE", 0 };
+						tbean.getTrans_image(), "ACTIVE", 0 , tbean.getTrans_payee_id() };
 
 				// define SQL types of the arguments
 				int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.INTEGER, Types.INTEGER,
 						Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
-						Types.INTEGER };
+						Types.INTEGER ,Types.INTEGER };
 
 				try {
 					rowAffectedForAccount = stmt.update(
 							"update account_master set account_amount = account_amount - ? where account_id = ?",
 							Double.parseDouble(tbean.getTrans_amount()), tbean.getTrans_account_id());
 
-					rowAffected = stmt.update("insert into trans_master(trans_user_id ,trans_type ,trans_date ,trans_account_id ,trans_category_id ,trans_sub_category_id ,trans_amount ,trans_note ,trans_description ,trans_image ,trans_status ,trans_isDeleted) values(?,?,?,?,?,?,?,?,?,?,?,?)", params,
+					rowAffected = stmt.update("insert into trans_master(trans_user_id ,trans_type ,trans_date ,trans_account_id ,trans_category_id ,trans_sub_category_id ,trans_amount ,trans_note ,trans_description ,trans_image ,trans_status ,trans_isDeleted , trans_payee_id) values(?,?,?,?,?,?,?,?,?,?,?,?,?)", params,
 							types);
 
 				} catch (Exception e) {
@@ -90,19 +90,19 @@ public class TransactionDao {
 				Object[] params = new Object[] { tbean.getTrnas_user_id(), "INCOME", tbean.getTrans_date(),
 						tbean.getTrans_account_id(), tbean.getTrans_category_id(), tbean.getTrans_sub_category_id(),
 						tbean.getTrans_amount(), tbean.getTrans_note(), tbean.getTrans_description(),
-						tbean.getTrans_image(), "ACTIVE", 0 };
+						tbean.getTrans_image(), "ACTIVE", 0 ,  tbean.getTrans_payee_id() };
 
 				// define SQL types of the arguments
 				int[] types = new int[] { Types.INTEGER, Types.VARCHAR, Types.TIMESTAMP, Types.INTEGER, Types.INTEGER,
 						Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR,
-						Types.INTEGER };
+						Types.INTEGER , Types.INTEGER};
 
 				try {
 					rowAffectedForAccount = stmt.update(
 							"update account_master set account_amount = account_amount + ? where account_id = ?",
 							Double.parseDouble(tbean.getTrans_amount()), tbean.getTrans_account_id());
 
-					rowAffected = stmt.update("insert into trans_master(trans_user_id ,trans_type ,trans_date ,trans_account_id ,trans_category_id ,trans_sub_category_id ,trans_amount ,trans_note ,trans_description ,trans_image ,trans_status ,trans_isDeleted) values(?,?,?,?,?,?,?,?,?,?,?,?)", params,
+					rowAffected = stmt.update("insert into trans_master(trans_user_id ,trans_type ,trans_date ,trans_account_id ,trans_category_id ,trans_sub_category_id ,trans_amount ,trans_note ,trans_description ,trans_image ,trans_status ,trans_isDeleted, trans_payee_id) values(?,?,?,?,?,?,?,?,?,?,?,?,?)", params,
 							types);
 
 				} catch (Exception e) {
@@ -129,6 +129,19 @@ public class TransactionDao {
 		return list;
 
 	}
+	public List<TransactionBean> getAllExpense() {
+		List<TransactionBean> list = new ArrayList<TransactionBean>();
+		System.out.println("in all exp");
+		try {
+			list = stmt.query(
+					"select tm.trans_date, tm.trans_id, tm.trans_account_id, am.account_name, tm.trans_category_id,tm.trans_user_id,user_master.user_name ,tm.trans_type, cm.category_name, tm.trans_sub_category_id, sc.sub_category_name, tm.trans_amount, tm.trans_note from trans_master as tm inner join account_master as am on tm.trans_account_id = am.account_id inner join user_master on user_master.user_id=tm.trans_user_id inner join category_master as cm on tm.trans_category_id = cm.category_id inner join sub_category as sc on tm.trans_sub_category_id = sc.sub_category_id order by tm.trans_date desc", new TransactionBeanRowMapper1());
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return list;
+
+	}
 
 	class TransactionBeanRowMapper implements RowMapper<TransactionBean> {
 		public TransactionBean mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -146,12 +159,36 @@ public class TransactionDao {
 			tbean.setTrans_account_name(rs.getString("account_name"));
 			tbean.setTrans_category_name(rs.getString("category_name"));
 			tbean.setTrans_sub_category_name(rs.getString("sub_category_name"));
+			
 			return tbean;
 
 		}
 
 	}
 
+	class TransactionBeanRowMapper1 implements RowMapper<TransactionBean> {
+		public TransactionBean mapRow(ResultSet rs, int rowNum) throws SQLException {
+			// account_name,category_name,subcategory_name,
+			TransactionBean tbean = new TransactionBean();
+//			System.out.println(rs.getInt("trans_id"));
+			tbean.setTrans_id(rs.getInt("trans_id"));
+			tbean.setTrans_user_id(rs.getInt("trans_user_id"));
+			tbean.setTrans_account_id(rs.getInt("trans_account_id"));
+			tbean.setTrans_date(rs.getTimestamp("trans_date"));
+			tbean.setTrans_type(rs.getString("trans_type"));
+			tbean.setTrans_category_id(rs.getInt("trans_category_id"));
+			tbean.setTrans_sub_category_id(rs.getInt("trans_sub_category_id"));
+			tbean.setTrans_amount(rs.getString("trans_amount"));
+			tbean.setTrans_note(rs.getString("trans_note"));
+			tbean.setTrans_account_name(rs.getString("account_name"));
+			tbean.setTrans_category_name(rs.getString("category_name"));
+			tbean.setTrans_sub_category_name(rs.getString("sub_category_name"));
+			tbean.setUser_name(rs.getString("user_name"));
+			return tbean;
+
+		}
+
+	}
 	public int deleteTransaction(int trans_id) {
 		// TODO Auto-generated method stub
 		TransactionBean tbean=(TransactionBean) stmt.queryForObject("select trans_id,trans_amount,trans_account_id,trans_type from trans_master where trans_id=?",new TransRowMapper(),new Object[] {trans_id});

@@ -22,15 +22,21 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bean.AccountBean;
 import com.bean.CategoryBean;
+import com.bean.PayeeBean;
 import com.bean.TransactionBean;
 import com.bean.UserBean;
 import com.dao.CategoryDao;
+import com.dao.PayeeDao;
 import com.dao.TransactionDao;
+import com.google.gson.Gson;
 import com.util.MyTime;
 
 @Controller
 public class TransactionController {
 	int rowsAffected;
+
+	@Autowired
+	PayeeDao payeeDao;
 
 	@Autowired
 	TransactionDao transactionDao;
@@ -66,11 +72,13 @@ public class TransactionController {
 			model.addAttribute("tbean", tbean);
 			List<AccountBean> userAccountList = transactionDao.getUserAccounts(userId);
 			model.addAttribute("account_list", userAccountList);
-			JSONObject userAccountListInJson = new JSONObject();
-			for (AccountBean abean : userAccountList) {
-				userAccountListInJson.put(abean.getAccount_id(), abean.getAccount_amount());
-			}
-			model.addAttribute("account_list_json", userAccountListInJson.toJSONString());
+//			JSONObject userAccountListInJson = new JSONObject();
+//			for (AccountBean abean : userAccountList) {
+//				userAccountListInJson.put(abean.getAccount_id(), abean);
+//			}
+//			model.addAttribute("account_list_json", userAccountListInJson.toJSONString());
+
+			model.addAttribute("account_list_json", new Gson().toJson(userAccountList));
 			List<CategoryBean> userExpenseCategoryList = categoryDao.getUserCategoryExpense(userId);
 			model.addAttribute("expense_category_list", userExpenseCategoryList);
 			List<CategoryBean> userIncomeCategoryList = categoryDao.getUserCategoryIncome(userId);
@@ -100,6 +108,13 @@ public class TransactionController {
 				e.printStackTrace();
 			}
 			tbean.setTrnas_user_id(accountController.getUserId(session));
+//			code for payee insert or exist
+			PayeeBean pBean = new PayeeBean(0, tbean.getTrans_user_id(), req.getParameter("payee_name"), 0, null, null);
+			payeeDao.insertUserPayee(pBean);
+			pBean = payeeDao.getPayeeByName(pBean);
+
+			tbean.setTrans_payee_id(pBean.getPayee_id());
+//			code end for payee insert or exist
 			boolean addedTrans = transactionDao.addExpenseTransaction(tbean);
 			System.out.println("addedTrans " + addedTrans);
 			model.addAttribute("tbean", new TransactionBean());
@@ -123,6 +138,13 @@ public class TransactionController {
 				e.printStackTrace();
 			}
 			tbean.setTrnas_user_id(accountController.getUserId(session));
+//			code for payee insert or exist
+			PayeeBean pBean = new PayeeBean(0, tbean.getTrans_user_id(), req.getParameter("payee_name"), 0, null, null);
+			payeeDao.insertUserPayee(pBean);
+			pBean = payeeDao.getPayeeByName(pBean);
+
+			tbean.setTrans_payee_id(pBean.getPayee_id());
+//			code end for payee insert or exist
 			boolean addedTrans = transactionDao.addIncomeTransaction(tbean);
 			System.out.println("addedTrans " + addedTrans);
 			model.addAttribute("tbean", new TransactionBean());
@@ -149,32 +171,66 @@ public class TransactionController {
 		}
 		return "redirect:/user/transaction";
 	}
-	
+
+	@RequestMapping(value = "/admin/transaction/delete/{id}")
+	public String adminDeleteTransaction(@PathVariable("id") int trans_id) {
+//		System.out.println(trans_id + " Transaction ID");
+		int rowsAffected = transactionDao.deleteTransaction(trans_id);
+		if (rowsAffected > 0) {
+			rowsAffected = 1;
+			System.out.println(rowsAffected);
+		}
+		return "redirect:/admin/transaction";
+	}
+
 	@PostMapping(value = "/user/updateTransaction")
-	public String updateTransaction(@Valid @ModelAttribute("tbean") TransactionBean tbean, BindingResult result,Model model,HttpSession session,HttpServletRequest request) {
-		System.out.println("\n"+tbean.getTrans_id() + " abc Transaction ID");
-		
+	public String updateTransaction(@Valid @ModelAttribute("tbean") TransactionBean tbean, BindingResult result,
+			Model model, HttpSession session, HttpServletRequest request) {
+		System.out.println("\n" + tbean.getTrans_id() + " abc Transaction ID");
+
 		try {
 			tbean.setTrans_date(MyTime.toTimestampFromString(request.getParameter("trans_date")));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-		
-		int userId=getUserId(session);
+
+		int userId = getUserId(session);
 		tbean.setTrans_user_id(userId);
-		
-		boolean flag=transactionDao.updateExpence(tbean);
+
+		boolean flag = transactionDao.updateExpence(tbean);
 		if (flag) {
-			System.out.println(" flag of update : "+flag);
-			model.addAttribute("msg","update successfull");
-		}else {
-			System.out.println(" flag of update : "+flag);
-			model.addAttribute("msg","No any fields are updated!");
+			System.out.println(" flag of update : " + flag);
+			model.addAttribute("msg", "update successfull");
+		} else {
+			System.out.println(" flag of update : " + flag);
+			model.addAttribute("msg", "No any fields are updated!");
 		}
 		System.out.println("end of transup");
 		return "redirect:/user/transaction";
 	}
-	
-	
+
+	@PostMapping(value = "/admin/updateTransaction")
+	public String adminUpdateTransaction(@Valid @ModelAttribute("tbean") TransactionBean tbean, BindingResult result,
+			Model model, HttpSession session, HttpServletRequest request) {
+		System.out.println("\n" + tbean.getTrans_id() + " abc Transaction ID");
+
+		try {
+			tbean.setTrans_date(MyTime.toTimestampFromString(request.getParameter("trans_date")));
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		}
+		boolean flag = transactionDao.updateExpence(tbean);
+		if (flag) {
+			System.out.println(" flag of update : " + flag);
+			model.addAttribute("msg", "update successfull");
+		} else {
+			System.out.println(" flag of update : " + flag);
+			model.addAttribute("msg", "No any fields are updated!");
+		}
+		System.out.println("end of transup");
+		return "redirect:/admin/transaction";
+	}
+
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TransactionBean {
 	private int trans_id;
+	private String user_name;
 	private int trans_user_id;
 	private Timestamp trans_date;
 	private int trans_account_id;
@@ -28,7 +29,15 @@ public class TransactionBean {
 	private String amount;
 	private int nrow;
 	private int days;
+	private int trans_payee_id;
 
+	public int getTrans_payee_id() {
+		return trans_payee_id;
+	}
+
+	public void setTrans_payee_id(int trans_payee_id) {
+		this.trans_payee_id = trans_payee_id;
+	}
 	public int getDays() {
 		return days;
 	}
@@ -63,6 +72,13 @@ public class TransactionBean {
 
 	public int getTrans_user_id() {
 		return trans_user_id;
+	}
+	public String getUser_name() {
+		return user_name;
+	}
+
+	public void setUser_name(String user_name) {
+		this.user_name = user_name;
 	}
 
 	public String getTrans_type() {
@@ -101,22 +117,58 @@ public class TransactionBean {
 		this.trans_account_name = trans_account_name;
 	}
 
-	@Override
-	public String toString() {
-		return "TransactionBean [trans_id=" + trans_id + ", trans_user_id=" + trans_user_id + ", trans_date="
-				+ trans_date + ", trans_account_id=" + trans_account_id + ", trans_category_id=" + trans_category_id
-				+ ", trans_sub_category_id=" + trans_sub_category_id + ", trans_category_name=" + trans_category_name
-				+ ", trans_sub_category_name=" + trans_sub_category_name + ", trans_account_name=" + trans_account_name
-				+ ", trans_amount=" + trans_amount + ", trans_note=" + trans_note + ", trans_description="
-				+ trans_description + ", trans_image=" + trans_image + ", trans_status=" + trans_status
-				+ ", trans_type=" + trans_type + ", months=" + months + ", amount=" + amount + ", nrow=" + nrow
-				+ ", days=" + days + "]";
-	}
 	
 	
 
 	public int getTrans_id() {
 		return trans_id;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("TransactionBean [trans_id=");
+		builder.append(trans_id);
+		builder.append(", user_name=");
+		builder.append(user_name);
+		builder.append(", trans_user_id=");
+		builder.append(trans_user_id);
+		builder.append(", trans_date=");
+		builder.append(trans_date);
+		builder.append(", trans_account_id=");
+		builder.append(trans_account_id);
+		builder.append(", trans_category_id=");
+		builder.append(trans_category_id);
+		builder.append(", trans_sub_category_id=");
+		builder.append(trans_sub_category_id);
+		builder.append(", trans_category_name=");
+		builder.append(trans_category_name);
+		builder.append(", trans_sub_category_name=");
+		builder.append(trans_sub_category_name);
+		builder.append(", trans_account_name=");
+		builder.append(trans_account_name);
+		builder.append(", trans_amount=");
+		builder.append(trans_amount);
+		builder.append(", trans_note=");
+		builder.append(trans_note);
+		builder.append(", trans_description=");
+		builder.append(trans_description);
+		builder.append(", trans_image=");
+		builder.append(trans_image);
+		builder.append(", trans_status=");
+		builder.append(trans_status);
+		builder.append(", trans_type=");
+		builder.append(trans_type);
+		builder.append(", months=");
+		builder.append(months);
+		builder.append(", amount=");
+		builder.append(amount);
+		builder.append(", nrow=");
+		builder.append(nrow);
+		builder.append(", days=");
+		builder.append(days);
+		builder.append("]");
+		return builder.toString();
 	}
 
 	public void setTrans_id(int trans_id) {

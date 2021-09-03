@@ -19,7 +19,12 @@
 				<div class="row py-2 border-bottom mb-3">
 					<h5 class="h5">
 						<i class="fas fa-chevron-right"></i> Categories
+						<button type="button" class="btn"
+							style="background: green; float: right; color: white"
+							data-bs-toggle="modal" data-bs-target="#addCategoryModal">Add
+							Category</button>
 					</h5>
+
 				</div>
 				<div class="row">
 					<div class="container">
@@ -71,7 +76,7 @@
 							</table>
 						</div>
 					</div>
-
+					<!-- Modal for updating category -->
 					<div class="modal fade" id="categoryModal" tabindex="-1"
 						aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
@@ -89,7 +94,7 @@
 										<div class="mb-3">
 											<input type="hidden" class="form-control" id="category_id"
 												name="category_id" /> <label for="categoryInput"
-												class="form-label">Sub Category Name </label> <input type="text"
+												class="form-label">Category Name </label> <input type="text"
 												class="form-control" id="category_name" name="category_name"
 												placeholder="Enter Category Name" required />
 										</div>
@@ -104,12 +109,110 @@
 							</div>
 						</div>
 					</div>
+
+					<!-- Modal for adding category -->
+					<div class="modal fade" id="addCategoryModal" tabindex="-1"
+						aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Add Catgory</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+
+								<form action="/ExpenseApplication/user/addCategory"
+									method="POST">
+									<div class="modal-body">
+										<div class="mb-3">
+											<label for="categoryInput" class="form-label">Category
+											</label> <input type="text" class="form-control" id="categoryInput"
+												name="categoryInput" placeholder="Enter Category Name"
+												required />
+										</div>
+										<div class="mb-3">
+											<label for="categoryTypeInput" class="form-label">Category
+												Type </label> <select class="form-select"
+												aria-label="Default select example" id="categoryTypeInput"
+												name="categoryTypeInput">
+												<option vlaue="Expense">Expense</option>
+												<option vlaue="Income">Income</option>
+											</select>
+										</div>
+										<div class="mb-3">
+											<label for="subCategoryInput" class="form-label">Sub
+												Category </label> <input type="text" class="form-control"
+												id="subCategoryInput" name="subCategoryInput"
+												placeholder="Enter Sub Category Name">
+										</div>
+									</div>
+
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Cancel</button>
+										<button type="submit" class="btn btn-primary">Add</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+					<!-- Modal for adding sub category -->
+					<div class="modal fade" id="addSubCategoryModal" tabindex="-1"
+						aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Add Sub
+										Category</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"
+										aria-label="Close"></button>
+								</div>
+
+								<form action="/ExpenseApplication/user/addSubCategory"
+									method="POST">
+									<div class="modal-body">
+										<div class="mb-3">
+											<label for="subCategoryModalType" class="form-label">Category
+												Type</label> <select class="form-select" id="subCategoryModalType">
+												<option value="Expense">Expense</option>
+												<option value="Income">Income</option>
+											</select>
+										</div>
+										<div class="mb-3">
+											<label for="subCategoryModalCategory" class="form-label">Select Category</label>
+											 <select class="form-select" id="subCategoryModalCategory" name="categoryId">
+												
+											</select>
+										</div>
+										<div class="mb-3">
+											<label for="subCategoryModalName" class="form-label">Sub
+												Category </label> <input type="text" class="form-control"
+												id="subCategoryModalName" name="subCategoryInputName"
+												placeholder="Enter Sub Category Name" required>
+										</div>
+									</div>
+
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Cancel</button>
+										<button type="submit" class="btn btn-primary">Add</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 			<div class="container">
 				<div class="row py-2 border-bottom mb-3">
 					<h5 class="h5">
 						<i class="fas fa-chevron-right"></i> Sub Categories
+						<button type="button" class="btn"
+							style="background: green; float: right; color: white"
+							data-bs-toggle="modal" data-bs-target="#addSubCategoryModal">Add
+							Sub Category</button>
 					</h5>
 				</div>
 				<div class="row mb-5">
@@ -144,29 +247,30 @@
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title" id="exampleModalLabel">Update Sub
-										Catgory</h5>
+										Category</h5>
 									<button type="button" class="btn-close" data-bs-dismiss="modal"
 										aria-label="Close"></button>
 								</div>
 
-								
-									<div class="modal-body">
-										<div class="mb-3">
-											<input type="hidden" class="form-control"
-												id="sub_category_id" name="sub_category_id" /> <label
-												for="categoryInput" class="form-label">Sub Category Name</label> <input
-												type="text" class="form-control" id="sub_category_name"
-												name="sub_category_name"
-												placeholder="Enter Sub Category Name" required />
-										</div>
-									</div>
 
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary"
-											data-bs-dismiss="modal">Cancel</button>
-										<button type="button" onclick="updateSubCategory()" class="btn btn-primary" data-bs-dismiss="modal" >Update</button>
+								<div class="modal-body">
+									<div class="mb-3">
+										<input type="hidden" class="form-control" id="sub_category_id"
+											name="sub_category_id" /> <label for="categoryInput"
+											class="form-label">Sub Category Name</label> <input
+											type="text" class="form-control" id="sub_category_name"
+											name="sub_category_name"
+											placeholder="Enter Sub Category Name" required />
 									</div>
-									
+								</div>
+
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal">Cancel</button>
+									<button type="button" onclick="updateSubCategory()"
+										class="btn btn-primary" data-bs-dismiss="modal">Update</button>
+								</div>
+
 							</div>
 						</div>
 					</div>
@@ -217,6 +321,12 @@ function myFunction() {
 <script type="text/javascript">
 	$("#categoryType").on('change click',function (e) {
 		setCategoryDropdown(this.value)
+		/* added code */
+		if(e.type == 'change'){
+        $('#categoryDropDown').text("All Category")
+			
+		}
+
 	})
 	let catIdStore;		
 	function setCategoryDropdown(type){
@@ -232,6 +342,8 @@ function myFunction() {
 	            	catIdStore = $(this).attr('data');
 			        $('#categoryDropDown').click();
 	    			renderSubCategoryInTable($(this).attr('data'));
+	    			/* added code */
+	    	        $('#categoryDropDown').text($(this).text())
 	    		})
 	    })()
 	}
@@ -260,6 +372,27 @@ function myFunction() {
 	        renderSubCategoryInTable(catIdStore);
 	    })()		
 	}
+</script>
+<script type="text/javascript">
+	$('#subCategoryModalType').on('change',function(e){
+		let type = $(this).val();
+		setAddSubCategoryDropDown(type)
+		
+	})
+	
+	function setAddSubCategoryDropDown(type){
+		console.log(type);
+		(async () => {
+	        let response  = await fetch('/ExpenseApplication/user/getCategory/'+type).then(data => data.json())
+	            console.log(response);
+	        	$('#subCategoryModalCategory').empty();
+	            response.forEach(function(item,index){	
+					$('#subCategoryModalCategory').append(`<option value='\${item.category_id}'>\${item.category_name}</option>`)
+	            })
+	    })()
+	}
+
+	setAddSubCategoryDropDown('Expense');
 </script>
 </body>
 <%@include file="footer.jsp"%>

@@ -50,6 +50,10 @@ alter table [DigiWallet].[dbo].[trans_label] drop constraint [trans_label_label_
 GO
 alter table [DigiWallet].[dbo].[trans_label] drop constraint [trans_label_trans_id_to_trans_master_trans_id_FK]
 ------------------------------------------------------------------------------------------------------------
+-- drop constraint on payee_master
+GO
+alter table [DigiWallet].[dbo].[trans_master] drop constraint [trans_payee_id_to_payee_id_FK]
+------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------
 --Deleting all Indexes
@@ -122,4 +126,7 @@ drop table [DigiWallet].[dbo].[label_master]
 GO
 drop table [DigiWallet].[dbo].[trans_label]
 ------------------------------------------------------------------------------------------------------------
-
+-- drop table payee_master
+GO
+drop table [DigiWallet].[dbo].[payee_master]
+------------------------------------------------------------------------------------------------------------

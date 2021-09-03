@@ -96,4 +96,23 @@ public class SubCategoryController {
 			return false;
 		}
 	}
+
+	@RequestMapping(value = "/user/addSubCategory", method = RequestMethod.POST)
+	public String addSubCategory(HttpServletRequest req, HttpSession session, Model model) {
+		if (accountController.isValidUser(req)) {
+			int categoryId = Integer.parseInt(req.getParameter("categoryId"));
+			System.out.println("category Id is " + categoryId);
+			String subCategoryName = req.getParameter("subCategoryInputName");
+			boolean isSubCategoryAdded = subCategoryDao.addUserSubCategory(categoryId, subCategoryName);
+			if (isSubCategoryAdded) {
+				System.out.println("sub category added");
+			} else {
+				System.out.println("sub not category added");
+			}
+			return "redirect:/user/category";
+		} else {
+			return "redirect:/login";
+		}
+	}
+
 }

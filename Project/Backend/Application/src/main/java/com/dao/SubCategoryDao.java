@@ -22,15 +22,46 @@ public class SubCategoryDao {
 	}
 
 	public boolean addUserSubCategory(int categoryId, String subCategoryName) {
-		int rowAffected = 0;
 		try {
-			rowAffected = stmt.update("insert into sub_category (category_id,sub_category_name) values(?,?)",
-					categoryId, subCategoryName);
+			SubCategoryBean scBean = null;
+			try {
+				scBean = stmt.queryForObject(
+						"select TOP(1) * from sub_category where category_id = ? and sub_category_name = ?  ",
+						new Object[] { categoryId, subCategoryName },
+						new BeanPropertyRowMapper<SubCategoryBean>(SubCategoryBean.class));
+				System.out.println("duplicate sub category found try to activating.. it");
+			} catch (Exception e) {
+				System.out.println("duplicate sub category not found try to inserting.. it");
+			}
+			if (scBean == null) {
+//			try to insert new sub category
+				int rowAffected = 0;
+				try {
+					rowAffected = stmt.update("insert into sub_category (category_id,sub_category_name) values(?,?)",
+							categoryId, subCategoryName);
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("Error in insert of sub category");
+				}
+				return rowAffected == 0 ? false : true;
+			} else {
+//			try to activate sub category
+				int rowAffected = 0;
+				try {
+					rowAffected = stmt.update(
+							"update sub_category set sub_category_isDeleted = 0 where sub_category_id = ? ",
+							scBean.getSub_category_id());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return rowAffected == 0 ? false : true;
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error in insert of sub category");
+			// TODO: handle exception
+			System.out.println("Error in add sub category");
+			return false;
 		}
-		return rowAffected == 0 ? false : true;
+
 	}
 
 	public boolean deleteSubCategory(int subCatgoryId) {
@@ -48,7 +79,8 @@ public class SubCategoryDao {
 	public boolean updateSubCategory(SubCategoryBean scbean) {
 		int rowAffected = 0;
 		try {
-			rowAffected = stmt.update("update sub_category set sub_category_name = ? where sub_category_id = ? ",
+			rowAffected = stmt.update(
+					"update sub_category set sub_category_name = ? where sub_category_id = ? and sub_category_isDeleted = 0 ",
 					scbean.getSub_category_name(), scbean.getSub_category_id());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,3 +89,4 @@ public class SubCategoryDao {
 		return rowAffected == 0 ? false : true;
 	}
 }
+	

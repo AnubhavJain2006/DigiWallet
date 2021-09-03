@@ -132,7 +132,6 @@ public class CategoryController {
 		if (accountController.isValidUser(req)) {
 			int userId = accountController.getUserId(session);
 			if (catType.equals("Expense")) {
-				System.out.println("inside cat");
 				return categoryDao.getUserCategoryExpense(userId);
 			}
 			if (catType.equals("Income")) {
@@ -140,5 +139,47 @@ public class CategoryController {
 			}
 		}
 		return null;
+	}
+
+	@RequestMapping(value = "/user/addCategory", method = RequestMethod.POST)
+	public String addCategory(HttpServletRequest req, HttpSession session, Model model) {
+		if (accountController.isValidUser(req)) {
+			int userId = ((UserBean) session.getAttribute("user")).getUser_id();
+			String categoryName = req.getParameter("categoryInput");
+			String categoryType = req.getParameter("categoryTypeInput");
+			String subCategoryName = req.getParameter("subCategoryInput");
+			if (categoryType.equals("Income")) {
+				int categoryId = categoryDao.addUserCategoryIncome(userId, categoryName);
+				if (categoryId > 0) {
+					System.out.println("User Category added");
+					if (subCategoryName != null && !subCategoryName.equals("")) {
+						boolean isSubCategoryAdded = subCategoryDao.addUserSubCategory(categoryId, subCategoryName);
+						System.out.println("User Sub Category " + (isSubCategoryAdded ? "inserted" : "not inserted"));
+					} else {
+						System.out.println("Sub category id not provided");
+					}
+				} else {
+					System.out.println("User Category not added");
+				}
+			} else if (categoryType.equals("Expense")) {
+				int categoryId = categoryDao.addUserCategoryExpense(userId, categoryName);
+				if (categoryId > 0) {
+					System.out.println("User Category added");
+					if (subCategoryName != null && !subCategoryName.equals("")) {
+						boolean isSubCategoryAdded = subCategoryDao.addUserSubCategory(categoryId, subCategoryName);
+						System.out.println("User Sub Category " + (isSubCategoryAdded ? "inserted" : "not inserted"));
+					} else {
+						System.out.println("Sub category id not provided");
+					}
+				} else {
+					System.out.println("User Category not added");
+				}
+			}
+			return "redirect:/user/category";
+
+//			return transactionController.transaction(req, new TransactionBean(), model, session);
+		} else {
+			return "redirect:/login";
+		}
 	}
 }

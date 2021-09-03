@@ -23,8 +23,8 @@ user_full_name varchar(255) DEFAULT NULL,
 user_password varchar(MAX),
 user_image text,
 user_role_id int NOT NULL DEFAULT 2,
-user_insertdate datetime DEFAULT getdate(),
-user_updatedate datetime DEFAULT NULL,
+user_createdAt datetime DEFAULT getdate(),
+user_updatedAt datetime DEFAULT NULL,
 user_status varchar(10) DEFAULT 'ACTIVE' check(user_status in ('ACTIVE','DEACTIVE'))
 )
 ------------------------------------------------------------------------------------------------------------
@@ -46,15 +46,18 @@ trans_account_id int NOT NULL,
 trans_category_id int NOT NULL,
 trans_sub_category_id int NOT NULL,
 trans_amount money NOT NULL,
+trans_payee_id int DEFAULT NULL,
 trans_note text DEFAULT NULL,
 trans_description text DEFAULT NULL,
 trans_image text DEFAULT NULL,
 trans_status varchar(10) DEFAULT 'ACTIVE' check(trans_status in ('ACTIVE','DEACTIVE')),
-trans_isDeleted int DEFAULT 0 check(trans_isDeleted in (0,1))
+trans_isDeleted int DEFAULT 0 check(trans_isDeleted in (0,1)),
 trans_createdAt datetime DEFAULT getdate(),
 trans_updatedAt datetime DEFAULT NULL
 )
 ------------------------------------------------------------------------------------------------------------
+
+
 -- Create table account_group
 GO
 create table [DigiWallet].[dbo].[account_group] (
@@ -71,6 +74,17 @@ account_group_id int NOT NULL,
 account_name varchar(30) NOT NULL,
 account_amount money CHECK (account_amount >= 0),
 account_description text DEFAULT NULL
+)
+------------------------------------------------------------------------------------------------------------
+-- Create table payee_master
+GO
+create table [DigiWallet].[dbo].[payee_master] (
+payee_id int primary key identity,
+payee_user_id int NOT NULL,
+payee_name varchar(50) NOT NULL,
+payee_isDeleted int DEFAULT 0 check(payee_isDeleted in (0,1)),
+payee_createdAt datetime DEFAULT GETDATE(),
+payee_updatedAt datetime DEFAULT NULL
 )
 ------------------------------------------------------------------------------------------------------------
 -- Create table category_master
@@ -170,11 +184,17 @@ ON DELETE CASCADE
 ------------------------------------------------------------------------------------------------------------
 --Add Foreign Key Constraint to trans_master(trans_category_id) to category_master(category_id)
 --Purpose : to connect one user transaction to one user category (one-to-one) relationship
---Drawback : to insert default category this constraint will create an issue 
 GO
 ALTER TABLE [DigiWallet].[dbo].[trans_master]
 ADD CONSTRAINT trans_category_id_to_category_id_FK
 FOREIGN KEY (trans_category_id) REFERENCES category_master(category_id)
+------------------------------------------------------------------------------------------------------------
+--Add Foreign Key Constraint to trans_master(trans_payee_id) to payee_master(payee_id)
+--Purpose : to connect one user transaction to one payee (one-to-one) relationship
+GO
+ALTER TABLE [DigiWallet].[dbo].[trans_master]
+ADD CONSTRAINT trans_payee_id_to_payee_id_FK
+FOREIGN KEY (trans_payee_id) REFERENCES payee_master(payee_id)
 ------------------------------------------------------------------------------------------------------------
 --Add UNIQUE Constraint to category_master on category_user_id and category_name and category_type
 --Purpose : one user cannot have duplicate category name on category_name
@@ -182,6 +202,13 @@ GO
 ALTER TABLE [DigiWallet].[dbo].[category_master]
 ADD CONSTRAINT category_user_id_AND_category_type_AND_category_name_UNQ
 UNIQUE(category_user_id,category_name,category_type)
+------------------------------------------------------------------------------------------------------------
+--Add UNIQUE Constraint to sub_category on category_id and sub_category_name
+--Purpose : one user cannot have duplicate sub category name 
+GO
+ALTER TABLE [DigiWallet].[dbo].[sub_category]
+ADD CONSTRAINT category_id_AND_category_name_UNQ
+UNIQUE(category_id,sub_category_name)
 ------------------------------------------------------------------------------------------------------------
 --Add Foreign Key Constraint to trans_master(trans_sub_category_id) to sub_category(sub_category_id)
 --Purpose : to connect one user transaction to one user sub category (one-to-one) relationship
@@ -220,6 +247,14 @@ GO
 ALTER TABLE [DigiWallet].[dbo].[sub_category]
 ADD CONSTRAINT sub_category_id_to_category_id_FK
 FOREIGN KEY (category_id) REFERENCES category_master(category_id)
+------------------------------------------------------------------------------------------------------------
+--Add UNIQUE Constraint to payee_master on payee_user_id and payee_name
+--Purpose : one user cannot have duplicate payee's
+--Example : (two Anubhav with same name)
+GO
+ALTER TABLE [DigiWallet].[dbo].[payee_master]
+ADD CONSTRAINT payee_user_id_AND_payee_name_UNQ
+UNIQUE(payee_user_id,payee_name)
 ------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------
@@ -373,17 +408,19 @@ END
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Create trigger for category_master
 --Purpose : To deactivate all corresponding sub category when category is deactivate 
-GO
-CREATE TRIGGER AUTO_DEACTIVE_SUB_CATEGORY_WHEN_CATEGORY_DEACTIVE_TG
-ON [DigiWallet].[dbo].[category_master]
-FOR UPDATE
-AS 
-BEGIN
-	DECLARE @category_id INT
-	DECLARE @category_isDeleted INT
-	select @category_id = category_id, @category_isDeleted = category_isDeleted from inserted
-	if (@category_isDeleted = 1)
-	BEGIN
-		update sub_category set sub_category_isDeleted = 1 where category_id = @category_id
-	END
-END
+--Drawback : We don't need it bcz it we deactive category by default user UI will not able to access it's sub category
+--GO
+--CREATE TRIGGER AUTO_DEACTIVE_SUB_CATEGORY_WHEN_CATEGORY_DEACTIVE_TG
+--ON [DigiWallet].[dbo].[category_master]
+--FOR UPDATE
+--AS 
+--BEGIN
+--	DECLARE @category_id INT
+--	DECLARE @category_isDeleted INT
+--	select @category_id = category_id, @category_isDeleted = category_isDeleted from inserted
+--	if (@category_isDeleted = 1)
+--	BEGIN
+--		update sub_category set sub_category_isDeleted = 1 where category_id = @category_id
+--	END
+--END
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

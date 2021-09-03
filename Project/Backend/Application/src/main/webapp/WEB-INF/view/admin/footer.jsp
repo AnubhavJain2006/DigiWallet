@@ -1,6 +1,6 @@
 <footer class="app-footer">
 	<div class="container text-center py-3">
-		<small>Kuch Sochne ke baad likh dunga</small>
+		<small>All rights are reserved</small>
 	</div>
 </footer>
 

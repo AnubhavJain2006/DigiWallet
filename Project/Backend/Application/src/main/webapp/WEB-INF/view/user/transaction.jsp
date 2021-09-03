@@ -237,8 +237,9 @@
 											</c:forEach>
 										</f:select>
 										<p style="margin: 0px 10px; font-size: 80%; color: #5CB377;">
-											Your current balance is <span
-												id="span_account_amount_expense"></span>
+											Your <a href="account" style="text-decoration: underline;"><span
+												class="span_account_name_expense">Account Name</span></a>
+											balance is <span class="span_account_amount_expense"></span>
 										</p>
 									</div>
 								</div>
@@ -281,6 +282,27 @@
 											id="addSubCategoryBtn"></i>
 									</div>
 								</div>
+								
+								<!-- payee input for expense div start -->
+
+								<div class="row mb-3">
+
+									<label for="browser" class="col-sm-4 col-form-label">Pay
+										To</label>
+									<div class="col-sm-7">
+										<input list="payee_for_expense" name="payee_name" id="payee_name"
+											class="form-control" autocomplete="off">
+
+										<datalist id="payee_for_expense">
+											<!-- <option value="Edge"> -->
+
+										</datalist>
+									</div>
+								</div>
+
+								<!-- payee input for expense div end -->
+								
+								
 								<div class="row mb-3">
 									<label for="trans_amount" class="col-sm-4 col-form-label">Amount</label>
 									<div class="col-sm-7">
@@ -349,6 +371,11 @@
 												<option value="${account_list.account_id}">${account_list.account_name}</option>
 											</c:forEach>
 										</f:select>
+										<p style="margin: 0px 10px; font-size: 80%; color: #5CB377;">
+											Your <a href="account" style="text-decoration: underline;"><span
+												class="span_account_name_income">Account Name</span></a> balance
+											is <span class="span_account_amount_income"></span>
+										</p>
 									</div>
 								</div>
 								<div class="row mb-3">
@@ -390,6 +417,26 @@
 											id="addSubCategoryBtn"></i>
 									</div>
 								</div>
+								
+								<!-- payee input for income div start -->
+
+								<div class="row mb-3">
+
+									<label for="payee" class="col-sm-4 col-form-label">Pay
+										By</label>
+									<div class="col-sm-7">
+										<input list="payee_for_income" name="payee_name" id="payee_name"
+											class="form-control">
+
+										<datalist id="payee_for_income">
+											<!-- <option value="Edge"> -->
+
+										</datalist>
+									</div>
+								</div>
+
+								<!-- payee input for income div end -->
+								
 								<div class="row mb-3">
 									<label for="trans_amount" class="col-sm-4 col-form-label">Amount</label>
 									<div class="col-sm-7">
@@ -551,30 +598,77 @@ categoryDropdownForExpense.addEventListener('change',() => {
 
 </script>
 <script type="text/javascript">
-	function stringToRupees(value){
-	    let dollarIndianLocale = Intl.NumberFormat('en-IN');
-	    return "&#8377 "+ dollarIndianLocale.format(value)
+function stringToRupees(value){
+    let dollarIndianLocale = Intl.NumberFormat('en-IN');
+    return "&#8377 "+ dollarIndianLocale.format(value)
+}
+
+let accountListJson='<%=request.getAttribute("account_list_json")%>'
+let accountObj = JSON.parse(accountListJson);
+/* let accountDropDown = document.getElementById('trans_account_expense') ;
+accountDropDown.addEventListener('change',() => {
+    document.getElementById('span_account_amount_expense').innerText = accountObj[accountDropDown.value]
+});
+ */
+ 
+ $( document ).ready(function() {
+	 	setAccountDisplayString('expense',$('#trans_account_expense').val());
+		setAccountDisplayString('income',$('#trans_account_expense').val());
+		$('#trans_account_expense').on('load change focus',function(e){
+			setAccountDisplayString('expense',this.value);
+		});
+		$('#trans_account_income').on('load change focus',function(e){
+			setAccountDisplayString('income',this.value);
+		});
+				
+});
+ 
+function setAccountDisplayString(type,accountId){
+	let accountNameSpan = $('.span_account_name'+'_'+type);
+	let accountAmountSpan = $('.span_account_amount'+'_'+type);
+	accountObj.forEach(function(item,index) {
+		if(item.account_id == accountId){
+			accountNameSpan.html(item.account_name);
+			accountAmountSpan.html(stringToRupees(item.account_amount));
+		}
+	})
+	
+}
+
+
+</script>
+<script type="text/javascript">
+	/* Script tag for payee */
+	let payeeArray;
+	let payeeExpenseNameDiv = $('#payee_for_expense');
+	let payeeIncomeNameDiv = $('#payee_for_income');
+		
+	function setPayeeArray(){
+		(async () => {
+	       	response = await fetch('/ExpenseApplication/user/payee').then(data => data.json());
+	       	console.log(response);
+	       	payeeArray = response;
+			renderPayeeName(payeeArray);
+	    })();
+	}	
+	setPayeeArray();
+	
+	
+	function renderPayeeName(array){
+		payeeExpenseNameDiv.empty();
+		payeeIncomeNameDiv.empty();
+		array.forEach((item,index) => {
+			console.log(item.payee_name);
+			payeeExpenseNameDiv.append(`<option payee_id = \${item.payee_id} value = '\${item.payee_name}'></option>`);
+		})
+		array.forEach((item,index) => {
+			payeeIncomeNameDiv.append(`<option payee_id = \${item.payee_id} value = '\${item.payee_name}'></option>`);
+		})
 	}
 	
-	let accountListJson='<%=request.getAttribute("account_list_json")%>'
-	let accountObj = JSON.parse(accountListJson);
-	/* let accountDropDown = document.getElementById('trans_account_expense') ;
-	accountDropDown.addEventListener('change',() => {
-	    document.getElementById('span_account_amount_expense').innerText = accountObj[accountDropDown.value]
-	});
-	 */
-	 
-	 $( document ).ready(function() {
-		    console.log( "ready!" );
-			$('#trans_account_expense').on('load change focus',function(e){
-				document.getElementById('span_account_amount_expense').innerHTML = stringToRupees(accountObj[this.value]);
-			});
-			document.getElementById('span_account_amount_expense').innerHTML = stringToRupees(accountObj[document.getElementById('trans_account_expense').value]);		
-	});
-	 
-	
-	
 </script>
+
+
 <script>
 
 	

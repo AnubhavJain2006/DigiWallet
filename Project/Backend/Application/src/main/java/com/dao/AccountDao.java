@@ -95,4 +95,15 @@ public class AccountDao {
 		return flag;
 	}
 
+	public List<AccountBean> getUserAccounts(int userId) {
+		List<AccountBean> beans = stmt.query(
+				"select am.account_id,am.account_name,am.account_group_id, am.account_amount, am.account_description ,ag.account_group_name from account_master am join account_group ag on am.account_group_id=ag.account_group_id where am.account_user_id="
+						+ userId + " order by account_id desc",
+				new BeanPropertyRowMapper<AccountBean>(AccountBean.class));
+		if (!beans.isEmpty()) {
+			return beans;
+		}
+		return null;
+	}
+
 }

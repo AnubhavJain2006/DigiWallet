@@ -57,8 +57,8 @@ public class CategoryDao {
 					stmt.update(
 							"update category_master set category_isDeleted = 0 where category_user_id = ? and category_id = ? ",
 							cbean.getCategory_user_id(), cbean.getCategory_id());
-					stmt.update("update sub_category set sub_category_isDeleted = 0 where category_id = ? ",
-							cbean.getCategory_id());
+//					stmt.update("update sub_category set sub_category_isDeleted = 0 where category_id = ? ",
+//							cbean.getCategory_id());
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -101,8 +101,8 @@ public class CategoryDao {
 					stmt.update(
 							"update category_master set category_isDeleted = 0 where category_user_id = ? and category_id = ? ",
 							cbean.getCategory_user_id(), cbean.getCategory_id());
-					stmt.update("update sub_category set sub_category_isDeleted = 0 where category_id = ? ",
-							cbean.getCategory_id());
+//					stmt.update("update sub_category set sub_category_isDeleted = 0 where category_id = ? ",
+//							cbean.getCategory_id());
 
 				} catch (Exception e) {
 					e.printStackTrace();
