@@ -398,7 +398,7 @@
 								<th class="cell">Amount</th>
 								<th class="cell">Note</th>
 								<th class="cell">Name</th>
-								<th class="cell">Action</th>
+								
 							</tr>
 						</thead>
 						<tbody>
@@ -414,15 +414,6 @@
 										<td class="cell">${tbean.trans_amount}</td>
 										<td class="cell">${tbean.trans_note}</td>
 										<td class="cell">${tbean.user_name}</td>
-										<td class="cell">
-											<button type="submit" class="editExpence btn-sm btn btn-warning"
-												data-bs-toggle="modal"
-												data-bs-target="#updateModalForExpense"
-												id="${tbean.trans_id}">Update</button> <a
-											href="transaction/delete/${tbean.trans_id}"><button
-													type="submit" class="btn btn-danger btn-sm"
-													onclick="return confirmDelete()">Delete</button></a>
-										</td>
 									</tr>
 
 								</c:if>
@@ -453,7 +444,6 @@
 								<th class="cell">Sub Category Name</th>
 								<th class="cell">Amount</th>
 								<th class="cell">Note</th>
-								<th class="cell">Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -469,15 +459,6 @@
 										<td class="cell">${tbean.trans_amount}</td>
 										<td class="cell">${tbean.trans_note}</td>
 										<th class="cell">Name</th>
-										<td class="cell">
-											<button type="submit" class="editIncome  btn-sm btn btn-warning"
-												data-bs-toggle="modal"
-												data-bs-target="#updateModalForIncome"
-												id="${tbean.trans_id}">Update</button> <a
-											href="transaction/delete/${tbean.trans_id}"><button
-													type="submit" class="btn btn-sm btn-danger"
-													onclick="return confirmDelete()">Delete</button></a>
-										</td>
 									</tr>
 
 								</c:if>

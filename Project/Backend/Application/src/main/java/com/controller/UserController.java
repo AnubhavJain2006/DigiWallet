@@ -159,13 +159,11 @@ public class UserController {
 			session.setAttribute("user", userbean);
 			switch (Integer.parseInt(userbean.getUser_role())) {
 			case 1:
-				System.out.println(((UserBean) session.getAttribute("user")).getUser_name());
+//				System.out.println(((UserBean) session.getAttribute("user")).getUser_name());
 				return "redirect:/admin/dashboard";
-
 			case 2:
-				System.out.println(((UserBean) session.getAttribute("user")).getUser_name());
+//				System.out.println(((UserBean) session.getAttribute("user")).getUser_name());
 				return "redirect:/user/dashboard";
-
 			}
 		} else {
 			rowsAffected = 3;
