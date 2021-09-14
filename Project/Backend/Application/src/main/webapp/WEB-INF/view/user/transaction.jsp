@@ -22,30 +22,19 @@
 
 				<div class="alert alert-danger" role="alert">
 					<h4 class="alert-heading text-center">Sorry</h4>
-					<p class="text-center">You don't have any account.Please add one account.
-						<a href="account">Add Accounts</a>
+					<p class="text-center">
+						You don't have any account.Please add one account. <a
+							href="account">Add Accounts</a>
 					</p>
 					<hr>
-				
+
 				</div>
 
 			</c:when>
 			<c:otherwise>
 
 				<div class="container-xl">
-					<c:choose>
-						<c:when test="${rowsAffected==1}">
-							<div class="alert alert-warning alert-dismissible fade show"
-								role="alert">
-								<strong>Congratulations</strong> Your data has been successfully
-								deleted..
-								<button type="button" class="close" data-dismiss="alert"
-									aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-						</c:when>
-					</c:choose>
+			
 
 
 					<!-- Button trigger modal -->

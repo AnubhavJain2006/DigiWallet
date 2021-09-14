@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,7 @@ import com.util.MyTime;
 
 @Controller
 public class TransactionController {
-	int rowsAffected;
+	int rowsAffected=10;
 
 	@Autowired
 	PayeeDao payeeDao;
@@ -77,7 +78,6 @@ public class TransactionController {
 //				userAccountListInJson.put(abean.getAccount_id(), abean);
 //			}
 //			model.addAttribute("account_list_json", userAccountListInJson.toJSONString());
-
 			model.addAttribute("account_list_json", new Gson().toJson(userAccountList));
 			List<CategoryBean> userExpenseCategoryList = categoryDao.getUserCategoryExpense(userId);
 			model.addAttribute("expense_category_list", userExpenseCategoryList);
@@ -87,8 +87,8 @@ public class TransactionController {
 			System.out.println(list);
 			model.addAttribute("allRecordsList", list);
 			model.addAttribute("rowsAffected", rowsAffected);
-		
-			rowsAffected = 0;
+			model.addAttribute("result",rowsAffected);
+			rowsAffected = 10;
 			return "user/transaction";
 		} else {
 			return "redirect:/login";
@@ -233,5 +233,7 @@ public class TransactionController {
 		System.out.println("end of transup");
 		return "redirect:/admin/transaction";
 	}
+	
+	
 
 }

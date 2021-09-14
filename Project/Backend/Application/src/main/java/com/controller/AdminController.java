@@ -63,7 +63,7 @@ public class AdminController {
 
 	public boolean isValidUser(HttpServletRequest req) {
 		HttpSession session = req.getSession(false);
-		if ((UserBean) session.getAttribute("user") != null)
+		if ((UserBean) session.getAttribute("admin") != null)
 			return true;
 		else
 			return false;
@@ -142,7 +142,7 @@ public class AdminController {
 
 	@RequestMapping(value = "/admin/profile")
 	public String adminProfile(UserBean user, Model model, HttpSession session) {
-		int userId = ((UserBean) session.getAttribute("user")).getUser_id();
+		int userId = ((UserBean) session.getAttribute("admin")).getUser_id();
 		UserBean ubean = userDao.getUserProfile(userId);
 		model.addAttribute("user", ubean);
 		return "/admin/profile";
@@ -156,7 +156,7 @@ public class AdminController {
 //				System.out.println("error");
 				return "/admin/profile";
 			} else {
-				user.setUser_id(((UserBean) session.getAttribute("user")).getUser_id());
+				user.setUser_id(((UserBean) session.getAttribute("admin")).getUser_id());
 				userDao.updateUserProfile(user);
 			}
 			return "redirect:/admin/profile";

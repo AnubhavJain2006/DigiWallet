@@ -35,8 +35,9 @@ public class TransactionDao {
 		int rowAffectedForAccount = 0;
 		List<AccountBean> curAccountAsList = accountDao.getAccountByAccountId(tbean.getTrans_account_id());
 		if (curAccountAsList.size() == 1) {
-			System.out.println("Account found starting transaction ...");
+			System.out.println("Account found starting transaction-- ...");
 			AccountBean curAccount = curAccountAsList.get(0);
+			System.out.print("Current Account "+curAccount);
 			Double curAccountAmount = Double.parseDouble(curAccount.getAccount_amount());
 			Double curTransactionAmount = Double.parseDouble(tbean.getTrans_amount());
 			System.out.println("curAccountAmount : " + curAccountAmount);

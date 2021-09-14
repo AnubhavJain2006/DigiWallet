@@ -8,7 +8,6 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal"
 								aria-label="Close"></button>
 						</div>
-
 						<form action="/ExpenseApplication/user/addExpenseCategory"
 							method="POST">
 							<div class="modal-body">

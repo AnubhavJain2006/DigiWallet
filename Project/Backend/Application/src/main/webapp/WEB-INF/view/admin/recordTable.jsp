@@ -19,7 +19,7 @@
 												<td><%=i%></td>
 												<td>${ubean.user_name }</td>
 												<td>${ubean.user_email }</td>
-												<td>${ubean.user_insertDate }</td>
+												<td>${ubean.user_insertDate}</td>
 												<td>${ubean.user_status}
 												<c:choose>
 												<c:when test="${ubean.user_id != '1' }">

@@ -300,7 +300,7 @@
 						<thead>
 							<tr>
 
-								
+
 								<th class="cell">Date</th>
 								<th class="cell">Account Name</th>
 								<th class="cell">Category Name</th>
@@ -316,7 +316,7 @@
 							<!-- allRecordsList -->
 							<c:forEach items="${allExpenseList}" var="tbean">
 								<tr>
-									
+
 
 									<td class="cell">${tbean.trans_date}</td>
 
@@ -328,10 +328,12 @@
 									<td class="cell" id="${tbean.trans_user_id}">${tbean.user_name}</td>
 									<c:choose>
 										<c:when test="${tbean.trans_type=='EXPENSE'}">
-											<td class="cell"><span id="trans_type1" class="badge bg-danger">${tbean.trans_type}</span></td>
+											<td class="cell"><span id="trans_type1"
+												class="badge bg-danger">${tbean.trans_type}</span></td>
 										</c:when>
 										<c:when test="${tbean.trans_type=='INCOME'}">
-											<td class="cell"><span id="trans_type1" class="badge bg-success">${tbean.trans_type}</span></td>
+											<td class="cell"><span id="trans_type1"
+												class="badge bg-success">${tbean.trans_type}</span></td>
 										</c:when>
 									</c:choose>
 									<c:choose>
@@ -390,7 +392,7 @@
 					<table class="table app-table-hover mb-0 text-left" id="myTable1">
 						<thead>
 							<tr>
-								
+
 								<th class="cell">Date</th>
 								<th class="cell">Account Name</th>
 								<th class="cell">Category Name</th>
@@ -398,7 +400,7 @@
 								<th class="cell">Amount</th>
 								<th class="cell">Note</th>
 								<th class="cell">Name</th>
-								
+
 							</tr>
 						</thead>
 						<tbody>
@@ -406,7 +408,7 @@
 							<c:forEach items="${allExpenseList}" var="tbean">
 								<c:if test="${tbean.trans_type=='EXPENSE'}">
 									<tr>
-										
+
 										<td class="cell">${tbean.trans_date}</td>
 										<td class="cell" id="${tbean.trans_account_id}">${tbean.trans_account_name }</td>
 										<td class="cell" id="${tbean.trans_category_id}">${tbean.trans_category_name}</td>
@@ -437,13 +439,14 @@
 					<table class="table app-table-hover mb-0 text-left" id="myTable2">
 						<thead>
 							<tr>
-								
+
 								<th class="cell">Date</th>
 								<th class="cell">Account Name</th>
 								<th class="cell">Category Name</th>
 								<th class="cell">Sub Category Name</th>
 								<th class="cell">Amount</th>
 								<th class="cell">Note</th>
+								<th class="cell">Name</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -451,14 +454,13 @@
 							<c:forEach items="${allExpenseList}" var="tbean">
 								<c:if test="${tbean.trans_type=='INCOME'}">
 									<tr>
-										<td class="cell">${tbean.user_name}</td>
 										<td class="cell">${tbean.trans_date}</td>
 										<td class="cell" id="${tbean.trans_account_id}">${tbean.trans_account_name }</td>
 										<td class="cell" id="${tbean.trans_category_id}">${tbean.trans_category_name}</td>
 										<td class="cell" id="${tbean.trans_sub_category_id}">${tbean.trans_sub_category_name}</td>
 										<td class="cell">${tbean.trans_amount}</td>
 										<td class="cell">${tbean.trans_note}</td>
-										<th class="cell">Name</th>
+										<td class="cell">${tbean.user_name}</td>
 									</tr>
 
 								</c:if>
@@ -472,7 +474,7 @@
 		</div>
 		<!--//app-card-->
 	</div>
-	
+
 	<!--//tab-pane-->
 </div>
 <!--//tab-content-->

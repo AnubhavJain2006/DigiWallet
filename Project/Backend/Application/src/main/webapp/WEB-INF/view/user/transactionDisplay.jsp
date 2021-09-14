@@ -38,7 +38,9 @@
 							</c:forEach>
 						</f:select>
 						<p style="margin: 0px 10px; font-size: 80%; color: #5CB377;">
-							Your current balance is <span id="span_account_amount_expense1"></span>
+							Your <a href="account" style="text-decoration: underline;"><span
+								class="span_account_name_expense">Account Name</span></a> balance is
+							<span class="span_account_amount_expense"></span>
 						</p>
 					</div>
 				</div>

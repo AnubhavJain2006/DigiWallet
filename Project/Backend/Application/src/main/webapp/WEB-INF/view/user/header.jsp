@@ -79,7 +79,7 @@
 				<div class="app-branding">
 					<a class="app-logo" href="dashboard"><img class="logo-icon me-2"
 						src="<c:url value="/resources/images/app-logo.svg"/>" alt="logo"><span
-						class="logo-text">PORTAL</span></a>
+						class="logo-text">DigiWallet</span></a>
 
 				</div>
 				<!--//app-branding-->
